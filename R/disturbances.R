@@ -441,7 +441,7 @@ disturbance_other <- function(spatial_grid, spde, config) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    mutate(Year = as.numeric(Year)) # ,
+    dplyr::mutate(Year = as.numeric(Year)) # ,
   ## Value=scales::rescale(Value, to=c(0,1)))
 
   list(
@@ -451,41 +451,172 @@ disturbance_other <- function(spatial_grid, spde, config) {
   )
 }
 
-## TODO - put the weights as config
+##' All disturbance summarise_layers()
+##'
+##' This function combines all the effects together (weighted).
+##' The total effects are compiled (disturbances as well as growth) together.
+##' All calculations are on the link scale, so as to simply the
+##' calculations of a cumulative sum of effects per pixel.
+##' The relative influence (annual decline weighting) of each disturbance
+##' is provided via the config.
+##' Growth (annual increase) of HCC and SC are also provided in the config.
+##' Macroalgae respond differently. Rather than respond directly, macroalgae
+##' simply takes up the remaining available space \eqn{MA = Total available space - HCC - SC}
+##' @title All disturbance layers
+##' @param spatial_grid
+##' A sfc POINT object representing the full spatial grid/
+##' @param dhw_effects
+##' A matrix of dhw effect parameters
+##' @param cyc_effects
+##' A matrix of cyclone effect parameters
+##' @param other_effects
+##' A matrix of other effect parameters
+##' @param spde
+##' A list containing the SPDE mesh, SPDE object, Q matrix and A matrix
+##' @param config
+##' A list that should contains the following parameters:
+##' - years: A vector of years to generate the disturbance layer for
+##' - seed: A seed for the random number generator
+##' - dhw_weight: the relative influence of DHW as a disturbance
+##' - cyc_weight: the relative influence of Cyclones as a disturbance
+##' - other_weight: the relative influence of other disturbances as a disturbance
+##' - hcc_growth: the annual growth rate of hard coral
+##' - sc_growth: the annual growth rate of soft coral
+##' @return
+##' A list containing the following elements:
+##' - other_temporal: A data frame containing the temporal trend in OTHER
+##' - other_effects: A matrix containing the spatially varying random field
+##' - other_pts_sample: A matrix containing the disturbance layer projected onto the spatial grid
+##' - other_pts_effects_df: A data frame containing the disturbance layer projected onto the spatial grid
+##' @examples
+##' library(sf)
+##' library(INLA)
+##' library(dplyr)
+##' library(ggplot2)
+##' config <- list(crs=4326, seed = 123)
+##' spatial_domain <- st_geometry(
+##'   st_multipoint(
+##'     x = rbind(
+##'       c(0, -10),
+##'       c(3, -10),
+##'       c(10, -20),
+##'       c(1, -21),
+##'       c(2, -16),
+##'       c(0, -10)
+##'     )
+##'   )
+##' ) |>
+##'   st_set_crs(config$crs) |>
+##'   st_cast("POLYGON")
+##' set.seed(config$seed)
+##' spatial_grid <- spatial_domain |>
+##'   st_set_crs(NA) |>
+##'   st_sample(size = 10000, type = "regular") |>
+##'   st_set_crs(config$crs)
+##' config <- list(alpha = 2, kappa = 1, variance = 1)
+##' matern_projection <- create_spde(spatial_grid, config)
+##' config <- list(years = 1:12, seed = 123)
+##' dhw <- disturbance_dhw(spatial_grid, matern_projection, config)
+##' cyc <- disturbance_cyc(spatial_grid, matern_projection, config)
+##' other <- disturbance_other(spatial_grid, matern_projection, config)
+##' config <- list(
+##'   years = 1:12, seed = 123,
+##'   dhw_weight = 0.5,
+##'   cyc_weight = 0.4,
+##'   other_weight = 0.1,
+##'   hcc_growth = 0.3,
+##'   sc_growth =  0.3
+##' )
+##' all_disturbance_effects <- disturbance_all(
+##'   spatial_grid,
+##'   dhw_effects = dhw$dhw_effects,
+##'   cyc_effects = cyc$cyc_effects,
+##'   other_effects = other$other_effects,
+##'   matern_projection,
+##'   config) 
+##' all_disturbance_effects$all_effects_df |>
+##'    group_by(Year) |>
+##'    summarise(
+##'      Mean = mean(Y_HCC, na.rm = TRUE),
+##'      Median = median(Y_HCC, na.rm = TRUE)
+##'    ) |>
+##'    ggplot(aes(x = as.numeric(as.character(Year)))) +
+##'    geom_line(aes(y = Mean, color = "Mean")) +
+##'    geom_line(aes(y = Median, color = "Median")) +
+##'    scale_x_continuous("Year") +
+##'    scale_y_continuous("Effect on HCC") +
+##'    theme_bw()
+##'
+##' all_disturbance_effects$all_effects_df |>
+##'   ggplot(aes(y = Latitude, x = Longitude)) +
+##'   geom_point(aes(color = Y_HCC)) +
+##'   ## geom_tile(aes(fill = Y_HCC)) +
+##'   facet_wrap(~Year, nrow = 2) +
+##'   scale_color_gradient2("HCC", low = "red", high = "green", mid = "white") +
+##'   coord_sf(crs = 4236) +
+##'   theme_bw(base_size = 12) +
+##'   theme(axis.title = element_blank())
+##'
+##' ggplot(all_disturbance_effects$disturb_pts_effects, aes(y = Latitude, x = Longitude)) +
+##' geom_tile(aes(fill = Value)) +
+##' facet_wrap(~Year, nrow = 2) +
+##' scale_fill_gradientn(colors = terrain.colors(10)) +
+##' coord_sf(crs = 4236) +
+##' theme_bw(base_size = 12) +
+##' theme(
+##'   axis.title = element_blank(),
+##'   legend.position = c(0.95, 0.95),
+##'   legend.justification = c(1, 1)
+##' )
+##' @author Murray
+##' @export
 disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effects, spde, config) {
-  spatial_grid_pts_df <- spatial_grid |>
-    st_coordinates() |>
-    as.data.frame() |>
-    dplyr::rename(Longitude = X, Latitude = Y) |>
-    arrange(Longitude, Latitude)
+  testthat::expect(
+    inherits(spatial_grid, c("sfc_POINT")),
+    "spatial_grid must be an sfc_POINT object"
+  )
+  testthat::expect_in(
+    sort(c("mesh", "spde", "Q", "A")),
+    sort(names(spde))
+  )
+  testthat::expect(
+    inherits(spde$spde, c("inla.spde")),
+    "spde$spde must be a inla.spde object"
+  )
+  testthat::expect_in(
+    sort(c("years", "seed", "dhw_weight", "cyc_weight", "other_weight")),
+    sort(names(config))
+  )
+
+  spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   disturb_effects <-
-    (0.5 * dhw_effects) +
-    (0.4 * cyc_effects) +
-    (0.1 * other_effects) |>
+    (config$dhw_weight * dhw_effects) +
+    (config$cyc_weight * cyc_effects) +
+    (config$other_weight * other_effects) |>
     as.data.frame() # |>
   all_effects_df <- spde$mesh$loc[, 1:2] |>
     as.data.frame() |>
     dplyr::rename(Longitude = V1, Latitude = V2) |>
     cbind(disturb_effects) |>
-    pivot_longer(
+    tidyr::pivot_longer(
       cols = c(-Longitude, -Latitude),
       names_to = "Year",
       names_pattern = "sample:(.*)",
       values_to = "Y"
     ) |>
-    mutate(Year = factor(Year, levels = sort(unique(as.numeric(
+    dplyr::mutate(Year = factor(Year, levels = sort(unique(as.numeric(
       as.character(Year)
     ))))) |>
-    group_by(Longitude, Latitude) |>
-    mutate(
+    dplyr::group_by(Longitude, Latitude) |>
+    dplyr::mutate(
       Growth_HCC = 0.3, ## Add growth onto this
       Growth_SC = 0.3,
       Y_HCC = cumsum(-Y + Growth_HCC), ## cumsum on link scale will accumulate effects
       Y_SC = cumsum(-Y + Growth_SC)
     )
   all_effects <- all_effects_df |>
-    pivot_wider(
+    tidyr::pivot_wider(
       id_cols = c(Longitude, Latitude),
       names_prefix = "sample:",
       names_from = Year,
@@ -493,10 +624,10 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     )
 
   ## Project onto the spatial grid
-  disturb_pts_sample <- inla.mesh.project(spde$mesh,
+  disturb_pts_sample <- INLA::inla.mesh.project(spde$mesh,
     loc = as.matrix(spatial_grid_pts_df[, 1:2]),
     all_effects |>
-      ungroup() |> 
+      dplyr::ungroup() |> 
       dplyr::select(-Longitude, -Latitude) |>
       as.matrix()
   )
@@ -504,13 +635,13 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     as.matrix() |>
     as.data.frame() |>
     cbind(spatial_grid_pts_df) |>
-    pivot_longer(
+    tidyr::pivot_longer(
       cols = c(-Longitude, -Latitude),
       names_to = c("Year"),
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = as.numeric(Year))
   list(
     disturb_effects = disturb_effects,
     all_effects_df = all_effects_df,

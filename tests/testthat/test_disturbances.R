@@ -164,3 +164,85 @@ test_that("Generate other disturbance", {
   )
   testthat::expect_contains(names(other$other_pts_effects), c("Longitude", "Latitude", "Year", "Value"))
 })
+
+test_that("Generate all disturbance", {
+  library(sf)
+  library(INLA)
+  library(ggplot2)
+  config <- list(crs = 4326, seed = 123)
+  spatial_domain <- st_geometry(
+    st_multipoint(
+      x = rbind(
+        c(0, -10),
+        c(3, -10),
+        c(10, -20),
+        c(1, -21),
+        c(2, -16),
+        c(0, -10)
+      )
+    )
+  ) |>
+    st_set_crs(config$crs) |>
+    st_cast("POLYGON")
+  set.seed(config$seed)
+  spatial_grid <- spatial_domain |>
+    st_set_crs(NA) |>
+    st_sample(size = 10000, type = "regular") |>
+    st_set_crs(config$crs)
+  config <- list(alpha = 2, kappa = 1, variance = 1)
+  matern_projection <- create_spde(spatial_grid, config)
+  config <- list(years = 1:12, seed = 123)
+  dhw <- disturbance_dhw(spatial_grid, matern_projection, config)
+  cyc <- disturbance_cyc(spatial_grid, matern_projection, config)
+  other <- disturbance_other(spatial_grid, matern_projection, config)
+  config <- list(
+    years = 1:12, seed = 123,
+    dhw_weight = 0.5,
+    cyc_weight = 0.4,
+    other_weight = 0.1,
+    hcc_growth = 0.3,
+    sc_growth =  0.3
+  )
+  all_disturbance_effects <- disturbance_all(
+    spatial_grid,
+    dhw_effects = dhw$dhw_effects,
+    cyc_effects = cyc$cyc_effects,
+    other_effects = other$other_effects,
+    matern_projection,
+    config) 
+
+  testthat::expect_in(
+    names(all_disturbance_effects),
+    c("disturb_effects", "all_effects_df", "all_effects", "disturb_pts_sample",
+      "disturb_pts_effects")
+  )
+
+  testthat::expect(
+    inherits(all_disturbance_effects$disturb_effects, "data.frame"),
+    "all_disturbance_effects$disturb_effects should be a data.frame"
+  )
+  testthat::expect(
+    inherits(all_disturbance_effects$all_effects_df, "data.frame"),
+    "all_disturbance_effects$all_effects_df should be a data.frame"
+  )
+  testthat::expect_contains(
+    names(all_disturbance_effects$all_effects_df),
+    c("Longitude", "Latitude", "Year", "Y_HCC", "Y_SC", "Growth_HCC", "Growth_SC")
+  )
+  testthat::expect(
+    inherits(all_disturbance_effects$all_effects, "data.frame"),
+    "all_disturbance_effects$all_effects should be a data.frame"
+  )
+  testthat::expect(
+    inherits(all_disturbance_effects$disturb_pts_sample, "matrix"),
+    "all_disturbance_effects$disturb_pts_sample should be a matrix"
+  )
+  testthat::expect(
+    inherits(all_disturbance_effects$disturb_pts_effects, "data.frame"),
+    "all_disturbance_effects$disturb_pts_effects should be a data.frame"
+  )
+  testthat::expect_contains(
+    names(all_disturbance_effects$disturb_pts_effects),
+    c("Longitude", "Latitude", "Year", "Value")
+  )
+})

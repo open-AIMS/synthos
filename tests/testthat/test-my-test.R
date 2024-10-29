@@ -127,3 +127,59 @@ test_that("Generate simulated reefs works", {
     sort(colnames(simulated_reefs$simulated_reefs_poly_sf))
   )
 })
+
+test_that("Pointify polygons", {
+ library(sf)
+ library(gstat)
+ library(ggplot2)
+ config <- list(
+  seed = 1,
+  crs = 4326,
+  model = "Exp",
+  psill = 1,
+  range = 15,
+  nugget = 0,
+  patch_threshold = 1.75,
+  reef_width = 0.01
+ )
+ spatial_domain <- st_geometry(
+   st_multipoint(
+     x = rbind(
+       c(0, -10),
+       c(3, -10),
+       c(10, -20),
+       c(1, -21),
+       c(2, -16),
+       c(0, -10)
+     )
+   )
+ ) |>
+   st_set_crs(config$crs) |>
+   st_cast("POLYGON")
+ set.seed(config$seed)
+ spatial_grid <- spatial_domain |>
+   st_set_crs(NA) |>
+   st_sample(size = 10000, type = "regular") |>
+   st_set_crs(config$crs)
+ simulated_field <- generate_field(spatial_grid, config)
+ simulated_patches <- generate_patches(simulated_field, config)
+ simulated_reefs <- generate_reefs(simulated_patches, config)
+ reefs <- pointify_polygons(simulated_reefs$simulated_reefs_sf)
+
+  testthat::expect_in(
+    names(reefs),
+    c("data_reefs_sf", "data_reefs_df")
+  )
+  testthat::expect(
+    inherits(reefs$data_reefs_sf, "sf"),
+    "reefs$data_reefs_sf should be an sf object"
+  )
+  testthat::expect(
+    inherits(reefs$data_reefs_df, "data.frame"),
+    "reefs$data_reefs_df should be an data.frame object"
+  )
+  testthat::expect_contains(
+    names(reefs$data_reefs_df),
+    c("Longitude", "Latitude")
+  )
+})

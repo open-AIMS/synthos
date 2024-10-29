@@ -19,4 +19,5 @@ Imports:
     INLA,
     sf,
     stars,
+    stringr,
     tidyr
