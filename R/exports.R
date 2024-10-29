@@ -120,12 +120,12 @@ prepare_for_reefcloud <- function(data_fixed_locs_points) {
       )
   }
   ## Quadrat (%cover) specific
-  if ("QUAD_NO" %in% names(reef_data_synthetic_fixed)) {
+  if ("Quad" %in% names(reef_data_synthetic_fixed)) {
     reef_data_synthetic_fixed <-
       reef_data_synthetic_fixed |> 
       mutate(
         cover = Value,
-        quad_no = as.numeric(factor(QUAD_NO))
+        quad_no = as.numeric(factor(Quad))
       )
   }
   reef_data_synthetic_fixed <-
