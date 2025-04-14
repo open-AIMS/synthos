@@ -2,10 +2,12 @@
 
 export(baseline_hard_coral_cover)
 export(baseline_soft_coral_cover)
+export(calculate_reef_disturbances)
 export(calculate_reef_hcc)
 export(calculate_reef_ma)
 export(calculate_reef_sc)
 export(combine_reef_benthos)
+export(combine_reef_disturbances)
 export(create_spde)
 export(create_synthetic_reef_landscape)
 export(disturbance_all)

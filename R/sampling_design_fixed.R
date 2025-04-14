@@ -117,7 +117,6 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config) {
 ##' - geometry: sf geometry
 ##' @param config
 ##' A list containing:
-##' - years: numeric representation of years in the temporal domain
 ##' - Number_of_transects_per_site: number of transects per site
 ##' - Depths: number of depths
 ##' - Number_of_frames_per_transect: number of frames per transect
@@ -155,7 +154,9 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config) {
 ##'   dhw_weight = 0.5,
 ##'   cyc_weight = 0.4,
 ##'   other_weight = 0.1,
+##'   hcc_cover_range = c(0.1, 0.7),
 ##'   hcc_growth = 0.3,
+##'   sc_cover_range = c(0.01, 0.1),
 ##'   sc_growth =  0.3
 ##' )
 ##' spatial_domain <- st_geometry(
@@ -181,7 +182,6 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config) {
 ##' config <- list(n_locs = 25, n_sites = 2, seed = 123)
 ##' benthos_fixed_locs_sf <- sampling_design_large_scale_fixed(benthos_reefs_pts, config)
 ##' config <- list(
-##'   years =  1:12,
 ##'   Number_of_transects_per_site = 5,
 ##'   Depths = 2,
 ##'   Number_of_frames_per_transect = 100,
@@ -239,8 +239,8 @@ sampling_design_fine_scale_fixed <- function(data_fixed_locs_sf, config) {
     dplyr::arrange(Reef, Site, Transect, Year) |>
     dplyr::select(Reef, Longitude, Latitude, Site,
       Transect, Year, HCC = HCC2, SC = SC2, MA = MA2) |>
-    dplyr::mutate(Year = 2021 - max(config$years) + Year,
-      Date = as.POSIXct(paste0(Year, "-01-01 14:00:00")))
+    ## dplyr::mutate(Year = 2021 - max(config$years) + Year,
+    dplyr::mutate(Date = as.POSIXct(paste0(Year, "-01-01 14:00:00")))
   return(data_fixed_locs_obs)
 }
 
@@ -281,7 +281,9 @@ sampling_design_fine_scale_fixed <- function(data_fixed_locs_sf, config) {
 ##'   dhw_weight = 0.5,
 ##'   cyc_weight = 0.4,
 ##'   other_weight = 0.1,
+##'   hcc_cover_range = c(0.1, 0.7),
 ##'   hcc_growth = 0.3,
+##'   sc_cover_range = c(0.01, 0.1),
 ##'   sc_growth =  0.3
 ##' )
 ##' spatial_domain <- st_geometry(
@@ -402,7 +404,9 @@ sampling_design_fine_scale_points <- function(data_fixed_locs_obs, config) {
 ##'   dhw_weight = 0.5,
 ##'   cyc_weight = 0.4,
 ##'   other_weight = 0.1,
+##'   hcc_cover_range = c(0.1, 0.7),
 ##'   hcc_growth = 0.3,
+##'   sc_cover_range = c(0.01, 0.1),
 ##'   sc_growth =  0.3
 ##' )
 ##' spatial_domain <- st_geometry(

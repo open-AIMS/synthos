@@ -7,11 +7,18 @@
 ##' SPDE grid.
 ##' \deqn{Y = clong + sin(clat) + 1.5*clong + clat}
 ##' Note, these values are on the expected link scale (logit).
+##' These values are then rescaled to the nominated cover range (on the
+##' logit scale).
 ##' @title Calculate baseline hard coral cover 
 ##' @param spatial_grid 
 ##' A sfc POINT object representing the full spatial grid/
 ##' @param spde 
 ##' A list containing the SPDE mesh, SPDE object, Q matrix and A matrix
+##' @param cover_range 
+##' A numeric vector of length 2 that represents the broad scale range
+##' of the coral cover.  The range needs to be between 0 and 1 but cannot
+##' include 0 (0%) or 1 (%).  The default values are c(0.1, 0.7) equating
+##' to a range of 10% to 70% cover across the spatial domain.
 ##' @return A list containing the baseline sample, baseline effects,
 ##' baseline points sample and baseline points effects
 ##' @author Murray
@@ -65,7 +72,7 @@
 ##'     legend.justification = c(1, 1)
 ##'   )
 ##' @export
-baseline_hard_coral_cover <- function(spatial_grid, spde) {
+baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0.7)) {
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   testthat::expect(
@@ -76,6 +83,11 @@ baseline_hard_coral_cover <- function(spatial_grid, spde) {
     inherits(spde$mesh, c("inla.mesh")),
     "spde$mesh must be a inla.mesh object"
   )
+  testthat::expect(
+    min(cover_range) > 0 & max(cover_range) < 1,
+    "cover range must be between 0 and 1"
+  )
+  cover_range <- qlogis(cover_range)
 
   baseline_sample_hcc <- spde$mesh$loc[, 1:2] |>
     as.data.frame() |>
@@ -86,7 +98,7 @@ baseline_hard_coral_cover <- function(spatial_grid, spde) {
       Y = clong + sin(clat) + # rnorm(1,0,1) +
         1.5 * clong + clat
     ) |>
-    dplyr::mutate(Y = scales::rescale(Y, to = c(-2, 0.8)))
+    dplyr::mutate(Y = scales::rescale(Y, to = cover_range))
 
   baseline_effects_hcc <- baseline_sample_hcc |>
     dplyr::select(Y) |>
@@ -179,7 +191,7 @@ baseline_hard_coral_cover <- function(spatial_grid, spde) {
 ##'   other_effects = other$other_effects,
 ##'   matern_projection,
 ##'   config) 
-##' baseline_hcc <- baseline_hard_coral_cover(spatial_grid, matern_projection)
+##' baseline_hcc <- baseline_hard_coral_cover(spatial_grid, matern_projection, cover_range = c(0.1, 0.7))
 ##' field_hcc <- synthetic_field_hcc(spatial_grid, all_disturbance_effects$all_effects_df,
 ##'  baseline_hcc$baseline_sample_hcc, matern_projection)
 ##' 
@@ -258,7 +270,7 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
       values_to = "Value"
     ) |>
     dplyr::mutate(
-      Year = as.numeric(Year),
+      Year = config$years[as.numeric(Year)],
       Value = Value
     )
   list(all_effects_hcc = all_effects_hcc,
@@ -281,6 +293,11 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
 ##' A sfc POINT object representing the full spatial grid/
 ##' @param spde 
 ##' A list containing the SPDE mesh, SPDE object, Q matrix and A matrix
+##' @param cover_range 
+##' A numeric vector of length 2 that represents the broad scale range
+##' of the coral cover.  The range needs to be between 0 and 1 but cannot
+##' include 0 (0%) or 1 (%).  The default values are c(0.01, 0.1) equating
+##' to a range of 0.1% to 10% cover across the spatial domain.
 ##' @return A list containing the baseline sample, baseline effects,
 ##' baseline points sample and baseline points effects
 ##' @author Murray
@@ -334,7 +351,7 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
 ##'     legend.justification = c(1, 1)
 ##'   )
 ##' @export
-baseline_soft_coral_cover <- function(spatial_grid, spde) {
+baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 0.1)) {
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   testthat::expect(
@@ -345,6 +362,11 @@ baseline_soft_coral_cover <- function(spatial_grid, spde) {
     inherits(spde$mesh, c("inla.mesh")),
     "spde$mesh must be a inla.mesh object"
   )
+  testthat::expect(
+    min(cover_range) > 0 & max(cover_range) < 1,
+    "cover range must be between 0 and 1"
+  )
+  cover_range <- qlogis(cover_range)
 
   baseline_sample_sc <- spde$mesh$loc[, 1:2] |>
     as.data.frame() |>
@@ -355,7 +377,7 @@ baseline_soft_coral_cover <- function(spatial_grid, spde) {
       Y = clong + sin(clat) + # rnorm(1,0,1) +
         1.5 * clong + -1.5 * clat
     ) |>
-    dplyr::mutate(Y = scales::rescale(Y, to = c(-4, -2)))
+    dplyr::mutate(Y = scales::rescale(Y, to = cover_range))
 
   baseline_effects_sc <- baseline_sample_sc |>
     dplyr::select(Y) |>
@@ -375,7 +397,7 @@ baseline_soft_coral_cover <- function(spatial_grid, spde) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = config$years[as.numeric(Year)])
 
   list(baseline_sample_sc = baseline_sample_sc,
     baseline_effects_sc = baseline_effects_sc,
@@ -528,7 +550,7 @@ synthetic_field_sc <- function(spatial_grid, all_effects_df, baseline_sample_sc,
       values_to = "Value"
     ) |>
     dplyr::mutate(
-      Year = as.numeric(Year),
+      Year = config$years[as.numeric(Year)],
       Value = Value
     )
   list(all_effects_sc = all_effects_sc,

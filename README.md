@@ -36,7 +36,9 @@ config <- list(
   dhw_weight = 0.5,
   cyc_weight = 0.4,
   other_weight = 0.1,
+  hcc_cover_range = c(0.1, 0.7),
   hcc_growth = 0.3,
+  sc_cover_range = c(0.01, 0.1),
   sc_growth =  0.3
 )
 spatial_domain <- st_geometry(

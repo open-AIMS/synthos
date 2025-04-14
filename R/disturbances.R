@@ -142,7 +142,8 @@ disturbance_dhw <- function(spatial_grid, spde, config) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) %>%
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = config$years[as.numeric(Year)])
+    ## dplyr::mutate(Year = as.numeric(Year))
   ## Value=scales::rescale(Value, to=c(0,1)))
   list(
     dhw_temporal = dhw_temporal,
@@ -254,7 +255,9 @@ disturbance_cyc <- function(spatial_grid, spde, config) {
   set.seed(config$seed)
   cyc <- vector("list", length(config$years))
 
-  for (yr in config$years) {
+  yrs <- 1 + (config$years - min(config$years))
+  ## for (yr in config$years) {
+  for (yr in yrs) {
     ## cat(paste("Year:", yr, "\n"))
     cyc_occur <- rbinom(1, 1, prob = min(0.05 * yr^2, 0.6))
     ## cat(paste("Cyclone Occurance:", cyc_occur, "\n"))
@@ -309,7 +312,7 @@ disturbance_cyc <- function(spatial_grid, spde, config) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = config$years[as.numeric(Year)])
   list(
     cyc_effects = cyc_effects,
     cyc_effects_df = cyc_effects_df,
@@ -441,7 +444,8 @@ disturbance_other <- function(spatial_grid, spde, config) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = as.numeric(Year)) # ,
+    ## dplyr::mutate(Year = as.numeric(Year)) # ,
+    dplyr::mutate(Year = config$years[as.numeric(Year)])
   ## Value=scales::rescale(Value, to=c(0,1)))
 
   list(
@@ -641,7 +645,7 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = config$years[as.numeric(Year)])
   list(
     disturb_effects = disturb_effects,
     all_effects_df = all_effects_df,
