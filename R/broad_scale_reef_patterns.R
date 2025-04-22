@@ -100,7 +100,7 @@
 ##'   theme(axis.title = element_blank())
 ##' sf_use_s2(TRUE)
 ##' @export
-calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_df, data_reefs_sf, reefs_poly_sf) {
+calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_df, data_reefs_sf, reefs_poly_sf, config) {
   
   testthat::expect(
     inherits(all_effects_hcc, c("matrix")),
@@ -263,7 +263,7 @@ calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_d
 ##'   theme(axis.title = element_blank())
 ##' sf_use_s2(TRUE)
 ##' @export
-calculate_reef_sc <- function(spatial_grid, spde, all_effects_sc, data_reefs_df, data_reefs_sf, reefs_poly_sf) {
+calculate_reef_sc <- function(spatial_grid, spde, all_effects_sc, data_reefs_df, data_reefs_sf, reefs_poly_sf, config) {
   
   testthat::expect(
     inherits(all_effects_sc, c("matrix")),
@@ -562,7 +562,7 @@ calculate_reef_ma <- function(data_reefs_hcc, data_reefs_sc, data_reefs_sf, reef
 ##'   theme(axis.title = element_blank())
 ##' sf_use_s2(TRUE)
 ##' @export
-calculate_reef_disturbances <- function(spatial_grid, spde, all_effects_disturb, data_reefs_df, data_reefs_sf, reefs_poly_sf) {
+calculate_reef_disturbances <- function(spatial_grid, spde, all_effects_disturb, data_reefs_df, data_reefs_sf, reefs_poly_sf, config) {
   
   testthat::expect(
     inherits(all_effects_disturb, c("matrix")),
@@ -1013,13 +1013,13 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     cover_range = config$hcc_cover_range)
   if (verbose) cat("Generate synthetic hard coral cover\n")
   field_hcc <- synthetic_field_hcc(spatial_grid, all_disturbance_effects$all_effects_df,
-    baseline_hcc$baseline_sample_hcc, matern_projection)
+    baseline_hcc$baseline_sample_hcc, matern_projection, config)
   if (verbose) cat("Generate baseline soft coral cover\n")
   baseline_sc <- baseline_soft_coral_cover(spatial_grid, matern_projection,
-    cover_range = config$sc_cover_range)
+    cover_range = config$sc_cover_range, config)
   if (verbose) cat("Generate synthetic soft coral cover\n")
   field_sc <- synthetic_field_sc(spatial_grid, all_disturbance_effects$all_effects_df,
-    baseline_sc$baseline_sample_sc, matern_projection)
+    baseline_sc$baseline_sample_sc, matern_projection, config)
   if (verbose) cat("Pointify polygons\n")
   reefs <- pointify_polygons(simulated_reefs$simulated_reefs_sf)
   if (verbose) cat("Calculate reef hard coral cover\n")
@@ -1029,7 +1029,8 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     field_hcc$all_effects_hcc,
     reefs$data_reefs_df,
     reefs$data_reefs_sf,
-    simulated_reefs$simulated_reefs_poly_sf
+    simulated_reefs$simulated_reefs_poly_sf,
+    config
   )
   if (verbose) cat("Calculate reef soft coral cover\n")
   reefs_sc <- calculate_reef_sc(
@@ -1038,7 +1039,8 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     field_sc$all_effects_sc,
     reefs$data_reefs_df,
     reefs$data_reefs_sf,
-    simulated_reefs$simulated_reefs_poly_sf
+    simulated_reefs$simulated_reefs_poly_sf,
+    config
   )
   if (verbose) cat("Calculate reef macroalgae cover\n")
   reefs_ma <- calculate_reef_ma(
@@ -1061,7 +1063,8 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       cyc$cyc_effects,
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
-      simulated_reefs$simulated_reefs_poly_sf
+      simulated_reefs$simulated_reefs_poly_sf,
+      config
     )
     reefs_dhw <- calculate_reef_disturbances(
       spatial_grid,
@@ -1069,7 +1072,8 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       dhw$dhw_effects,
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
-      simulated_reefs$simulated_reefs_poly_sf
+      simulated_reefs$simulated_reefs_poly_sf,
+      config
     )
     reefs_other <- calculate_reef_disturbances(
       spatial_grid,
@@ -1077,7 +1081,8 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       other$other_effects,
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
-      simulated_reefs$simulated_reefs_poly_sf
+      simulated_reefs$simulated_reefs_poly_sf,
+      config
     )
     benthos_reefs_pts <- combine_reef_disturbances(
       benthos_reefs_pts,

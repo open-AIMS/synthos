@@ -141,6 +141,8 @@ baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0
 ##' A matrix containing the baseline sample
 ##' @param spde 
 ##' A list containing the SPDE mesh, SPDE object, Q matrix and A matrix
+##' @param config 
+##' A list containing configs
 ##' @return 
 ##' A list containing the synthetic field, the projected synthetic field
 ##' and the projected synthetic field as a data.frame
@@ -193,7 +195,7 @@ baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0
 ##'   config) 
 ##' baseline_hcc <- baseline_hard_coral_cover(spatial_grid, matern_projection, cover_range = c(0.1, 0.7))
 ##' field_hcc <- synthetic_field_hcc(spatial_grid, all_disturbance_effects$all_effects_df,
-##'  baseline_hcc$baseline_sample_hcc, matern_projection)
+##'  baseline_hcc$baseline_sample_hcc, matern_projection, config)
 ##' 
 ##' field_hcc$all_pts_effects_hcc |>
 ##'   mutate(Value = plogis(Value)) |> 
@@ -216,7 +218,7 @@ baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0
 ##'     legend.position = c(0.95,0.95),
 ##'     legend.justification = c(1,1))
 ##' @export
-synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hcc, spde) {
+synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hcc, spde, config) {
   testthat::expect(
     inherits(all_effects_df, c("data.frame")),
     "all_effects_df must be a data.frame object"
@@ -298,6 +300,8 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
 ##' of the coral cover.  The range needs to be between 0 and 1 but cannot
 ##' include 0 (0%) or 1 (%).  The default values are c(0.01, 0.1) equating
 ##' to a range of 0.1% to 10% cover across the spatial domain.
+##' @param config 
+##' A list containing configs
 ##' @return A list containing the baseline sample, baseline effects,
 ##' baseline points sample and baseline points effects
 ##' @author Murray
@@ -328,7 +332,7 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
 ##'   st_set_crs(config$crs)
 ##' config <- list(alpha = 2, kappa = 1, variance = 1)
 ##' matern_projection <- create_spde(spatial_grid, config)
-##' baseline_sc <- baseline_soft_coral_cover(spatial_grid, matern_projection)
+##' baseline_sc <- baseline_soft_coral_cover(spatial_grid, matern_projection, config = config)
 ##' ggplot(baseline_sc$baseline_pts_effects_sc, aes(y = Latitude, x = Longitude)) +
 ##'   geom_tile(aes(fill = Value)) +
 ##'   scale_fill_gradientn(colors = terrain.colors(10)) +
@@ -351,7 +355,7 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
 ##'     legend.justification = c(1, 1)
 ##'   )
 ##' @export
-baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 0.1)) {
+baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 0.1), config) {
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   testthat::expect(
@@ -421,6 +425,8 @@ baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 
 ##' A matrix containing the baseline sample
 ##' @param spde 
 ##' A list containing the SPDE mesh, SPDE object, Q matrix and A matrix
+##' @param config 
+##' A list containing configs
 ##' @return 
 ##' A list containing the synthetic field, the projected synthetic field
 ##' and the projected synthetic field as a data.frame
@@ -471,9 +477,9 @@ baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 
 ##'   other_effects = other$other_effects,
 ##'   matern_projection,
 ##'   config) 
-##' baseline_sc <- baseline_soft_coral_cover(spatial_grid, matern_projection)
+##' baseline_sc <- baseline_soft_coral_cover(spatial_grid, matern_projection, config = config)
 ##' field_sc <- synthetic_field_sc(spatial_grid, all_disturbance_effects$all_effects_df,
-##'  baseline_sc$baseline_sample_sc, matern_projection)
+##'  baseline_sc$baseline_sample_sc, matern_projection, config)
 ##' 
 ##' field_sc$all_pts_effects_sc |>
 ##'   mutate(Value = plogis(Value)) |> 
@@ -496,7 +502,7 @@ baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 
 ##'     legend.position = c(0.95,0.95),
 ##'     legend.justification = c(1,1))
 ##' @export
-synthetic_field_sc <- function(spatial_grid, all_effects_df, baseline_sample_sc, spde) {
+synthetic_field_sc <- function(spatial_grid, all_effects_df, baseline_sample_sc, spde, config) {
   testthat::expect(
     inherits(all_effects_df, c("data.frame")),
     "all_effects_df must be a data.frame object"
