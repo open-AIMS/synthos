@@ -1,5 +1,7 @@
 ## Generating synthethic data
 
+# 1. Create synthetic reef landscape
+
 library(sf)
 library(stars)
 library(gstat)
