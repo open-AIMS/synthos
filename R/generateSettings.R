@@ -88,11 +88,13 @@ assign("config_fine", config_fine, envir = .GlobalEnv)
 
 ## Generate point-based data 
 config_pt <- list(
- # Depths = 2,
+  Depths = 2,
   Depth_effect_multiplier = 2,
-  #Number_of_transects_per_site = 5,
+  Number_of_transects_per_site = 5,
   Number_of_frames_per_transect = 100,
-  Points_per_frame = 50
+  Number_of_quadrats_per_transect = 10,
+  Points_per_frame = 50,
+  Quad_sigma = 0.5
 )
 assign("config_pt", config_pt, envir = .GlobalEnv)
 

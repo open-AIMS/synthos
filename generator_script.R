@@ -1,16 +1,17 @@
 ## Generating synthethic data
 rm(list = ls())
-# 1. Create synthetic reef landscape
+
 
 library(sf)
 library(stars)
 library(gstat)
 library(INLA)
+detach("package:synthos", unload = TRUE, character.only = TRUE)
 remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = FALSE)
 library(synthos)
 
 ##### Generate settings
-generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
 
 # config <- list(
 #   seed = 1,
@@ -34,6 +35,7 @@ generateSettings(nreefs = 25, nsites = 3, nyears = 15)
 #   sc_growth =  0.3
 # )
 
+# 1. Create synthetic reef landscape
 spatial_domain <- st_geometry(
   st_multipoint(
     x = rbind(
@@ -48,7 +50,7 @@ spatial_domain <- st_geometry(
 ) |>
   st_set_crs(config_sp$crs) |>
   st_cast("POLYGON")
-## ----end
+
 
 ## ---- SpatialPoints
 set.seed(config_sp$seed)
@@ -58,10 +60,10 @@ spatial_grid <- spatial_domain |>
   st_set_crs(config_sp$crs)
 sf_use_s2(FALSE)
 
-benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, config)
+benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, config_sp)
+## ----end
 
-# config <- list(n_locs = 25, n_sites = 2, seed = 123)
-# benthos_fixed_locs_sf <- synthos::sampling_design_large_scale_fixed(benthos_reefs_pts, config)
+benthos_fixed_locs_sf <- synthos::sampling_design_large_scale_fixed(benthos_reefs_pts, config_lrge)
 
 # config <- list(
 #   years =  1:12,
@@ -83,7 +85,7 @@ benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, conf
 #   ma_sigma = 0.1 # random noise
 # )
 
-# benthos_fixed_locs_obs <- synthos::sampling_design_fine_scale_fixed(benthos_fixed_locs_sf, config)
+benthos_fixed_locs_obs <- synthos::sampling_design_fine_scale_fixed(benthos_fixed_locs_sf, config_fine)
 
 # config <- list(
 #   Depths = 2,
@@ -92,9 +94,10 @@ benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, conf
 #   Number_of_frames_per_transect = 100,
 #   Points_per_frame = 5
 # )
-# benthos_fixed_locs_points <- synthos::sampling_design_fine_scale_points(benthos_fixed_locs_obs, config)
 
-# reefcloud_synthetic_fixed_benthos <- synthos::prepare_for_reefcloud(benthos_fixed_locs_points)
+benthos_fixed_locs_points <- synthos::sampling_design_fine_scale_points(benthos_fixed_locs_obs, config_pt)
+
+synthetic_fixed_points <- synthos::prepare_table(benthos_fixed_locs_points)
 
 # config <- list(
 #   Depths = 2,
@@ -103,6 +106,7 @@ benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, conf
 #   Number_of_quadrats_per_transect = 10,
 #   Quad_sigma = 0.5
 # )
-# benthos_fixed_locs_cover <- synthos::sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config)
 
-# synthetic_fixed_benthos_cover <- synthos::prepare_table(benthos_fixed_locs_cover)
+benthos_fixed_locs_cover <- synthos::sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config_pt)
+
+synthetic_fixed_benthos_cover <- synthos::prepare_table(benthos_fixed_locs_cover)
