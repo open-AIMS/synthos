@@ -64,7 +64,7 @@ sampling_design_fine_scale_cover <- function(data_fixed_locs_obs, config_pt) {
     tidyr::crossing(
       Quad = paste0("Q", 1:config_pt$Number_of_quadrats_per_transect)
     ) |>
-    dplyr::mutate(Value = 100* plogis(qlogis(Value / 100) + rnorm(n(), 0, config_pt$Quad_sigma))) |> 
+    dplyr::mutate(Value = 100* plogis(qlogis(Value / 100) + rnorm(nrow(data_fixed_locs_obs), 0, config_pt$Quad_sigma))) |> 
     dplyr::ungroup()
   return(data_fixed_locs_obs)
 }

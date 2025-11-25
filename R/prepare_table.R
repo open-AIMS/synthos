@@ -65,7 +65,7 @@ prepare_table <- function(data_fixed_locs_points) {
   if ("POINT_NO" %in% names(reef_data_synthetic_fixed)) {
     reef_data_synthetic_fixed <-
       reef_data_synthetic_fixed |>
-      mutate(
+      dplyr::mutate(
         image_name = factor(paste(survey_title, FRAME)),
         image_id = as.numeric(image_name),
         image_quality = 100,
@@ -78,7 +78,7 @@ prepare_table <- function(data_fixed_locs_points) {
   if ("Quad" %in% names(reef_data_synthetic_fixed)) {
     reef_data_synthetic_fixed <-
       reef_data_synthetic_fixed |> 
-      mutate(
+      dplyr::mutate(
         cover = Value,
         quad_no = as.numeric(factor(Quad))
       )
