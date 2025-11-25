@@ -97,7 +97,7 @@ config_pt <- list(
 assign("config_pt", config_pt, envir = .GlobalEnv)
 
 config_list <- list(config_sp, config_lrge, config_fine, config_pt)
-save(config_list, file = paste0(title_of_run,"/lists_of_parameters.RData"))
+#save(config_list, file = paste0(title_of_run,"/lists_of_parameters.RData"))
 
 ## Type of monitoring surveys
 surveys <- "fixed"
