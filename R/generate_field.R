@@ -83,6 +83,6 @@ generate_field <- function(spatial_grid, config) {
     dummy = TRUE
   )
   ## predict the random field
-  simulated_field_sf <- predict(sim, newdata = spatial_grid, nsim = 1)
+  simulated_field_sf <- stats::predict(sim, newdata = spatial_grid, nsim = 1)
   return(simulated_field_sf)
 }
