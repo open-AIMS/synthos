@@ -89,7 +89,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
   field_sc <- synthos::synthetic_field_sc(spatial_grid, all_disturbance_effects$all_effects_df,
     baseline_sc$baseline_sample_sc, matern_projection, config)
   if (verbose) cat("Pointify polygons\n")
-  reefs <- pointify_polygons(simulated_reefs$simulated_reefs_sf)
+  reefs <- synthos::pointify_polygons(simulated_reefs$simulated_reefs_sf)
   if (verbose) cat("Calculate reef hard coral cover\n")
   reefs_hcc <- synthos::calculate_reef_hcc(
     spatial_grid,

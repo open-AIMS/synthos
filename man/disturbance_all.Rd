@@ -9,7 +9,7 @@ disturbance_all(
   dhw_effects,
   cyc_effects,
   other_effects,
-  spde,
+  matern_projection,
   config
 )
 }
@@ -22,9 +22,6 @@ disturbance_all(
 
 \item{other_effects}{Matrix of other disturbance effects.}
 
-\item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
-and projection matrix \code{A}.}
-
 \item{config}{A list with:
 \itemize{
 \item \code{years} – vector of years to simulate
@@ -35,6 +32,9 @@ and projection matrix \code{A}.}
 \item \code{hcc_growth} – annual growth rate of hard coral
 \item \code{sc_growth} – annual growth rate of soft coral
 }}
+
+\item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
+and projection matrix \code{A}.}
 }
 \value{
 A list with:

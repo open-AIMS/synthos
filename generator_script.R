@@ -1,12 +1,12 @@
 ## Generating synthethic data
-
+rm(list = ls())
 # 1. Create synthetic reef landscape
 
 library(sf)
 library(stars)
 library(gstat)
 library(INLA)
-remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = TRUE)
+remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = FALSE)
 library(synthos)
 
 config <- list(
