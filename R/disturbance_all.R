@@ -34,17 +34,17 @@
 #'
 #' @author Murray
 #' @export
-disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effects, spde, config) {
+disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effects, matern_projection, config) {
   testthat::expect(
     inherits(spatial_grid, c("sfc_POINT")),
     "spatial_grid must be an sfc_POINT object"
   )
   testthat::expect_in(
     sort(c("mesh", "spde", "Q", "A")),
-    sort(names(spde))
+    sort(names(matern_projection))
   )
   testthat::expect(
-    inherits(spde$spde, c("inla.spde")),
+    inherits(matern_projection$spde, c("inla.spde")),
     "spde$spde must be a inla.spde object"
   )
   testthat::expect_in(
@@ -52,14 +52,14 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     sort(names(config))
   )
 
-  spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
+  spatial_grid_pts_df <- synthos::spatial_grid_sfc_to_df(spatial_grid)
 
   disturb_effects <-
     (config$dhw_weight * dhw_effects) +
     (config$cyc_weight * cyc_effects) +
     (config$other_weight * other_effects) |>
     as.data.frame()
-  all_effects_df <- spde$mesh$loc[, 1:2] |>
+  all_effects_df <- matern_projection$spde$mesh$loc[, 1:2] |>
     as.data.frame() |>
     dplyr::rename(Longitude = V1, Latitude = V2) |>
     cbind(disturb_effects) |>
@@ -88,7 +88,7 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     )
 
   ## Project onto the spatial grid
-  disturb_pts_sample <- INLA::inla.mesh.project(spde$mesh,
+  disturb_pts_sample <- INLA::inla.mesh.project(matern_projection$spde$mesh,
     loc = as.matrix(spatial_grid_pts_df[, 1:2]),
     all_effects |>
       dplyr::ungroup() |> 
