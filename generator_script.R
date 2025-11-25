@@ -11,9 +11,12 @@ remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = 
 library(synthos)
 
 ##### Generate settings
+surveys <- "fixed"
+data_type <- "points"
+
 synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
 
-# 1. Create synthetic reef landscape
+# 1. Generation of the spatial and temporal domains, disturbances and baselines
 spatial_domain <- st_geometry(
   st_multipoint(
     x = rbind(
@@ -40,14 +43,41 @@ sf_use_s2(FALSE)
 benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, config_sp)
 ## ----end
 
-benthos_fixed_locs_sf <- synthos::sampling_design_large_scale_fixed(benthos_reefs_pts, config_lrge)
 
+######################## Fixed sampling design 
+
+if (surveys == "fixed"){
+
+# 2. Generation of the sampling design 
+benthos_fixed_locs_sf <- synthos::sampling_design_large_scale_fixed(benthos_reefs_pts, config_lrge)
 benthos_fixed_locs_obs <- synthos::sampling_design_fine_scale_fixed(benthos_fixed_locs_sf, config_fine)
 
+# 3. Generation of the data table
+if (data_type == "points"){
 benthos_fixed_locs_points <- synthos::sampling_design_fine_scale_points(benthos_fixed_locs_obs, config_pt)
-
-synthetic_fixed_points <- synthos::prepare_table(benthos_fixed_locs_points)
-
+synthos_data <- synthos::prepare_table(benthos_fixed_locs_points)
+}else{
 benthos_fixed_locs_cover <- synthos::sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config_pt)
+synthos_data <- synthos::prepare_table(benthos_fixed_locs_cover)
+}
+}
 
-synthetic_fixed_benthos_cover <- synthos::prepare_table(benthos_fixed_locs_cover)
+######################## Random sampling design 
+
+if (surveys == "random"){
+
+# 2. Generation of the sampling design 
+benthos_random_locs_sf <- synthos::sampling_design_large_scale_random(benthos_reefs_pts, config_lrge)
+benthos_random_locs_obs <- synthos::sampling_design_fine_scale_random(benthos_random_locs_sf, config_fine)
+
+# 3. Generation of the data table
+if (data_type == "points"){
+benthos_random_locs_points <- synthos::sampling_design_fine_scale_points(benthos_random_locs_obs, config_pt)
+synthos_data <- synthos::prepare_table(benthos_random_locs_points)
+}else{
+benthos_random_locs_cover <- synthos::sampling_design_fine_scale_cover(benthos_random_locs_obs, config_pt)
+synthos_data <- synthos::prepare_table(benthos_random_locs_cover)
+}
+}
+
+######################## Plots 

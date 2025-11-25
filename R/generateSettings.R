@@ -68,9 +68,7 @@ assign("config_lrge", config_lrge, envir = .GlobalEnv)
 config_fine <- list(
   years =  1:nyears,
   Number_of_transects_per_site = 5,
-  Depths = 1,
-#  Number_of_frames_per_transect = 100,
-#  Points_per_frame = 5,
+  Depths = 2,
   ## Note, the following are on the link scale
   hcc_site_sigma = 0.5, # variability in Sites within Locations
   hcc_transect_sigma = 0.2, # variability in Transects within Sites

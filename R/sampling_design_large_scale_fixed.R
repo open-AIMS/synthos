@@ -50,6 +50,7 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config_lrge) {
     dplyr::distinct() |>
     dplyr::sample_n(size = config_lrge$n_locs) |>
     dplyr::pull(Reef)
+
   ## Then filter to these Reefs before selecting a single location within
   ## each of the Reefs
   data_fixed_locs_sf <- data_reefs_pts_sf |>
