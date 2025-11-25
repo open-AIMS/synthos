@@ -74,8 +74,8 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     ))))) |>
     dplyr::group_by(Longitude, Latitude) |>
     dplyr::mutate(
-      Growth_HCC = hcc_growth, ## Add growth onto this
-      Growth_SC = sc_growth,
+      Growth_HCC = config$hcc_growth, ## Add growth onto this
+      Growth_SC = config$sc_growth,
       Y_HCC = cumsum(-Y + Growth_HCC), ## cumsum on link scale will accumulate effects
       Y_SC = cumsum(-Y + Growth_SC)
     )

@@ -6,7 +6,9 @@ library(sf)
 library(stars)
 library(gstat)
 library(INLA)
+remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = TRUE)
 library(synthos)
+
 config <- list(
   seed = 1,
   crs = 4326,
@@ -29,7 +31,7 @@ config <- list(
   sc_growth =  0.3
 )
 
-spatial.domain <- st_geometry(
+spatial_domain <- st_geometry(
   st_multipoint(
     x = rbind(
       c(0, -11),
@@ -40,29 +42,13 @@ spatial.domain <- st_geometry(
       c(0,-11)
     )
   )
-) %>%
-  st_set_crs(4326) %>%
-  st_cast('POLYGON')
-## ----end
-
-spatial.domain <- st_geometry(
-  st_multipoint(
-    x = rbind(
-      c(0, -11),
-      c(3,-11),
-      c(6,-14),
-      c(1,-15),
-      c(2,-12),
-      c(0,-11)
-    )
-  )
-) %>%
-  st_set_crs(4326) %>%
-  st_cast('POLYGON')
+) |>
+  st_set_crs(config$crs) |>
+  st_cast("POLYGON")
 ## ----end
 
 ## ---- SpatialPoints
-set.seed(config_sp$seed)
+set.seed(config$seed)
 spatial_grid <- spatial_domain |>
   st_set_crs(NA) |>
   st_sample(size = 10000, type = "regular") |>
