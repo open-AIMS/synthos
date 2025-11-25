@@ -11,7 +11,7 @@
 #'   and projection matrix `A`.
 #' @param cover_range Numeric vector of length 2 defining the broad-scale range
 #'   of soft coral cover on the link scale. Values must be >0 and <1. Default `c(0.01, 0.1)`.
-#' @param config A list containing configuration parameters including `years`.
+#' @param config_sp A list containing config_spuration parameters including `years`.
 #'
 #' @return A list with:
 #'   \itemize{
@@ -23,7 +23,7 @@
 #'
 #' @author Murray
 #' @export
-baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 0.1), config) {
+baseline_soft_coral_cover <- function(spatial_grid, spde, config_sp) {
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   testthat::expect(
@@ -34,6 +34,9 @@ baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 
     inherits(spde$mesh, c("inla.mesh")),
     "spde$mesh must be a inla.mesh object"
   )
+
+  cover_range <- config_sp$sc_cover_range
+  
   testthat::expect(
     min(cover_range) > 0 & max(cover_range) < 1,
     "cover range must be between 0 and 1"
@@ -69,7 +72,7 @@ baseline_soft_coral_cover <- function(spatial_grid, spde, cover_range = c(0.01, 
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = config$years[as.numeric(Year)])
+    dplyr::mutate(Year = config_sp$years[as.numeric(Year)])
 
   list(baseline_sample_sc = baseline_sample_sc,
     baseline_effects_sc = baseline_effects_sc,

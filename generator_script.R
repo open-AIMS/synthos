@@ -9,27 +9,30 @@ library(INLA)
 remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = FALSE)
 library(synthos)
 
-config <- list(
-  seed = 1,
-  crs = 4326,
-  model = "Exp",
-  psill = 1,
-  range = 15,
-  nugget = 0,
-  alpha = 2,
-  kappa = 1,
-  variance = 1,
-  patch_threshold = 1.75,
-  reef_width = 0.01,
-  years = 1:12,
-  dhw_weight = 0.5,
-  cyc_weight = 0.4,
-  other_weight = 0.1,
-  hcc_cover_range = c(0.1, 0.7),
-  hcc_growth = 0.3,
-  sc_cover_range = c(0.01, 0.1),
-  sc_growth =  0.3
-)
+##### Generate settings
+generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+
+# config <- list(
+#   seed = 1,
+#   crs = 4326,
+#   model = "Exp",
+#   psill = 1,
+#   range = 15,
+#   nugget = 0,
+#   alpha = 2,
+#   kappa = 1,
+#   variance = 1,
+#   patch_threshold = 1.75,
+#   reef_width = 0.01,
+#   years = 1:12,
+#   dhw_weight = 0.5,
+#   cyc_weight = 0.4,
+#   other_weight = 0.1,
+#   hcc_cover_range = c(0.1, 0.7),
+#   hcc_growth = 0.3,
+#   sc_cover_range = c(0.01, 0.1),
+#   sc_growth =  0.3
+# )
 
 spatial_domain <- st_geometry(
   st_multipoint(
@@ -43,16 +46,16 @@ spatial_domain <- st_geometry(
     )
   )
 ) |>
-  st_set_crs(config$crs) |>
+  st_set_crs(config_sp$crs) |>
   st_cast("POLYGON")
 ## ----end
 
 ## ---- SpatialPoints
-set.seed(config$seed)
+set.seed(config_sp$seed)
 spatial_grid <- spatial_domain |>
   st_set_crs(NA) |>
   st_sample(size = 10000, type = "regular") |>
-  st_set_crs(config$crs)
+  st_set_crs(config_sp$crs)
 sf_use_s2(FALSE)
 
 benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, config)

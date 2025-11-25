@@ -12,7 +12,7 @@
 #' @param data_reefs_df A data.frame of reef sample points (`Longitude`, `Latitude`).
 #' @param data_reefs_sf An sf object of the reef sample points.
 #' @param reefs_poly_sf An sf polygon object of reef boundaries.
-#' @param config A list containing configuration options, including `years`.
+#' @param config_sp A list containing configuration options, including `years`.
 #'
 #' @return A list containing:
 #'   \itemize{
@@ -23,7 +23,7 @@
 #'
 #' @author Murray
 #' @export
-calculate_reef_disturbances <- function(spatial_grid, spde, all_effects_disturb, data_reefs_df, data_reefs_sf, reefs_poly_sf, config) {
+calculate_reef_disturbances <- function(spatial_grid, spde, all_effects_disturb, data_reefs_df, data_reefs_sf, reefs_poly_sf, config_sp) {
   
   testthat::expect(
     inherits(all_effects_disturb, c("matrix")),
@@ -67,7 +67,7 @@ calculate_reef_disturbances <- function(spatial_grid, spde, all_effects_disturb,
       values_to = "Value"
     ) |>
     dplyr::mutate(
-      Year = config$years[as.numeric(Year)],
+      Year = config_sp$years[as.numeric(Year)],
       Value = Value
     )
 

@@ -4,7 +4,7 @@
 \alias{baseline_hard_coral_cover}
 \title{Baseline Hard Coral Cover}
 \usage{
-baseline_hard_coral_cover(spatial_grid, spde, cover_range = c(0.1, 0.7))
+baseline_hard_coral_cover(spatial_grid, spde, config_sp)
 }
 \arguments{
 \item{spatial_grid}{An \code{sfc_POINT} object representing the full spatial grid.}

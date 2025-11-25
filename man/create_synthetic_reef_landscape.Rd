@@ -6,7 +6,7 @@
 \usage{
 create_synthetic_reef_landscape(
   spatial_grid,
-  config,
+  config_sp,
   include_disturbances = FALSE,
   verbose = FALSE
 )
@@ -14,7 +14,7 @@ create_synthetic_reef_landscape(
 \arguments{
 \item{spatial_grid}{An sf object representing the spatial grid over which to simulate reefs.}
 
-\item{config}{A list of configuration parameters controlling the simulation, including:
+\item{config_sp}{A list of config_spuration parameters controlling the simulation, including:
 - \code{seed}: random seed
 - \code{model}, \code{psill}, \code{range}, \code{nugget}: variogram/SPDE parameters
 - \code{patch_threshold}, \code{reef_width}: reef patch parameters
@@ -35,7 +35,7 @@ disturbance values (\code{CYC}, \code{DHW}, \code{OTHER}), along with reef coord
 Create Synthetic Reef Landscape
 }
 \details{
-Generates a synthetic reef landscape from a spatial grid and configuration parameters.
+Generates a synthetic reef landscape from a spatial grid and config_spuration parameters.
 This includes generating synthetic fields, patches, and reefs, SPDE projections,
 baseline and synthetic benthos layers (hard coral, soft coral, macroalgae),
 and optionally reef-level disturbance layers (CYC, DHW, OTHER). Reef coordinates are

@@ -4,12 +4,7 @@
 \alias{baseline_soft_coral_cover}
 \title{Baseline Soft Coral Cover}
 \usage{
-baseline_soft_coral_cover(
-  spatial_grid,
-  spde,
-  cover_range = c(0.01, 0.1),
-  config
-)
+baseline_soft_coral_cover(spatial_grid, spde, config_sp)
 }
 \arguments{
 \item{spatial_grid}{An \code{sfc_POINT} object representing the full spatial grid.}
@@ -17,10 +12,10 @@ baseline_soft_coral_cover(
 \item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
 and projection matrix \code{A}.}
 
+\item{config_sp}{A list containing config_spuration parameters including \code{years}.}
+
 \item{cover_range}{Numeric vector of length 2 defining the broad-scale range
 of soft coral cover on the link scale. Values must be >0 and <1. Default \code{c(0.01, 0.1)}.}
-
-\item{config}{A list containing configuration parameters including \code{years}.}
 }
 \value{
 A list with:

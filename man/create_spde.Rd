@@ -4,12 +4,12 @@
 \alias{create_spde}
 \title{Create a mesh and SPDE}
 \usage{
-create_spde(spatial_grid, config)
+create_spde(spatial_grid, config_sp)
 }
 \arguments{
 \item{spatial_grid}{A sfc POINT object representing the full spatial grid/}
 
-\item{config}{A list that should contains the following parameters:
+\item{config_sp}{A list that should contains the following parameters:
 \itemize{
 \item alpha: the smoothness parameter of the Matern covariance function
 \item kappa: the range parameter of the Matern covariance function
@@ -24,13 +24,13 @@ Create a mesh and SPDE
 }
 \details{
 This function creates a mesh and SPDE for a given spatial grid and
-configuration.  It is primarily a wrapper for the create_spde_mesh and
+config_spuration.  It is primarily a wrapper for the create_spde_mesh and
 create_spde_matern functions.
 }
 \examples{
 library(sf)
 library(INLA)
-config <- list(crs=4326, seed = 123)
+config_sp <- list(crs=4326, seed = 123)
 spatial_domain <- st_geometry(
   st_multipoint(
     x = rbind(
@@ -43,15 +43,15 @@ spatial_domain <- st_geometry(
     )
   )
 ) |>
-  st_set_crs(config$crs) |>
+  st_set_crs(config_sp$crs) |>
   st_cast("POLYGON")
-set.seed(config$seed)
+set.seed(config_sp$seed)
 spatial_grid <- spatial_domain |>
   st_set_crs(NA) |>
   st_sample(size = 10000, type = "regular") |>
-  st_set_crs(config$crs)
-config <- list(alpha = 2, kappa = 1, variance = 1)
-matern_projection <- create_spde(spatial_grid, config)
+  st_set_crs(config_sp$crs)
+config_sp <- list(alpha = 2, kappa = 1, variance = 1)
+matern_projection <- create_spde(spatial_grid, config_sp)
 }
 \author{
 Murray

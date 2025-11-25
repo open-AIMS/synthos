@@ -12,7 +12,7 @@
 #' @param other_effects Matrix of other disturbance effects.
 #' @param spde A list containing the SPDE mesh, SPDE object, precision matrix `Q`,
 #'   and projection matrix `A`.
-#' @param config A list with:
+#' @param config_sp A list with:
 #'   \itemize{
 #'     \item `years` – vector of years to simulate
 #'     \item `seed` – random seed
@@ -34,7 +34,7 @@
 #'
 #' @author Murray
 #' @export
-disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effects, matern_projection, config) {
+disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effects, matern_projection, config_sp) {
   testthat::expect(
     inherits(spatial_grid, c("sfc_POINT")),
     "spatial_grid must be an sfc_POINT object"
@@ -49,15 +49,15 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
   )
   testthat::expect_in(
     sort(c("years", "seed", "dhw_weight", "cyc_weight", "other_weight")),
-    sort(names(config))
+    sort(names(config_sp))
   )
 
   spatial_grid_pts_df <- synthos::spatial_grid_sfc_to_df(spatial_grid)
 
   disturb_effects <-
-    (config$dhw_weight * dhw_effects) +
-    (config$cyc_weight * cyc_effects) +
-    (config$other_weight * other_effects) |>
+    (config_sp$dhw_weight * dhw_effects) +
+    (config_sp$cyc_weight * cyc_effects) +
+    (config_sp$other_weight * other_effects) |>
     as.data.frame()
   all_effects_df <- matern_projection$spde$mesh$loc[, 1:2] |>
     as.data.frame() |>
@@ -74,8 +74,8 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
     ))))) |>
     dplyr::group_by(Longitude, Latitude) |>
     dplyr::mutate(
-      Growth_HCC = config$hcc_growth, ## Add growth onto this
-      Growth_SC = config$sc_growth,
+      Growth_HCC = config_sp$hcc_growth, ## Add growth onto this
+      Growth_SC = config_sp$sc_growth,
       Y_HCC = cumsum(-Y + Growth_HCC), ## cumsum on link scale will accumulate effects
       Y_SC = cumsum(-Y + Growth_SC)
     )
@@ -105,7 +105,7 @@ disturbance_all <- function(spatial_grid, dhw_effects, cyc_effects, other_effect
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = config$years[as.numeric(Year)])
+    dplyr::mutate(Year = config_sp$years[as.numeric(Year)])
   list(
     disturb_effects = disturb_effects,
     all_effects_df = all_effects_df,

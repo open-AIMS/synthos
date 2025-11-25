@@ -4,7 +4,7 @@
 \alias{disturbance_cyc}
 \title{Cyclones Disturbance Layer}
 \usage{
-disturbance_cyc(spatial_grid, spde, config)
+disturbance_cyc(spatial_grid, spde, config_sp)
 }
 \arguments{
 \item{spatial_grid}{An \code{sfc_POINT} object representing the full spatial grid.}
@@ -12,7 +12,7 @@ disturbance_cyc(spatial_grid, spde, config)
 \item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
 and projection matrix \code{A}.}
 
-\item{config}{A list with:
+\item{config_sp}{A list with:
 \itemize{
 \item \code{years} – vector of years to simulate
 \item \code{seed} – random seed

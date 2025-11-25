@@ -11,7 +11,7 @@ calculate_reef_hcc(
   data_reefs_df,
   data_reefs_sf,
   reefs_poly_sf,
-  config
+  config_sp
 )
 }
 \arguments{
@@ -27,7 +27,7 @@ calculate_reef_hcc(
 
 \item{reefs_poly_sf}{An sf polygon object of reef boundaries.}
 
-\item{config}{A list containing configuration parameters, including \code{years}.}
+\item{config_sp}{A list containing config_spuration parameters, including \code{years}.}
 }
 \value{
 A list containing:

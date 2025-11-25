@@ -11,7 +11,7 @@
 #' @param baseline_sample_hcc A data frame containing the baseline hard coral cover sample.
 #' @param spde A list containing the SPDE mesh, SPDE object, precision matrix `Q`,
 #'   and projection matrix `A`.
-#' @param config A list containing simulation configuration parameters.
+#' @param config_sp A list containing simulation config_spuration parameters.
 #'
 #' @return A list with:
 #'   \itemize{
@@ -23,7 +23,7 @@
 #' @author Murray
 #' @export
 #' 
-synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hcc, spde, config) {
+synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hcc, spde, config_sp) {
   testthat::expect(
     inherits(all_effects_df, c("data.frame")),
     "all_effects_df must be a data.frame object"
@@ -77,7 +77,7 @@ synthetic_field_hcc <- function(spatial_grid, all_effects_df, baseline_sample_hc
       values_to = "Value"
     ) |>
     dplyr::mutate(
-      Year = config$years[as.numeric(Year)],
+      Year = config_sp$years[as.numeric(Year)],
       Value = Value
     )
   list(all_effects_hcc = all_effects_hcc,

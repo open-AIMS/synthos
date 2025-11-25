@@ -7,7 +7,7 @@
 ##' @title Generate a random field 
 ##' @param spatial_grid
 ##' An sf object that represents the spatial grid 
-##' @param config
+##' @param config_sp
 ##' A list that contains the parameters for the variogram model.
 ##' The list should contain the following parameters:
 ##' - seed: an integer that sets the seed for the random number generator
@@ -19,7 +19,7 @@
 ##' library(sf)
 ##' library(gstat)
 ##' library(ggplot2)
-##' config <- list(
+##' config_sp <- list(
 ##'  seed = 1,
 ##'  crs = 4326,
 ##'  model = "Exp",
@@ -39,36 +39,36 @@
 ##'     )
 ##'   )
 ##' ) |>
-##'   st_set_crs(config$crs) |>
+##'   st_set_crs(config_sp$crs) |>
 ##'   st_cast("POLYGON")
-##' set.seed(config$seed)
+##' set.seed(config_sp$seed)
 ##' spatial_grid <- spatial_domain |>
 ##'   st_set_crs(NA) |>
 ##'   st_sample(size = 10000, type = "regular") |>
-##'   st_set_crs(config$crs)
-##' simulated_field <- generate_field(spatial_grid, config)
+##'   st_set_crs(config_sp$crs)
+##' simulated_field <- generate_field(spatial_grid, config_sp)
 ##' simulated_field |> ggplot() + geom_sf(aes(colour = sim1))
 ##' @return an sf object that represents the simulated field
 ##' @author Murray
 ##' @export
-generate_field <- function(spatial_grid, config) {
+generate_field <- function(spatial_grid, config_sp) {
   testthat::expect(
     inherits(spatial_grid, c("sf", "sfc")),
     "spatial_grid must be an sf object"
   )
   testthat::expect_in(
     sort(c("seed", "psill", "model", "range", "nugget")),
-    sort(names(config))
+    sort(names(config_sp))
   )
 
-  set.seed(config$seed)
+  set.seed(config_sp$seed)
   ## create a variogram model object that can be used to simulate a
   ## random field
   vgm_model <- gstat::vgm(
-    psill = config$psill,
-    model = config$model,
-    range = config$range,
-    nugget = config$nugget
+    psill = config_sp$psill,
+    model = config_sp$model,
+    range = config_sp$range,
+    nugget = config_sp$nugget
   )
   ## Simulate a random field using gstat with the sf object
   sim <- gstat::gstat(formula = z ~ 1, locations = spatial_grid,

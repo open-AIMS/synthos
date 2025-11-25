@@ -4,12 +4,12 @@
 \alias{generate_field}
 \title{Generate a random field}
 \usage{
-generate_field(spatial_grid, config)
+generate_field(spatial_grid, config_sp)
 }
 \arguments{
 \item{spatial_grid}{An sf object that represents the spatial grid}
 
-\item{config}{A list that contains the parameters for the variogram model.
+\item{config_sp}{A list that contains the parameters for the variogram model.
 The list should contain the following parameters:
 \itemize{
 \item seed: an integer that sets the seed for the random number generator
@@ -35,7 +35,7 @@ marine system or any other.
 library(sf)
 library(gstat)
 library(ggplot2)
-config <- list(
+config_sp <- list(
  seed = 1,
  crs = 4326,
  model = "Exp",
@@ -55,14 +55,14 @@ spatial_domain <- st_geometry(
     )
   )
 ) |>
-  st_set_crs(config$crs) |>
+  st_set_crs(config_sp$crs) |>
   st_cast("POLYGON")
-set.seed(config$seed)
+set.seed(config_sp$seed)
 spatial_grid <- spatial_domain |>
   st_set_crs(NA) |>
   st_sample(size = 10000, type = "regular") |>
-  st_set_crs(config$crs)
-simulated_field <- generate_field(spatial_grid, config)
+  st_set_crs(config_sp$crs)
+simulated_field <- generate_field(spatial_grid, config_sp)
 simulated_field |> ggplot() + geom_sf(aes(colour = sim1))
 }
 \author{

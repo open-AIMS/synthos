@@ -24,7 +24,7 @@
 #'
 #' @author Murray
 #' @export
-baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0.7)) {
+baseline_hard_coral_cover <- function(spatial_grid, spde, config_sp) {
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
   testthat::expect(
@@ -35,6 +35,9 @@ baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0
     inherits(spde$mesh, c("inla.mesh")),
     "spde$mesh must be a inla.mesh object"
   )
+
+  cover_range <- config_sp$hcc_cover_range
+
   testthat::expect(
     min(cover_range) > 0 & max(cover_range) < 1,
     "cover range must be between 0 and 1"
@@ -70,7 +73,7 @@ baseline_hard_coral_cover <- function(spatial_grid, spde, cover_range = c(0.1, 0
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = as.numeric(Year))
+    dplyr::mutate(Year = config_sp$years[as.numeric(Year)])
 
   list(baseline_sample_hcc = baseline_sample_hcc,
     baseline_effects_hcc = baseline_effects_hcc,

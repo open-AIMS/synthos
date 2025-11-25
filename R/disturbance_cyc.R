@@ -8,7 +8,7 @@
 #' @param spatial_grid An `sfc_POINT` object representing the full spatial grid.
 #' @param spde A list containing the SPDE mesh, SPDE object, precision matrix `Q`,
 #'   and projection matrix `A`.
-#' @param config A list with:
+#' @param config_sp A list with:
 #'   \itemize{
 #'     \item `years` – vector of years to simulate
 #'     \item `seed` – random seed
@@ -24,7 +24,7 @@
 #'
 #' @author Murray
 #' @export 
-disturbance_cyc <- function(spatial_grid, spde, config) {
+disturbance_cyc <- function(spatial_grid, spde, config_sp) {
 
   testthat::expect(
     inherits(spatial_grid, c("sfc_POINT")),
@@ -40,16 +40,16 @@ disturbance_cyc <- function(spatial_grid, spde, config) {
   )
   testthat::expect_in(
     sort(c("years", "seed")),
-    sort(names(config))
+    sort(names(config_sp))
   )
 
   spatial_grid_pts_df <- spatial_grid_sfc_to_df(spatial_grid)
 
-  set.seed(config$seed)
-  cyc <- vector("list", length(config$years))
+  set.seed(config_sp$seed)
+  cyc <- vector("list", length(config_sp$years))
 
-  yrs <- 1 + (config$years - min(config$years))
-  ## for (yr in config$years) {
+  yrs <- 1 + (config_sp$years - min(config_sp$years))
+  ## for (yr in config_sp$years) {
   for (yr in yrs) {
     ## cat(paste("Year:", yr, "\n"))
     cyc_occur <- rbinom(1, 1, prob = min(0.05 * yr^2, 0.6))
@@ -105,7 +105,7 @@ disturbance_cyc <- function(spatial_grid, spde, config) {
       names_pattern = "sample:(.*)",
       values_to = "Value"
     ) |>
-    dplyr::mutate(Year = config$years[as.numeric(Year)])
+    dplyr::mutate(Year = config_sp$years[as.numeric(Year)])
   list(
     cyc_effects = cyc_effects,
     cyc_effects_df = cyc_effects_df,

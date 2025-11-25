@@ -1,6 +1,6 @@
 #' Create Synthetic Reef Landscape
 #'
-#' Generates a synthetic reef landscape from a spatial grid and configuration parameters.
+#' Generates a synthetic reef landscape from a spatial grid and config_spuration parameters.
 #' This includes generating synthetic fields, patches, and reefs, SPDE projections,
 #' baseline and synthetic benthos layers (hard coral, soft coral, macroalgae),
 #' and optionally reef-level disturbance layers (CYC, DHW, OTHER). Reef coordinates are
@@ -9,7 +9,7 @@
 #' @title Create Synthetic Reef Landscape with Benthos and Disturbances
 #'
 #' @param spatial_grid An sf object representing the spatial grid over which to simulate reefs.
-#' @param config A list of configuration parameters controlling the simulation, including:
+#' @param config_sp A list of config_spuration parameters controlling the simulation, including:
 #'               - `seed`: random seed
 #'               - `model`, `psill`, `range`, `nugget`: variogram/SPDE parameters
 #'               - `patch_threshold`, `reef_width`: reef patch parameters
@@ -25,7 +25,7 @@
 #'
 #' @author Murray
 #' @export
-create_synthetic_reef_landscape <- function(spatial_grid, config, include_disturbances = FALSE, verbose = FALSE) {
+create_synthetic_reef_landscape <- function(spatial_grid, config_sp, include_disturbances = FALSE, verbose = FALSE) {
   
   testthat::expect(
     inherits(spatial_grid, c("sfc")),
@@ -52,22 +52,22 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       "sc_cover_range",
       "sc_growth"
     )),
-    sort(names(config))
+    sort(names(config_sp))
   )
   if (verbose) cat("Generating synthetic field\n")
-  simulated_field <- synthos::generate_field(spatial_grid, config)
+  simulated_field <- synthos::generate_field(spatial_grid, config_sp)
   if (verbose) cat("Generating synthetic patches\n")
-  simulated_patches <- synthos::generate_patches(simulated_field, config)
+  simulated_patches <- synthos::generate_patches(simulated_field, config_sp)
   if (verbose) cat("Generating synthetic reefs\n")
-  simulated_reefs <- synthos::generate_reefs(simulated_patches, config)
+  simulated_reefs <- synthos::generate_reefs(simulated_patches, config_sp)
   if (verbose) cat("Generating SPDE\n")
-  matern_projection <- synthos::create_spde(spatial_grid, config)
+  matern_projection <- synthos::create_spde(spatial_grid, config_sp)
   if (verbose) cat("Generating DHW layer\n")
-  dhw <- synthos::disturbance_dhw(spatial_grid, matern_projection, config)
+  dhw <- synthos::disturbance_dhw(spatial_grid, matern_projection, config_sp)
   if (verbose) cat("Generating cyclone layer\n")
-  cyc <- synthos::disturbance_cyc(spatial_grid, matern_projection, config)
+  cyc <- synthos::disturbance_cyc(spatial_grid, matern_projection, config_sp)
   if (verbose) cat("Generating other disturbance layer\n")
-  other <- synthos::disturbance_other(spatial_grid, matern_projection, config)
+  other <- synthos::disturbance_other(spatial_grid, matern_projection, config_sp)
   if (verbose) cat("Combine all effect layers\n")
   all_disturbance_effects <- synthos::disturbance_all(
     spatial_grid,
@@ -75,19 +75,19 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     cyc_effects = cyc$cyc_effects,
     other_effects = other$other_effects,
     matern_projection,
-    config) 
+    config_sp) 
   if (verbose) cat("Generate baseline hard coral cover\n")
   baseline_hcc <- synthos::baseline_hard_coral_cover(spatial_grid, matern_projection,
-    cover_range = config$hcc_cover_range)
+    config_sp)
   if (verbose) cat("Generate synthetic hard coral cover\n")
   field_hcc <- synthos::synthetic_field_hcc(spatial_grid, all_disturbance_effects$all_effects_df,
-    baseline_hcc$baseline_sample_hcc, matern_projection, config)
+    baseline_hcc$baseline_sample_hcc, matern_projection, config_sp)
   if (verbose) cat("Generate baseline soft coral cover\n")
   baseline_sc <- synthos::baseline_soft_coral_cover(spatial_grid, matern_projection,
-    cover_range = config$sc_cover_range, config)
+    config_sp)
   if (verbose) cat("Generate synthetic soft coral cover\n")
   field_sc <- synthos::synthetic_field_sc(spatial_grid, all_disturbance_effects$all_effects_df,
-    baseline_sc$baseline_sample_sc, matern_projection, config)
+    baseline_sc$baseline_sample_sc, matern_projection, config_sp)
   if (verbose) cat("Pointify polygons\n")
   reefs <- synthos::pointify_polygons(simulated_reefs$simulated_reefs_sf)
   if (verbose) cat("Calculate reef hard coral cover\n")
@@ -98,7 +98,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     reefs$data_reefs_df,
     reefs$data_reefs_sf,
     simulated_reefs$simulated_reefs_poly_sf,
-    config
+    config_sp
   )
   if (verbose) cat("Calculate reef soft coral cover\n")
   reefs_sc <- synthos::calculate_reef_sc(
@@ -108,7 +108,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
     reefs$data_reefs_df,
     reefs$data_reefs_sf,
     simulated_reefs$simulated_reefs_poly_sf,
-    config
+    config_sp
   )
   if (verbose) cat("Calculate reef macroalgae cover\n")
   reefs_ma <- synthos::calculate_reef_ma(
@@ -132,7 +132,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
       simulated_reefs$simulated_reefs_poly_sf,
-      config
+      config_sp
     )
     reefs_dhw <- synthos::calculate_reef_disturbances(
       spatial_grid,
@@ -141,7 +141,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
       simulated_reefs$simulated_reefs_poly_sf,
-      config
+      config_sp
     )
     reefs_other <- synthos::calculate_reef_disturbances(
       spatial_grid,
@@ -150,7 +150,7 @@ create_synthetic_reef_landscape <- function(spatial_grid, config, include_distur
       reefs$data_reefs_df,
       reefs$data_reefs_sf,
       simulated_reefs$simulated_reefs_poly_sf,
-      config
+      config_sp
     )
     benthos_reefs_pts <- synthos::combine_reef_disturbances(
       benthos_reefs_pts,

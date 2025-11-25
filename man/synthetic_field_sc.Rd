@@ -9,7 +9,7 @@ synthetic_field_sc(
   all_effects_df,
   baseline_sample_sc,
   spde,
-  config
+  config_sp
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ synthetic_field_sc(
 \item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
 and projection matrix \code{A}.}
 
-\item{config}{A list containing configuration parameters, including \code{years}.}
+\item{config_sp_sp_sp}{A list containing config_sp_sp_spuration parameters, including \code{years}.}
 }
 \value{
 A list with:

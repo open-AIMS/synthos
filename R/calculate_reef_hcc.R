@@ -13,7 +13,7 @@
 #' @param data_reefs_df A data.frame of reef sample points with columns `Longitude` and `Latitude`.
 #' @param data_reefs_sf An sf object of the reef sample points.
 #' @param reefs_poly_sf An sf polygon object of reef boundaries.
-#' @param config A list containing configuration parameters, including `years`.
+#' @param config_sp A list containing config_spuration parameters, including `years`.
 #'
 #' @return A list containing:
 #'   \itemize{
@@ -24,7 +24,7 @@
 #'
 #' @author Murray
 #' @export
-calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_df, data_reefs_sf, reefs_poly_sf, config) {
+calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_df, data_reefs_sf, reefs_poly_sf, config_sp) {
   
   testthat::expect(
     inherits(all_effects_hcc, c("matrix")),
@@ -68,7 +68,7 @@ calculate_reef_hcc <- function(spatial_grid, spde, all_effects_hcc, data_reefs_d
       values_to = "Value"
     ) |>
     dplyr::mutate(
-      Year = config$years[as.numeric(Year)],
+      Year = config_sp$years[as.numeric(Year)],
       Value = Value
     )
 

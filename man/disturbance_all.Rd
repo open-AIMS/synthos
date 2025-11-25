@@ -10,7 +10,7 @@ disturbance_all(
   cyc_effects,
   other_effects,
   matern_projection,
-  config
+  config_sp
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ disturbance_all(
 
 \item{other_effects}{Matrix of other disturbance effects.}
 
-\item{config}{A list with:
+\item{config_sp}{A list with:
 \itemize{
 \item \code{years} – vector of years to simulate
 \item \code{seed} – random seed

@@ -9,7 +9,7 @@ synthetic_field_hcc(
   all_effects_df,
   baseline_sample_hcc,
   spde,
-  config
+  config_sp
 )
 }
 \arguments{
@@ -22,7 +22,7 @@ synthetic_field_hcc(
 \item{spde}{A list containing the SPDE mesh, SPDE object, precision matrix \code{Q},
 and projection matrix \code{A}.}
 
-\item{config}{A list containing simulation configuration parameters.}
+\item{config_sp}{A list containing simulation config_spuration parameters.}
 }
 \value{
 A list with:
