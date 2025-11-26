@@ -82,6 +82,7 @@ sampling_design_fine_scale_fixed <- function(data_fixed_locs_sf, config_fine) {
     dplyr::arrange(Reef, Site, Transect, Year) |>
     dplyr::select(Reef, Longitude, Latitude, Site,
       Transect, Year, HCC = HCC2, SC = SC2, MA = MA2) |>
-    dplyr::mutate(Date = as.POSIXct(paste0(Year, "-01-01 14:00:00")))
+    dplyr::mutate(Year = as.numeric(format(Sys.Date(), "%Y")) - max(config_fine$years) + Year,
+         Date = as.POSIXct(paste0(Year, '-01-01 14:00:00')))
   return(data_fixed_locs_obs)
 }
