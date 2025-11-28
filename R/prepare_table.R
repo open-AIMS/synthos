@@ -80,7 +80,8 @@ prepare_table <- function(data_fixed_locs_points) {
       reef_data_synthetic_fixed |> 
       dplyr::mutate(
         cover = Value,
-        quad_no = as.numeric(factor(Quad))
+        quad_no = as.numeric(factor(Quad)),
+        point_machine_classification = Group
       )
   }
   reef_data_synthetic_fixed <-
