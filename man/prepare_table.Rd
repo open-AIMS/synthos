@@ -2,7 +2,7 @@
 % Please edit documentation in R/prepare_table.R
 \name{prepare_table}
 \alias{prepare_table}
-\title{Prepare ReefCloud-Compatible Data Table}
+\title{Prepare Data Table}
 \usage{
 prepare_table(data_fixed_locs_points)
 }
@@ -31,9 +31,7 @@ Prepare Synthetic ReefCloud Data Table
 }
 \details{
 Converts point-level benthic sampling observations into a structured
-data frame mimicking the ReefCloud pipeline export format
-(https://reefcloud.ai/). Assigns survey, site, transect, frame, and point
-identifiers, along with benthic cover values and relevant metadata.
+data frame.
 
 The function:
 \itemize{

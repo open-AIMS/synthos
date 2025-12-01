@@ -1,11 +1,9 @@
 #' Prepare Synthetic ReefCloud Data Table
 #'
 #' Converts point-level benthic sampling observations into a structured
-#' data frame mimicking the ReefCloud pipeline export format
-#' (https://reefcloud.ai/). Assigns survey, site, transect, frame, and point
-#' identifiers, along with benthic cover values and relevant metadata.
+#' data frame. 
 #'
-#' @title Prepare ReefCloud-Compatible Data Table
+#' @title Prepare Data Table
 #'
 #' @param data_fixed_locs_points An `sf` object containing fine-scale point-level
 #' sampling data produced by `sampling_design_fine_scale_points()`. Must include:
@@ -37,86 +35,94 @@
 #' @author Murray
 #' @export
 prepare_table <- function(data_fixed_locs_points) {
-  reef_data_synthetic_fixed <-
+  reef_data_synthetic <-
     data_fixed_locs_points |>
     dplyr::mutate(
-      project_id = 1,
-      project_name = "synthetic_fixed",
-      SITE_NO = stringr::str_replace(Site, "^S", "Site "),
-      TRANSECT_NO = stringr::str_replace(Transect, "^T", "Transect "),
-      site_name = factor(paste(Reef, SITE_NO)),
-      site_id = as.numeric(site_name),
+    #  project_id = 1,
+      project_name = "synthetic",
+     # SITE_NO = stringr::str_replace(Site, "^S", "Site "),
+     # TRANSECT_NO = stringr::str_replace(Transect, "^T", "Transect "),
+     # site_name = factor(paste(Reef, SITE_NO)),
+      site_name = factor(paste(Reef, Site)),
+    #  site_id = as.numeric(site_name),
       site_latitude = Latitude,
       site_longitude = Longitude,
       site_depth = Depth,
-      site_country = "synthetic Country",
-      site_reef_name = factor(Reef),
-      site_reef_type = NA,
-      site_reef_zone = NA,
-      site_code = NA,
-      site_management = NA,
-      survey_title = factor(paste(Reef, SITE_NO, TRANSECT_NO, format(Date, "%Y-%m-%d"))),
-      survey_id = as.numeric(survey_title),
+    #  site_country = "Synthos Shire",
+    #  site_reef_name = factor(Reef),
+    #  site_reef_type = NA,
+    #  site_reef_zone = NA,
+    #  site_code = NA,
+    #  site_management = NA,
+    #  survey_title = factor(paste(Reef, SITE_NO, TRANSECT_NO, format(Date, "%Y-%m-%d"))),
+    #  survey_id = as.numeric(survey_title),
       survey_start_date = Date,
       survey_depth = Depth,
-      survey_transect_number = as.numeric(stringr::str_replace(TRANSECT_NO, "Transect ", "")),
+     # survey_transect_number = as.numeric(stringr::str_replace(TRANSECT_NO, "Transect ", "")),
+      survey_transect_number = Transect
       ) 
   ## Photo-transect specific
-  if ("POINT_NO" %in% names(reef_data_synthetic_fixed)) {
-    reef_data_synthetic_fixed <-
-      reef_data_synthetic_fixed |>
+  if (data_type == "points") {
+    reef_data_synthetic <-
+      reef_data_synthetic |>
       dplyr::mutate(
-        image_name = factor(paste(survey_title, FRAME)),
-        image_id = as.numeric(image_name),
-        image_quality = 100,
+      #  image_name = factor(paste(survey_title, FRAME)),
+      #  image_id = as.numeric(image_name),
+      #  image_quality = 100,
         point_no = POINT_NO,
-        point_id = as.numeric(factor(paste(image_name, POINT_NO))),
+      #  point_id = as.numeric(factor(paste(image_name, POINT_NO))),
         point_machine_classification = Group
       )
   }
   ## Quadrat (%cover) specific
-  if ("Quad" %in% names(reef_data_synthetic_fixed)) {
-    reef_data_synthetic_fixed <-
-      reef_data_synthetic_fixed |> 
+  if (data_type == "cover") {
+    reef_data_synthetic <-
+      reef_data_synthetic |> 
       dplyr::mutate(
         cover = Value,
         quad_no = as.numeric(factor(Quad)),
         point_machine_classification = Group
       )
   }
-  reef_data_synthetic_fixed <-
-    reef_data_synthetic_fixed |> 
+  reef_data_synthetic <-
+    reef_data_synthetic |> 
         dplyr::select(
-          project_id,
+         # project_id,
           project_name,
-          site_id,
+        #  site_id,
           site_name,
           site_latitude,
           site_longitude,
           site_depth,
-          site_country,
-          site_reef_name,
-          site_reef_type,
-          site_reef_zone,
-          site_code,
-          site_management,
-          survey_id,
-          survey_title,
+        #  site_country,
+        #  site_reef_name,
+        #  site_reef_type,
+        #  site_reef_zone,
+        #  site_code,
+        #  site_management,
+        #  survey_id,
+        #  survey_title,
           survey_start_date,
           survey_depth,
           survey_transect_number,
           any_of(c(
-            "image_id",
+          #  "image_id",
             "image_name",
-            "image_quality",
+          #  "image_quality",
             "point_id",
             "point_no",
             "point_machine_classification"
           )),
           any_of(c(
             "quad_no",
+            "point_machine_classification",
             "cover"
           ))
         )
-  return(reef_data_synthetic_fixed)
+  ## Process data table to get percent cover at transect level 
+
+  reef_data_synthetic <- select_process_reefs(reef_data_synthetic)
+  return(reef_data_synthetic)
 }
+
+

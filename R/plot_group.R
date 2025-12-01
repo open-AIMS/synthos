@@ -41,7 +41,7 @@ plot_group <- function(df) {
   ggplot(df) + 
     geom_line(aes(
       x = year, 
-      y = COVER * 100, 
+      y = COVER_site, 
       group = site, 
       color = site
     )) +
@@ -50,7 +50,7 @@ plot_group <- function(df) {
     theme_bw() +
     labs(
       x = "Year", 
-      y = "Coral cover (%)", 
+      y = "Cover (%)", 
       color = "Site",
       title = paste0("Group: ", unique(df$point_machine_classification), " and ", "Depth: ", unique(df$survey_depth))
     ) +

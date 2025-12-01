@@ -48,7 +48,7 @@
 #'
 #' @seealso [plot_group()]
 #' @author Julie
-#' @export
+##' @export
 plot_traj <- function(synthos_data){
 
   if (data_type == "points") {
@@ -60,7 +60,7 @@ plot_traj <- function(synthos_data){
       dplyr::mutate(TOTAL = sum(COUNT)) |>
       dplyr::ungroup() |>
       dplyr::mutate(
-        COVER = COUNT / TOTAL,
+        COVER = (COUNT / TOTAL) * 100,
         year  = lubridate::year(lubridate::ymd_hms(survey_start_date)),
         reef  = stringr::str_extract(site_name, "^Reef\\d+"),
         site  = stringr::str_extract(site_name, "Site \\d+$") |> stringr::str_remove("Site ")

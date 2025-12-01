@@ -36,7 +36,6 @@
 #'
 #' @author Julie
 #' @export
-
 sampling_design_large_scale_random <- function(data_reefs_pts_sf, config_lrge) {
   testthat::expect(
     inherits(data_reefs_pts_sf, c("sf")),
@@ -44,13 +43,11 @@ sampling_design_large_scale_random <- function(data_reefs_pts_sf, config_lrge) {
   )
   testthat::expect_in(
     sort(c(
-      "seed",
-      "n_locs",
       "n_sites"
     )),
     sort(names(config_lrge))
   )
-  set.seed(config_lrge$seed)
+ # set.seed(config_lrge$seed)
 
   ## Then filter to these Reefs before selecting a single location within
   ## each of the Reefs

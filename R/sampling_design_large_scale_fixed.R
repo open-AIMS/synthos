@@ -36,25 +36,27 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config_lrge) {
   )
   testthat::expect_in(
     sort(c(
-      "seed",
-      "n_locs",
+#      "seed",
+#      "n_locs",
       "n_sites"
     )),
     sort(names(config_lrge))
   )
-  set.seed(config_lrge$seed)
-  ## Start by randomly selecting nLocs Reefs
-  Reefs_fixed <- data_reefs_pts_sf |>
-    sf::st_drop_geometry() |>
-    dplyr::select(Reef) |>
-    dplyr::distinct() |>
-    dplyr::sample_n(size = config_lrge$n_locs) |>
-    dplyr::pull(Reef)
+
+  # set.seed(config_lrge$seed)
+  # ## Start by randomly selecting nLocs Reefs
+  # Reefs_fixed <- data_reefs_pts_sf |>
+  #   sf::st_drop_geometry() |>
+  #   dplyr::select(Reef) |>
+  #   dplyr::distinct() |>
+  #   dplyr::sample_n(size = config_lrge$n_locs) |>
+  #   dplyr::pull(Reef)
+
 
   ## Then filter to these Reefs before selecting a single location within
   ## each of the Reefs
   data_fixed_locs_sf <- data_reefs_pts_sf |>
-    dplyr::filter(Reef %in% Reefs_fixed) |>
+ #   dplyr::filter(Reef %in% Reefs_fixed) |>
     dplyr::select(Reef, geometry) |>
     dplyr::distinct(.keep_all = TRUE) |>
     dplyr::group_by(Reef) |>
