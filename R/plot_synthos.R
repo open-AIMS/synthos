@@ -70,13 +70,6 @@ plot_synthos <- function(synthos_data, type = "") {
       dplyr::mutate(
         COVER_site = (COUNT_site / TOTAL_site) * 100
       )
-      # ) |>
-      # dplyr::ungroup() |>
-      # dplyr::mutate(
-      #   year = lubridate::year(lubridate::ymd_hms(survey_start_date)),
-      #   reef = stringr::str_extract(site_name, "^Reef\\d+"),
-      #   site = stringr::str_extract(site_name, "Site \\d+$") |> stringr::str_remove("Site ")
-      # )
   }
 
   # ---- data prep: AGGREGATED COVER ----
@@ -87,12 +80,7 @@ plot_synthos <- function(synthos_data, type = "") {
         survey_depth, project_name, reef, site,
         year, point_machine_classification
       ) |>
-      dplyr::summarise(COVER_site = mean(COVER), .groups = "drop") #|>
-      # dplyr::mutate(
-      #   year = lubridate::year(lubridate::ymd_hms(survey_start_date)),
-      #   reef = stringr::str_extract(site_name, "^Reef\\d+"),
-      #   site = stringr::str_extract(site_name, "Site \\d+$") |> stringr::str_remove("Site ")
-      # )
+      dplyr::summarise(COVER_site = mean(COVER), .groups = "drop") 
   }
 
   # ---- common split variable ----

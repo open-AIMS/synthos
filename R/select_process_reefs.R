@@ -55,8 +55,8 @@ select_process_reefs <- function(reef_data_synthetic) {
   if (data_type == "points") {
     reef_data_synthetic <- reef_data_synthetic |>
       dplyr::group_by(
-        survey_depth, project_name, site_name, survey_transect_number,
-        survey_start_date, point_machine_classification
+        survey_depth, project_name, site_name, survey_transect_number, site_latitude,
+          site_longitude, survey_start_date, point_machine_classification
       ) |>
       dplyr::summarise(
         COUNT_TRUE = dplyr::n(),
@@ -87,8 +87,8 @@ select_process_reefs <- function(reef_data_synthetic) {
   if (data_type == "cover") {
     reef_data_synthetic <- reef_data_synthetic |>
       dplyr::group_by(
-        survey_depth, project_name, site_name, survey_transect_number,
-        survey_start_date, point_machine_classification
+        survey_depth, project_name, site_name, survey_transect_number,   site_latitude,
+          site_longitude, survey_start_date, point_machine_classification
       ) |>
       dplyr::summarise(COVER_TRUE = mean(cover, na.rm = TRUE), .groups = "drop") |>
       dplyr::mutate(

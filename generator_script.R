@@ -16,16 +16,10 @@ library(synthos)
 ##-----------------------------#
 
 ##### Generate settings
-surveys <- "fixed" # or "random"
-data_type <- "cover" #or "points"
+surveys <-  "random" # or  "fixed"
+data_type <- "points" # or "cover"
 
 synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
-
-##### Inspect all settings
-#config_sp
-#config_lrge
-#config_fine
-#config_pt
 
 ##-----------------------------#
 ## 2. Generate the spatio-temporal domain, disturbance effects and baselines
@@ -101,9 +95,9 @@ if (data_type == "points") {
 
 # 3.1 Long-term trajectories at site level
 
-plots <- plot_synthos(synthos_data, type = "trajectories")
+plots <- synthos::plot_synthos(synthos_data, type = "trajectories")
 purrr::walk(plots, print)
 
 # 3.2 Heatmaps 
-plots <- plot_synthos(synthos_data, type = "heatmaps")
+plots <- synthos::plot_synthos(synthos_data, type = "heatmaps")
 purrr::walk(plots, print)
