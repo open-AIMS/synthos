@@ -1,4 +1,18 @@
 url: https://open-aims.github.io/synthos/
 template:
   bootstrap: 5
+  bootswatch: minty
+  bslib:
+    primary: "#4BBFA9"      # mint-teal
+    secondary: "#6C63FF"    # modern purple
+    success: "#A9D44E"      # lime green
+    info: "#4BBFA9"
+    warning: "#FFC845"
+    danger: "#FF7F3F"
+    light: "#F7FAF9"
+    dark: "#003C4A"
 
+    # improve readability + modern look
+    base_font: {google: "Inter"}
+    heading_font: {google: "Poppins"}
+    code_font: {google: "Fira Code"}

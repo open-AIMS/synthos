@@ -1,10 +1,12 @@
 Package: synthos
 Title: Generate synthetic benthic data
-Version: 0.0.0.9000
+Version: 2.0
 Authors@R: 
     person("Murray", "Logan", , "pcinereus@gmail.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Generates synthetic hierarhical benthic data from synthetic distubances.
+           comment = c(ORCID = "0000-0001-5102-3972"))
+    person("Julie", "Vercelloni", , "julie.vercelloni@gmail.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-5227-014X"))
+Description: Generates ecological synthetic data.
 License: MIT + file LICENSE
 Suggests: 
     knitr,
