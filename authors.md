@@ -2,18 +2,18 @@
 
 ## Authors
 
-- **Murray Logan**. Author, maintainer.
-  [](https://orcid.org/YOUR-ORCID-ID)
+- **Julie Vercelloni**. Author, maintainer.
+  [](https://orcid.org/0000-0001-5227-014X)
 
 ## Citation
 
-Logan M (2025). *synthos: Generate synthetic benthic data*. R package
-version 0.0.0.9000, <https://open-aims.github.io/synthos/>.
+Vercelloni J (2025). *synthos: Generate synthetic benthic data*. R
+package version 2.0, <https://open-aims.github.io/synthos/>.
 
     @Manual{,
       title = {synthos: Generate synthetic benthic data},
-      author = {Murray Logan},
+      author = {Julie Vercelloni},
       year = {2025},
-      note = {R package version 0.0.0.9000},
+      note = {R package version 2.0},
       url = {https://open-aims.github.io/synthos/},
     }
