@@ -3,7 +3,7 @@ pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   generate-synthos-data: generate-synthos-data.html
-last_built: 2025-12-02T05:50Z
+last_built: 2025-12-02T06:26Z
 urls:
   reference: https://open-aims.github.io/synthos/reference
   article: https://open-aims.github.io/synthos/articles
