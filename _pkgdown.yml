@@ -15,7 +15,7 @@ template:
     secondary: '#058040'
   includes:
     in_header:
-      - '<link rel="icon" type="image/png" href="favicon-96x96.png">'
+      - '<link rel="icon" type="image/png" href="synthos_logo.png">'
 navbar:
   title: mbg
   structure:
