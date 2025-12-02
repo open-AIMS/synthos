@@ -1,6 +1,53 @@
-Synthos
-=================
+<img src="pkgdown/favicon/synthos_logo.png" alt="Logo" align="right" width="180">
+=========================================================================================
 
+[![CRAN](https://www.r-pkg.org/badges/version/mbg?color=ffcc00)](https://cran.r-project.org/package=mbg)
+[![Total downloads](https://cranlogs.r-pkg.org/badges/grand-total/mbg?color=blue)](https://cran.r-project.org/package=mbg)
+[![Build status](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml)
+
+**`synthos` is an R package to generate synthetic data.**
+
+The `synthos` package provides a simple interface to generate synthetic data for ecological communities. ADD MORE TEXT  
+
+The `synthos` package combines features from the [`sf`](https://r-spatial.github.io/sf/) and [`stars`](https://r-spatial.github.io/stars/) packages for spatial data processing; and, [`R-INLA`](https://www.r-inla.org/) and [`gstat`] (https://r-spatial.github.io/gstat/) for geostatistical models.
+
+---
+
+## Using the package
+
+**You can install the latest  version of the synthos package:**
+
+```remotes::install_github("open-AIMS/synthos@julie")```
+
+Some core package functions rely on R-INLA, which is not available on CRAN. If you do not already have the `INLA` package installed, you can download it at (https://www.r-inla.org/download-install).
+
+After installing and package and loading it using `library(synthos)`, you can access the package vignette by running `help(mbg)`, or get documentation for a specific function by running e.g. `help(MbgModelRunner)`.
+
+---
+
+<!-- ## Package workflow
+
+A typical MBG workflow includes the following steps:
+
+1. Load point data on **outcomes**, raster **covariate surfaces**, and a raster **population surface**
+2. _(Optional):_ Run **machine learning models** relating the input covariate surfaces to the outcome, producing predictive raster surfaces from a variety of methods
+3. **Prepare inputs** for the geostatistical model. This includes the outcomes point data, model specifications, a spatial 2-D mesh, and either the input covariate surfaces or the ML predictive surfaces
+4. Run the **geostatistical model**. This model predicts the outcome as a linear combination of the raster surfaces and a SPDE approximation to a Gaussian process over space.
+5. Using the model fit, **generate gridded predictions** of the outcome across the entire study area. Uncertainty is captured by generating 250 posterior predictive draws at each pixel location.
+6. **Summarize predictive draws** as raster surfaces by taking the mean, median, and 95% uncertainty interval bounds of draws at each pixel location
+7. _(Optional):_ **Aggregate** from pixels to administrative boundaries, preserving uncertainty
+
+For more details, see the [introductory vignette](https://henryspatialanalysis.github.io/mbg/articles/mbg.html).
+
+---
+
+### Acknowledgments
+
+Many thanks to the following groups of people for their contributions to the package:
+
+- IHME's Local Burden of Disease core code team, for their development of geostatistical software tools that helped inspire this package. Special thanks to Aaron Osgood-Zimmerman, Ian Davis, John VanderHeide, Jon Mosser, Katie Wilson, Lauren Woyczynski, Michael Collison, Michael Cork, Mike Richards, Nafis Sadat, Neal Marquez, and Roy Burstein.
+- The Geospatial Analysis team at the Demographic and Health Surveys Program -->
+<!-- 
 # Installation
 
 ```
@@ -124,4 +171,4 @@ config <- list(
 benthos_fixed_locs_cover <- sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config)
 
 reefcloud_synthetic_fixed_benthos_cover <- prepare_for_reefcloud(benthos_fixed_locs_cover)
-```
+``` -->
