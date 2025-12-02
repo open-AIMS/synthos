@@ -6,8 +6,8 @@ Authors@R:
            comment = c(ORCID = "0000-0001-5102-3972")),
       person("Julie", "Vercelloni", , "julie.vercelloni@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5227-014X")))
-Description: Generates ecological synthetic data. 
-License: MIT + file LICENSE
+Description: Generates synthetic data for ecological studies. 
+License: GPL-2
 Suggests: 
     knitr,
     rmarkdown,

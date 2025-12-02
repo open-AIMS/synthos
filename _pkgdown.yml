@@ -26,8 +26,8 @@ navbar:
       text: Home
       href: index.html
     intro:
-      text: Generating synthetic data
-      href: articles/_generate-synthos-data.html
+      text: Generating data
+      href: articles/generate-synthos-data.html
     vignettes:
       text: More tutorials
       menu:
