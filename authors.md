@@ -2,10 +2,9 @@
 
 ## Authors
 
-- **Murray Logan**. Author, maintainer.
-  [](https://orcid.org/0000-0001-5102-3972)
+- **Murray Logan**. Author. [](https://orcid.org/0000-0001-5102-3972)
 
-- **Julie Vercelloni**. Author.
+- **Julie Vercelloni**. Author, maintainer.
   [](https://orcid.org/0000-0001-5227-014X)
 
 ## Citation
