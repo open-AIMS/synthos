@@ -1,4 +1,4 @@
-# ![Logo](pkgdown/favicon/synthos_logo.png)
+# synthos ![Logo](reference/figures/synthos_logo.png)
 
 [![Build
 status](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml)
