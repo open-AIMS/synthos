@@ -1,115 +1,37 @@
-# Synthos
+# ![Logo](pkgdown/favicon/synthos_logo.png)
 
-# Installation
+[![CRAN](https://www.r-pkg.org/badges/version/mbg?color=ffcc00)](https://cran.r-project.org/package=mbg)
+[![Total
+downloads](https://cranlogs.r-pkg.org/badges/grand-total/mbg?color=blue)](https://cran.r-project.org/package=mbg)
+[![Build
+status](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml)
 
-    git clone git@github.com:open-AIMS/synthos.git .
+**`synthos` is an R package to generate synthetic data.**
 
-# Example use
+The `synthos` package provides a simple interface to generate synthetic
+data for ecological communities. ADD MORE TEXT
 
-The following describe how to use some of the wrapper functions to
-generate synthetic fixed photo-transect and quadrats data.
+The `synthos` package combines features from the
+[`sf`](https://r-spatial.github.io/sf/) and
+[`stars`](https://r-spatial.github.io/stars/) packages for spatial data
+processing; and, [`R-INLA`](https://www.r-inla.org/) and \[`gstat`\]
+(<https://r-spatial.github.io/gstat/>) for geostatistical models.
 
-## Create synthetic reef landscape
+------------------------------------------------------------------------
 
-    library(sf)
-    library(stars)
-    library(gstat)
-    library(INLA)
-    library(synthos)
-    config <- list(
-      seed = 1,
-      crs = 4326,
-      model = "Exp",
-      psill = 1,
-      range = 15,
-      nugget = 0,
-      alpha = 2,
-      kappa = 1,
-      variance = 1,
-      patch_threshold = 1.75,
-      reef_width = 0.01,
-      years = 1:12,
-      dhw_weight = 0.5,
-      cyc_weight = 0.4,
-      other_weight = 0.1,
-      hcc_cover_range = c(0.1, 0.7),
-      hcc_growth = 0.3,
-      sc_cover_range = c(0.01, 0.1),
-      sc_growth =  0.3
-    )
-    spatial_domain <- st_geometry(
-      st_multipoint(
-        x = rbind(
-          c(0, -10),
-          c(3, -10),
-          c(10, -20),
-          c(1, -21),
-          c(2, -16),
-          c(0, -10)
-        )
-      )
-    ) |>
-      st_set_crs(config$crs) |>
-      st_cast("POLYGON")
-    set.seed(config$seed)
-    spatial_grid <- spatial_domain |>
-      st_set_crs(NA) |>
-      st_sample(size = 10000, type = "regular") |>
-      st_set_crs(config$crs)
-    sf_use_s2(FALSE)
-    benthos_reefs_pts <- create_synthetic_reef_landscape(spatial_grid, config)
+## Using the package
 
-## Generate large scale fixed design
+**You can install the latest version of the synthos package:**
 
-    config <- list(n_locs = 25, n_sites = 2, seed = 123)
-    benthos_fixed_locs_sf <- sampling_design_large_scale_fixed(benthos_reefs_pts, config)
+`remotes::install_github("open-AIMS/synthos@julie")`
 
-## Generate fine scale fixed design
+Some core package functions rely on R-INLA, which is not available on
+CRAN. If you do not already have the `INLA` package installed, you can
+download it at (<https://www.r-inla.org/download-install>).
 
-    config <- list(
-      years =  1:12,
-      Number_of_transects_per_site = 5,
-      Depths = 2,
-      Number_of_frames_per_transect = 100,
-      Points_per_frame = 5,
-      ## Note, the following are on the link scale
-      hcc_site_sigma = 0.5, # variability in Sites within Locations
-      hcc_transect_sigma = 0.2, # variability in Transects within Sites
-      hcc_sigma = 0.1, # random noise
+After installing and package and loading it using
+[`library(synthos)`](https://open-aims.github.io/synthos/), you can
+access the package vignette by running `help(mbg)`, or get documentation
+for a specific function by running e.g. `help(MbgModelRunner)`.
 
-      sc_site_sigma = 0.05, # variability in Sites within Locations
-      sc_transect_sigma = 0.02, # variability in Transects within Sites
-      sc_sigma = 0.01, # random noise
-
-      ma_site_sigma = 0.5, # variability in Sites within Locations
-      ma_transect_sigma = 0.2, # variability in Transects within Sites
-      ma_sigma = 0.1 # random noise
-    )
-
-    benthos_fixed_locs_obs <- sampling_design_fine_scale_fixed(benthos_fixed_locs_sf, config)
-
-## Generate photo-transect like data and prepare for reefCloud
-
-    config <- list(
-      Depths = 2,
-      Depth_effect_multiplier = 2,
-      Number_of_transects_per_site = 5,
-      Number_of_frames_per_transect = 100,
-      Points_per_frame = 5
-    )
-    benthos_fixed_locs_points <- sampling_design_fine_scale_points(benthos_fixed_locs_obs, config)
-
-    reefcloud_synthetic_fixed_benthos <- prepare_for_reefcloud(benthos_fixed_locs_points)
-
-## Generate quadrat-like (percent cover) data and prepare for reefCloud
-
-    config <- list(
-      Depths = 2,
-      Depth_effect_multiplier = 2,
-      Number_of_transects_per_site = 5,
-      Number_of_quadrats_per_transect = 10,
-      Quad_sigma = 0.5
-    )
-    benthos_fixed_locs_cover <- sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config)
-
-    reefcloud_synthetic_fixed_benthos_cover <- prepare_for_reefcloud(benthos_fixed_locs_cover)
+------------------------------------------------------------------------

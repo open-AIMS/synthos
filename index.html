@@ -21,7 +21,7 @@
 <meta property="og:title" content="Generate synthetic benthic data">
 <meta name="description" content="Generates ecological synthetic data.">
 <meta property="og:description" content="Generates ecological synthetic data.">
-<link rel="icon" type="image/png" href="favicon-96x96.png">
+<link rel="icon" type="image/png" href="synthos_logo.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -64,130 +64,170 @@
 </nav><div class="container template-home">
 <div class="row">
   <main id="main" class="col-md-9"><div class="section level1">
-<div class="page-header"><h1 id="synthos">Synthos<a class="anchor" aria-label="anchor" href="#synthos"></a>
+<div class="page-header"><h1 id="section">
+<img src="pkgdown/favicon/synthos_logo.png" alt="Logo" align="right" width="180"><a class="anchor" aria-label="anchor" href="#section"></a>
 </h1></div>
-</div>
-<div class="section level1">
-<h1 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
-</h1>
-<pre><code>git clone git@github.com:open-AIMS/synthos.git .</code></pre>
-</div>
-<div class="section level1">
-<h1 id="example-use">Example use<a class="anchor" aria-label="anchor" href="#example-use"></a>
-</h1>
-<p>The following describe how to use some of the wrapper functions to generate synthetic fixed photo-transect and quadrats data.</p>
+<p><a href="https://cran.r-project.org/package=mbg" class="external-link"><img src="https://www.r-pkg.org/badges/version/mbg?color=ffcc00" alt="CRAN"></a> <a href="https://cran.r-project.org/package=mbg" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/mbg?color=blue" alt="Total downloads"></a> <a href="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg" alt="Build status"></a></p>
+<p><strong><code>synthos</code> is an R package to generate synthetic data.</strong></p>
+<p>The <code>synthos</code> package provides a simple interface to generate synthetic data for ecological communities. ADD MORE TEXT</p>
+<p>The <code>synthos</code> package combines features from the <a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code></a> and <a href="https://r-spatial.github.io/stars/" class="external-link"><code>stars</code></a> packages for spatial data processing; and, <a href="https://www.r-inla.org/" class="external-link"><code>R-INLA</code></a> and [<code>gstat</code>] (<a href="https://r-spatial.github.io/gstat/" class="external-link uri">https://r-spatial.github.io/gstat/</a>) for geostatistical models.</p>
+<hr>
 <div class="section level2">
-<h2 id="create-synthetic-reef-landscape">Create synthetic reef landscape<a class="anchor" aria-label="anchor" href="#create-synthetic-reef-landscape"></a>
+<h2 id="using-the-package">Using the package<a class="anchor" aria-label="anchor" href="#using-the-package"></a>
 </h2>
-<pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/sf/" class="external-link">sf</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://r-spatial.github.io/stars/" class="external-link">stars</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/r-spatial/gstat/" class="external-link">gstat</a></span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">INLA</span><span class="op">)</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://open-aims.github.io/synthos/">synthos</a></span><span class="op">)</span></span>
-<span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  seed <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  crs <span class="op">=</span> <span class="fl">4326</span>,</span>
-<span>  model <span class="op">=</span> <span class="st">"Exp"</span>,</span>
-<span>  psill <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  range <span class="op">=</span> <span class="fl">15</span>,</span>
-<span>  nugget <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>  alpha <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  kappa <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  variance <span class="op">=</span> <span class="fl">1</span>,</span>
-<span>  patch_threshold <span class="op">=</span> <span class="fl">1.75</span>,</span>
-<span>  reef_width <span class="op">=</span> <span class="fl">0.01</span>,</span>
-<span>  years <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>,</span>
-<span>  dhw_weight <span class="op">=</span> <span class="fl">0.5</span>,</span>
-<span>  cyc_weight <span class="op">=</span> <span class="fl">0.4</span>,</span>
-<span>  other_weight <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  hcc_cover_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.7</span><span class="op">)</span>,</span>
-<span>  hcc_growth <span class="op">=</span> <span class="fl">0.3</span>,</span>
-<span>  sc_cover_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">0.1</span><span class="op">)</span>,</span>
-<span>  sc_growth <span class="op">=</span>  <span class="fl">0.3</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">spatial_domain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st.html" class="external-link">st_multipoint</a></span><span class="op">(</span></span>
-<span>    x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">10</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="op">-</span><span class="fl">10</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="op">-</span><span class="fl">20</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">21</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">16</span><span class="op">)</span>,</span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">10</span><span class="op">)</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">crs</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_cast.html" class="external-link">st_cast</a></span><span class="op">(</span><span class="st">"POLYGON"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">seed</span><span class="op">)</span></span>
-<span><span class="va">spatial_grid</span> <span class="op">&lt;-</span> <span class="va">spatial_domain</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="cn">NA</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_sample.html" class="external-link">st_sample</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">10000</span>, type <span class="op">=</span> <span class="st">"regular"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">config</span><span class="op">$</span><span class="va">crs</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="va">benthos_reefs_pts</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/create_synthetic_reef_landscape.html">create_synthetic_reef_landscape</a></span><span class="op">(</span><span class="va">spatial_grid</span>, <span class="va">config</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="generate-large-scale-fixed-design">Generate large scale fixed design<a class="anchor" aria-label="anchor" href="#generate-large-scale-fixed-design"></a>
-</h2>
-<pre><code><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>n_locs <span class="op">=</span> <span class="fl">25</span>, n_sites <span class="op">=</span> <span class="fl">2</span>, seed <span class="op">=</span> <span class="fl">123</span><span class="op">)</span></span>
-<span><span class="va">benthos_fixed_locs_sf</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sampling_design_large_scale_fixed.html">sampling_design_large_scale_fixed</a></span><span class="op">(</span><span class="va">benthos_reefs_pts</span>, <span class="va">config</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="generate-fine-scale-fixed-design">Generate fine scale fixed design<a class="anchor" aria-label="anchor" href="#generate-fine-scale-fixed-design"></a>
-</h2>
-<pre><code><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  years <span class="op">=</span>  <span class="fl">1</span><span class="op">:</span><span class="fl">12</span>,</span>
-<span>  Number_of_transects_per_site <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  Depths <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  Number_of_frames_per_transect <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  Points_per_frame <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  <span class="co">## Note, the following are on the link scale</span></span>
-<span>  hcc_site_sigma <span class="op">=</span> <span class="fl">0.5</span>, <span class="co"># variability in Sites within Locations</span></span>
-<span>  hcc_transect_sigma <span class="op">=</span> <span class="fl">0.2</span>, <span class="co"># variability in Transects within Sites</span></span>
-<span>  hcc_sigma <span class="op">=</span> <span class="fl">0.1</span>, <span class="co"># random noise</span></span>
-<span></span>
-<span>  sc_site_sigma <span class="op">=</span> <span class="fl">0.05</span>, <span class="co"># variability in Sites within Locations</span></span>
-<span>  sc_transect_sigma <span class="op">=</span> <span class="fl">0.02</span>, <span class="co"># variability in Transects within Sites</span></span>
-<span>  sc_sigma <span class="op">=</span> <span class="fl">0.01</span>, <span class="co"># random noise</span></span>
-<span></span>
-<span>  ma_site_sigma <span class="op">=</span> <span class="fl">0.5</span>, <span class="co"># variability in Sites within Locations</span></span>
-<span>  ma_transect_sigma <span class="op">=</span> <span class="fl">0.2</span>, <span class="co"># variability in Transects within Sites</span></span>
-<span>  ma_sigma <span class="op">=</span> <span class="fl">0.1</span> <span class="co"># random noise</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">benthos_fixed_locs_obs</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sampling_design_fine_scale_fixed.html">sampling_design_fine_scale_fixed</a></span><span class="op">(</span><span class="va">benthos_fixed_locs_sf</span>, <span class="va">config</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="generate-photo-transect-like-data-and-prepare-for-reefcloud">Generate photo-transect like data and prepare for reefCloud<a class="anchor" aria-label="anchor" href="#generate-photo-transect-like-data-and-prepare-for-reefcloud"></a>
-</h2>
-<pre><code><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  Depths <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  Depth_effect_multiplier <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  Number_of_transects_per_site <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  Number_of_frames_per_transect <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  Points_per_frame <span class="op">=</span> <span class="fl">5</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">benthos_fixed_locs_points</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sampling_design_fine_scale_points.html">sampling_design_fine_scale_points</a></span><span class="op">(</span><span class="va">benthos_fixed_locs_obs</span>, <span class="va">config</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">reefcloud_synthetic_fixed_benthos</span> <span class="op">&lt;-</span> <span class="fu">prepare_for_reefcloud</span><span class="op">(</span><span class="va">benthos_fixed_locs_points</span><span class="op">)</span></span></code></pre>
-</div>
-<div class="section level2">
-<h2 id="generate-quadrat-like-percent-cover-data-and-prepare-for-reefcloud">Generate quadrat-like (percent cover) data and prepare for reefCloud<a class="anchor" aria-label="anchor" href="#generate-quadrat-like-percent-cover-data-and-prepare-for-reefcloud"></a>
-</h2>
-<pre><code><span><span class="va">config</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>  Depths <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  Depth_effect_multiplier <span class="op">=</span> <span class="fl">2</span>,</span>
-<span>  Number_of_transects_per_site <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>  Number_of_quadrats_per_transect <span class="op">=</span> <span class="fl">10</span>,</span>
-<span>  Quad_sigma <span class="op">=</span> <span class="fl">0.5</span></span>
-<span><span class="op">)</span></span>
-<span><span class="va">benthos_fixed_locs_cover</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/sampling_design_fine_scale_cover.html">sampling_design_fine_scale_cover</a></span><span class="op">(</span><span class="va">benthos_fixed_locs_obs</span>, <span class="va">config</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">reefcloud_synthetic_fixed_benthos_cover</span> <span class="op">&lt;-</span> <span class="fu">prepare_for_reefcloud</span><span class="op">(</span><span class="va">benthos_fixed_locs_cover</span><span class="op">)</span></span></code></pre>
-</div>
-</div>
+<p><strong>You can install the latest version of the synthos package:</strong></p>
+<p><code>remotes::install_github("open-AIMS/synthos@julie")</code></p>
+<p>Some core package functions rely on R-INLA, which is not available on CRAN. If you do not already have the <code>INLA</code> package installed, you can download it at (<a href="https://www.r-inla.org/download-install" class="external-link uri">https://www.r-inla.org/download-install</a>).</p>
+<p>After installing and package and loading it using <code><a href="https://open-aims.github.io/synthos/">library(synthos)</a></code>, you can access the package vignette by running <code>help(mbg)</code>, or get documentation for a specific function by running e.g. <code>help(MbgModelRunner)</code>.</p>
+<hr>
+<!-- ## Package workflow
 
+A typical MBG workflow includes the following steps:
+
+1. Load point data on **outcomes**, raster **covariate surfaces**, and a raster **population surface**
+2. _(Optional):_ Run **machine learning models** relating the input covariate surfaces to the outcome, producing predictive raster surfaces from a variety of methods
+3. **Prepare inputs** for the geostatistical model. This includes the outcomes point data, model specifications, a spatial 2-D mesh, and either the input covariate surfaces or the ML predictive surfaces
+4. Run the **geostatistical model**. This model predicts the outcome as a linear combination of the raster surfaces and a SPDE approximation to a Gaussian process over space.
+5. Using the model fit, **generate gridded predictions** of the outcome across the entire study area. Uncertainty is captured by generating 250 posterior predictive draws at each pixel location.
+6. **Summarize predictive draws** as raster surfaces by taking the mean, median, and 95% uncertainty interval bounds of draws at each pixel location
+7. _(Optional):_ **Aggregate** from pixels to administrative boundaries, preserving uncertainty
+
+For more details, see the [introductory vignette](https://henryspatialanalysis.github.io/mbg/articles/mbg.html).
+
+---
+
+### Acknowledgments
+
+Many thanks to the following groups of people for their contributions to the package:
+
+- IHME's Local Burden of Disease core code team, for their development of geostatistical software tools that helped inspire this package. Special thanks to Aaron Osgood-Zimmerman, Ian Davis, John VanderHeide, Jon Mosser, Katie Wilson, Lauren Woyczynski, Michael Collison, Michael Cork, Mike Richards, Nafis Sadat, Neal Marquez, and Roy Burstein.
+- The Geospatial Analysis team at the Demographic and Health Surveys Program --><!--
+# Installation
+
+```
+git clone git@github.com:open-AIMS/synthos.git .
+```
+
+# Example use
+
+The following describe how to use some of the wrapper functions to
+generate synthetic fixed photo-transect and quadrats data.
+
+## Create synthetic reef landscape
+
+```
+library(sf)
+library(stars)
+library(gstat)
+library(INLA)
+library(synthos)
+config <- list(
+  seed = 1,
+  crs = 4326,
+  model = "Exp",
+  psill = 1,
+  range = 15,
+  nugget = 0,
+  alpha = 2,
+  kappa = 1,
+  variance = 1,
+  patch_threshold = 1.75,
+  reef_width = 0.01,
+  years = 1:12,
+  dhw_weight = 0.5,
+  cyc_weight = 0.4,
+  other_weight = 0.1,
+  hcc_cover_range = c(0.1, 0.7),
+  hcc_growth = 0.3,
+  sc_cover_range = c(0.01, 0.1),
+  sc_growth =  0.3
+)
+spatial_domain <- st_geometry(
+  st_multipoint(
+    x = rbind(
+      c(0, -10),
+      c(3, -10),
+      c(10, -20),
+      c(1, -21),
+      c(2, -16),
+      c(0, -10)
+    )
+  )
+) |>
+  st_set_crs(config$crs) |>
+  st_cast("POLYGON")
+set.seed(config$seed)
+spatial_grid <- spatial_domain |>
+  st_set_crs(NA) |>
+  st_sample(size = 10000, type = "regular") |>
+  st_set_crs(config$crs)
+sf_use_s2(FALSE)
+benthos_reefs_pts <- create_synthetic_reef_landscape(spatial_grid, config)
+```
+
+## Generate large scale fixed design
+
+```
+config <- list(n_locs = 25, n_sites = 2, seed = 123)
+benthos_fixed_locs_sf <- sampling_design_large_scale_fixed(benthos_reefs_pts, config)
+```
+
+## Generate fine scale fixed design
+
+```
+config <- list(
+  years =  1:12,
+  Number_of_transects_per_site = 5,
+  Depths = 2,
+  Number_of_frames_per_transect = 100,
+  Points_per_frame = 5,
+  ## Note, the following are on the link scale
+  hcc_site_sigma = 0.5, # variability in Sites within Locations
+  hcc_transect_sigma = 0.2, # variability in Transects within Sites
+  hcc_sigma = 0.1, # random noise
+
+  sc_site_sigma = 0.05, # variability in Sites within Locations
+  sc_transect_sigma = 0.02, # variability in Transects within Sites
+  sc_sigma = 0.01, # random noise
+
+  ma_site_sigma = 0.5, # variability in Sites within Locations
+  ma_transect_sigma = 0.2, # variability in Transects within Sites
+  ma_sigma = 0.1 # random noise
+)
+
+benthos_fixed_locs_obs <- sampling_design_fine_scale_fixed(benthos_fixed_locs_sf, config)
+```
+
+## Generate photo-transect like data and prepare for reefCloud
+```
+config <- list(
+  Depths = 2,
+  Depth_effect_multiplier = 2,
+  Number_of_transects_per_site = 5,
+  Number_of_frames_per_transect = 100,
+  Points_per_frame = 5
+)
+benthos_fixed_locs_points <- sampling_design_fine_scale_points(benthos_fixed_locs_obs, config)
+
+reefcloud_synthetic_fixed_benthos <- prepare_for_reefcloud(benthos_fixed_locs_points)
+```
+
+## Generate quadrat-like (percent cover) data and prepare for reefCloud
+
+```
+config <- list(
+  Depths = 2,
+  Depth_effect_multiplier = 2,
+  Number_of_transects_per_site = 5,
+  Number_of_quadrats_per_transect = 10,
+  Quad_sigma = 0.5
+)
+benthos_fixed_locs_cover <- sampling_design_fine_scale_cover(benthos_fixed_locs_obs, config)
+
+reefcloud_synthetic_fixed_benthos_cover <- prepare_for_reefcloud(benthos_fixed_locs_cover)
+``` -->
+</div>
+</div>
   </main><aside class="col-md-3"><div class="license">
 <h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
