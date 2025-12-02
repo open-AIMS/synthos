@@ -3,18 +3,62 @@
 url: https://open-aims.github.io/synthos/
 template:
   bootstrap: 5
-  bootswatch: flatly   # best neutral base for earth themes
+  bootswatch: simplex
+  theme: arrow-light
+  math-rendering: katex
   bslib:
-    primary: "#8C6746"      # Earth brown (main brand)
-    secondary: "#C2A878"    # Sandstone beige
-    success: "#6B8E77"      # Sage green
-    info: "#D6C38A"         # Pale sand
-    warning: "#A5682A"      # Terracotta
-    danger: "#8C6746"       # Subtle brown
-    light: "#FAF8F4"        # Light sand
-    dark: "#3A2F2A"         # Bark / deep earth
-
-    # Typography for a clean, natural modern feel
-    base_font: {google: "Inter"}
-    heading_font: {google: "Source Serif Pro"}
-    code_font: {google: "Fira Code"}
+    base_font: {google: "Figtree"}
+    heading_font: {google: "Figtree"}
+    bg: '#ffffff'
+    fg: '#171717'
+    primary: '#F36E21'
+    secondary: '#058040'
+  includes:
+    in_header:
+      - '<link rel="icon" type="image/png" href="favicon-96x96.png">'
+navbar:
+  title: mbg
+  structure:
+    left: [home, intro, vignettes]
+    right: [search, reference, github]
+  components:
+    home:
+      text: Home
+    #  href: index.html
+    intro:
+      text: Getting started
+   #   href: articles/mbg.html
+    vignettes:
+      text: More tutorials
+      menu:
+      - text: Running spatial ML models
+    #    href: articles/spatial-ml-models.html
+      - text: All MBG model runner options
+    #    href: articles/all-model-options.html
+      - text: Model validation and comparison
+    #    href: articles/model-comparison.html
+# reference:
+# - title: MBG Model Runner
+#   desc: Model runner class
+#   contents: has_concept("model_runner")
+# - title: MBG core inputs
+#   desc: Functions to build the ID raster and load model covariates
+#   contents: has_concept("core_inputs")
+# - title: MBG model fitting and prediction
+#   desc: Individual functions for model fitting and prediction. These can also be executed
+#     through the `MbgModelRunner` class.
+#   contents:
+#   - has_concept("model_fit")
+#   - has_concept("prediction")
+# - title: Model validation
+#   desc: Functions for generating predictive validity metrics. These can also be executed
+#     through the `MbgModelRunner` class.
+#   contents: has_concept("validation")
+# - title: Pixel-to-polygon aggregation
+#   desc: Functions to aggregate rasters and pixel-level predictive draw matrices to
+#     polygon boundaries. These can also be executed through the `MbgModelRunner` class.
+#   contents: has_concept("aggregation")
+# - title: Other
+#   desc: Miscellaneous helper functions
+#   contents: lacks_concepts(c("model_runner", "core_inputs", "model_fit", "prediction",
+#     "validation", "aggregation", "internal"))

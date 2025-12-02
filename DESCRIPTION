@@ -2,7 +2,7 @@ Package: synthos
 Title: Generate synthetic benthic data
 Version: 2.0
 Authors@R: 
-    c(person("Murray", "Logan", , "pcinereus@gmail.com", role = c("aut", "cre"),
+    c(person("Murray", "Logan", , "pcinereus@gmail.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-5102-3972")),
       person("Julie", "Vercelloni", , "julie.vercelloni@gmail.com", role = c("aut"),
            comment = c(ORCID = "0000-0001-5227-014X")))
