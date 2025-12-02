@@ -24,10 +24,10 @@ navbar:
   components:
     home:
       text: Home
-    #  href: index.html
+      href: index.html
     intro:
       text: Getting started
-   #   href: articles/mbg.html
+      href: articles/generate-synthos-data.html
     vignettes:
       text: More tutorials
       menu:
