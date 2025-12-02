@@ -1,0 +1,76 @@
+# Package index
+
+## All functions
+
+- [`baseline_hard_coral_cover()`](https://open-aims.github.io/synthos/reference/baseline_hard_coral_cover.md)
+  : Baseline Hard Coral Cover
+- [`baseline_soft_coral_cover()`](https://open-aims.github.io/synthos/reference/baseline_soft_coral_cover.md)
+  : Baseline Soft Coral Cover
+- [`calculate_reef_disturbances()`](https://open-aims.github.io/synthos/reference/calculate_reef_disturbances.md)
+  : Calculate Reef-level Disturbance Levels
+- [`calculate_reef_hcc()`](https://open-aims.github.io/synthos/reference/calculate_reef_hcc.md)
+  : Calculate Reef-level Hard Coral Cover
+- [`calculate_reef_ma()`](https://open-aims.github.io/synthos/reference/calculate_reef_ma.md)
+  : Calculate Reef-level Macroalgae Cover
+- [`calculate_reef_sc()`](https://open-aims.github.io/synthos/reference/calculate_reef_sc.md)
+  : Calculate Reef-level Soft Coral Cover
+- [`combine_reef_benthos()`](https://open-aims.github.io/synthos/reference/combine_reef_benthos.md)
+  : Combine Reef-level Benthos Data
+- [`combine_reef_disturbances()`](https://open-aims.github.io/synthos/reference/combine_reef_disturbances.md)
+  : Combine Reef-level Disturbance Data with Benthos
+- [`create_spde()`](https://open-aims.github.io/synthos/reference/create_spde.md)
+  : Create a mesh and SPDE
+- [`create_spde_matern()`](https://open-aims.github.io/synthos/reference/create_spde_matern.md)
+  : Create SPDE Matern Components
+- [`create_spde_mesh()`](https://open-aims.github.io/synthos/reference/create_spde_mesh.md)
+  : Create SPDE Mesh
+- [`create_synthetic_reef_landscape()`](https://open-aims.github.io/synthos/reference/create_synthetic_reef_landscape.md)
+  : Create Synthetic Reef Landscape with Benthos and Disturbances
+- [`disturbance_all()`](https://open-aims.github.io/synthos/reference/disturbance_all.md)
+  : All Disturbance Layers
+- [`disturbance_cyc()`](https://open-aims.github.io/synthos/reference/disturbance_cyc.md)
+  : Cyclones Disturbance Layer
+- [`disturbance_dhw()`](https://open-aims.github.io/synthos/reference/disturbance_dhw.md)
+  : Degree Heating Weeks Disturbance Layer
+- [`disturbance_other()`](https://open-aims.github.io/synthos/reference/disturbance_other.md)
+  : Other Disturbance Layer
+- [`generateSettings()`](https://open-aims.github.io/synthos/reference/generateSettings.md)
+  : Generate Settings for Synthetic Reef Simulations
+- [`generate_field()`](https://open-aims.github.io/synthos/reference/generate_field.md)
+  : Generate a random field
+- [`generate_patches()`](https://open-aims.github.io/synthos/reference/generate_patches.md)
+  : Generate simulated patches
+- [`generate_reefs()`](https://open-aims.github.io/synthos/reference/generate_reefs.md)
+  : Generate simulated reefs
+- [`plot_group()`](https://open-aims.github.io/synthos/reference/plot_group.md)
+  : Plot Time Series of Coral Cover by Group and Depth
+- [`plot_map()`](https://open-aims.github.io/synthos/reference/plot_map.md)
+  : Benthic COVER_site Heatmap
+- [`plot_synthos()`](https://open-aims.github.io/synthos/reference/plot_synthos.md)
+  : Plot Benthic Cover Dynamics
+- [`pointify_polygons()`](https://open-aims.github.io/synthos/reference/pointify_polygons.md)
+  : Pointify polygons
+- [`prepare_table()`](https://open-aims.github.io/synthos/reference/prepare_table.md)
+  : Prepare Synthetic Data Table
+- [`sample_years_with_condition()`](https://open-aims.github.io/synthos/reference/sample_years_with_condition.md)
+  : Constrained Year Subsampling
+- [`sampling_design_fine_scale_cover()`](https://open-aims.github.io/synthos/reference/sampling_design_fine_scale_cover.md)
+  : Fine-Scale Percent Cover
+- [`sampling_design_fine_scale_fixed()`](https://open-aims.github.io/synthos/reference/sampling_design_fine_scale_fixed.md)
+  : Generate Fine-Scale Sampling Design (Fixed)
+- [`sampling_design_fine_scale_points()`](https://open-aims.github.io/synthos/reference/sampling_design_fine_scale_points.md)
+  : Generate Fine-Scale Photo-Point Observations
+- [`sampling_design_fine_scale_random()`](https://open-aims.github.io/synthos/reference/sampling_design_fine_scale_random.md)
+  : Generate Fine-Scale Sampling Design (random)
+- [`sampling_design_large_scale_fixed()`](https://open-aims.github.io/synthos/reference/sampling_design_large_scale_fixed.md)
+  : Large‐scale fixed sampling design
+- [`sampling_design_large_scale_random()`](https://open-aims.github.io/synthos/reference/sampling_design_large_scale_random.md)
+  : Large‐scale Randomised Sampling Design
+- [`select_process_reefs()`](https://open-aims.github.io/synthos/reference/select_process_reefs.md)
+  : Select and Process Synthetic Reefs
+- [`spatial_grid_sfc_to_df()`](https://open-aims.github.io/synthos/reference/spatial_grid_sfc_to_df.md)
+  : Convert sf Geometry to Data Frame
+- [`synthetic_field_hcc()`](https://open-aims.github.io/synthos/reference/synthetic_field_hcc.md)
+  : Synthetic Hard Coral Cover Field
+- [`synthetic_field_sc()`](https://open-aims.github.io/synthos/reference/synthetic_field_sc.md)
+  : Synthetic Soft Coral Cover Field
