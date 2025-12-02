@@ -1,5 +1,5 @@
 ---
-title: "generate-synthos-data"
+title: "Generate synthos data"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{generate-synthos-data}
