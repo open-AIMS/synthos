@@ -40,8 +40,8 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
-<li class="nav-item"><h6 class="dropdown-header" data-toc-skip>Home</h6></li>
-<li class="nav-item"><h6 class="dropdown-header" data-toc-skip>Getting started</h6></li>
+<li class="active nav-item"><a class="nav-link" href="index.html">Home</a></li>
+<li class="nav-item"><a class="nav-link" href="articles/generate-synthos-data.html">Getting started</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-more-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">More tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-more-tutorials">
@@ -67,19 +67,21 @@
 <div class="page-header"><h1 id="section">
 <img src="pkgdown/favicon/synthos_logo.png" alt="Logo" align="right" width="180"><a class="anchor" aria-label="anchor" href="#section"></a>
 </h1></div>
-<p><a href="https://cran.r-project.org/package=mbg" class="external-link"><img src="https://www.r-pkg.org/badges/version/mbg?color=ffcc00" alt="CRAN"></a> <a href="https://cran.r-project.org/package=mbg" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/mbg?color=blue" alt="Total downloads"></a> <a href="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg" alt="Build status"></a></p>
+<p><a href="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml" class="external-link"><img src="https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg" alt="Build status"></a></p>
 <p><strong><code>synthos</code> is an R package to generate synthetic data.</strong></p>
-<p>The <code>synthos</code> package provides a simple interface to generate synthetic data for ecological communities. ADD MORE TEXT</p>
-<p>The <code>synthos</code> package combines features from the <a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code></a> and <a href="https://r-spatial.github.io/stars/" class="external-link"><code>stars</code></a> packages for spatial data processing; and, <a href="https://www.r-inla.org/" class="external-link"><code>R-INLA</code></a> and [<code>gstat</code>] (<a href="https://r-spatial.github.io/gstat/" class="external-link uri">https://r-spatial.github.io/gstat/</a>) for geostatistical models.</p>
-<hr>
+<p>The <code>synthos</code> package provides a simple interface to generate synthetic data for ecological communities. BLABLABLA</p>
+<p>The <code>synthos</code> package combines features from the <a href="https://r-spatial.github.io/sf/" class="external-link"><code>sf</code></a> and <a href="https://r-spatial.github.io/stars/" class="external-link"><code>stars</code></a> packages for spatial data processing; and, <a href="https://www.r-inla.org/" class="external-link"><code>R-INLA</code></a> and <a href="https://r-spatial.github.io/gstat/" class="external-link"><code>gstat</code></a> for geostatistical models.</p>
 <div class="section level2">
 <h2 id="using-the-package">Using the package<a class="anchor" aria-label="anchor" href="#using-the-package"></a>
 </h2>
 <p><strong>You can install the latest version of the synthos package:</strong></p>
 <p><code>remotes::install_github("open-AIMS/synthos@julie")</code></p>
-<p>Some core package functions rely on R-INLA, which is not available on CRAN. If you do not already have the <code>INLA</code> package installed, you can download it at (<a href="https://www.r-inla.org/download-install" class="external-link uri">https://www.r-inla.org/download-install</a>).</p>
-<p>After installing and package and loading it using <code><a href="https://open-aims.github.io/synthos/">library(synthos)</a></code>, you can access the package vignette by running <code>help(mbg)</code>, or get documentation for a specific function by running e.g. <code>help(MbgModelRunner)</code>.</p>
-<hr>
+<p>Usage and further information about <code>synthos</code> can be seen on the <a href="https://open-aims.github.io/synthos/">project page</a> and the <a href="https://open-aims.github.io/synthos/articles/">vignettes</a>. Help files for the individual functions can be found on the <a href="https://open-aims.github.io/synthos/reference/">reference page</a>.</p>
+</div>
+<div class="section level2">
+<h2 id="further-information">Further Information<a class="anchor" aria-label="anchor" href="#further-information"></a>
+</h2>
+<p><code>synthos</code> is provided by the <a href="https://www.aims.gov.au/" class="external-link">Australian Institute of Marine Science</a> under the GPL-2 License (<a href="https://opensource.org/license/gpl-2-0" class="external-link">GPL-2</a>).</p>
 <!-- ## Package workflow
 
 A typical MBG workflow includes the following steps:
@@ -101,7 +103,8 @@ For more details, see the [introductory vignette](https://henryspatialanalysis.g
 Many thanks to the following groups of people for their contributions to the package:
 
 - IHME's Local Burden of Disease core code team, for their development of geostatistical software tools that helped inspire this package. Special thanks to Aaron Osgood-Zimmerman, Ian Davis, John VanderHeide, Jon Mosser, Katie Wilson, Lauren Woyczynski, Michael Collison, Michael Cork, Mike Richards, Nafis Sadat, Neal Marquez, and Roy Burstein.
-- The Geospatial Analysis team at the Demographic and Health Surveys Program --><!--
+- The Geospatial Analysis team at the Demographic and Health Surveys Program -->
+<!--
 # Installation
 
 ```
