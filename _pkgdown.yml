@@ -1,18 +1,18 @@
 url: https://open-aims.github.io/synthos/
 template:
   bootstrap: 5
-  bootswatch: minty
+  bootswatch: flatly   # best neutral base for earth themes
   bslib:
-    primary: "#4BBFA9"      # mint-teal
-    secondary: "#6C63FF"    # modern purple
-    success: "#A9D44E"      # lime green
-    info: "#4BBFA9"
-    warning: "#FFC845"
-    danger: "#FF7F3F"
-    light: "#F7FAF9"
-    dark: "#003C4A"
+    primary: "#8C6746"      # Earth brown (main brand)
+    secondary: "#C2A878"    # Sandstone beige
+    success: "#6B8E77"      # Sage green
+    info: "#D6C38A"         # Pale sand
+    warning: "#A5682A"      # Terracotta
+    danger: "#8C6746"       # Subtle brown
+    light: "#FAF8F4"        # Light sand
+    dark: "#3A2F2A"         # Bark / deep earth
 
-    # improve readability + modern look
+    # Typography for a clean, natural modern feel
     base_font: {google: "Inter"}
-    heading_font: {google: "Poppins"}
+    heading_font: {google: "Source Serif Pro"}
     code_font: {google: "Fira Code"}
