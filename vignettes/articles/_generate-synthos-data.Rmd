@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 ```
 
 
-# Setting up
+## Setting up
 
 ```{r setup, message = FALSE, warning = FALSE}
 # Load packages
@@ -111,16 +111,14 @@ if (data_type == "points") {
 # 3.1 Long-term trajectories at site level
 
 plots_1 <- synthos::plot_synthos(synthos_data, type = "trajectories")
-#purrr::walk(plots, print)
 
 # 3.2 Heatmaps 
 plots_2 <- synthos::plot_synthos(synthos_data, type = "heatmaps")
-#purrr::walk(plots, print)
 ```
-```{r plot-traj}
+```{r plot-traj, fig.width=6, fig.height=10, fig-cap: Coral trends at the site level.}
 plots_1[[2]]
 ```
 
-```{r plot-map}
+```{r plot-map, fig.width=6, fig.height=8, fig-cap: Temporal pattern of mean coral cover (\%) by site. White gaps represent missing data.}
 plots_2[[2]]
 ```

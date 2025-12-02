@@ -1,5 +1,5 @@
-<img src="pkgdown/favicon/synthos_logo.png" alt="Logo" align="right" width="180" />
-=========================================================================================
+synthos <img src="man/figures/synthos_logo.png" alt="Logo" align="right" width = 180 />
+=======================================================================================
 
 [![Build status](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/open-AIMS/synthos/actions/workflows/pkgdown.yaml)
 

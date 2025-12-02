@@ -96,5 +96,4 @@ config_pt <- list(
 assign("config_pt", config_pt, envir = .GlobalEnv)
 
 config_list <- list(config_sp, config_lrge, config_fine, config_pt)
-return(config_list)
 }
