@@ -7,6 +7,8 @@ Authors@R:
 Description: Generates synthetic hierarhical benthic data from synthetic distubances.
 License: MIT + file LICENSE
 Suggests: 
+    knitr,
+    rmarkdown,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Encoding: UTF-8
@@ -21,3 +23,5 @@ Imports:
     stars,
     stringr,
     tidyr
+VignetteBuilder: knitr
+URL: https://open-aims.github.io/synthos/
