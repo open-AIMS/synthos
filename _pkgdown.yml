@@ -25,9 +25,9 @@ navbar:
     home:
       text: Home
       href: index.html
-    intro:
-      text: Generating data
-      href: articles/synthos.html
+   # intro:
+   #   text: Generating data
+   #   href: articles/synthos.html
     vignettes:
       text: More tutorials
       menu:
