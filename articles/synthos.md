@@ -95,15 +95,69 @@ if (data_type == "points") {
 # 3.1 Long-term trajectories at site level
 
 plots_1 <- synthos::plot_synthos(synthos_data, type = "trajectories")
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure1.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 10, dpi = 300))
 
 # 3.2 Heatmaps 
 plots_2 <- synthos::plot_synthos(synthos_data, type = "heatmaps")
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 8, dpi = 300))
 ```
 
-``` r
-plots_1[[2]]
-```
+### 5.1 Trajectories
 
-``` r
-plots_2[[2]]
-```
+![Coral reef](figures/figure1.1.png)
+
+Figure 1: Trajectories of hard coral cover (HCC) at 3m depth.
+
+![Coral reef](figures/figure1.2.png)
+
+Figure 2: Trajectories of hard coral cover (HCC) at 10m depth.
+
+![Coral reef](figures/figure1.3.png)
+
+Figure 3: Trajectories of macroalgae cover (MA) at 3m depth.
+
+![Coral reef](figures/figure1.4.png)
+
+Figure 4: Trajectories of macroalgae cover (MA) at 10m depth.
+
+![Coral reef](figures/figure1.5.png)
+
+Figure 5: Trajectories of soft coral cover (SC) at 3m depth.
+
+![Coral reef](figures/figure1.6.png)
+
+Figure 6: Trajectories of soft coral cover (SC) at 10m depth.
+
+### 5.2 Heatmaps
+
+![Coral reef](figures/figure1.1.png)
+
+Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m
+depth.
+
+![Coral reef](figures/figure1.2.png)
+
+Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m
+depth.
+
+![Coral reef](figures/figure1.3.png)
+
+Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m
+depth.
+
+![Coral reef](figures/figure1.4.png)
+
+Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m
+depth.
+
+![Coral reef](figures/figure1.5.png)
+
+Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m
+depth.
+
+![Coral reef](figures/figure1.6.png)
+
+Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m
+depth.

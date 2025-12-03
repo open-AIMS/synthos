@@ -19,7 +19,7 @@
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Generate synthos data">
-<link rel="icon" type="image/png" href="synthos_logo.png">
+<link rel="icon" type="image/png" href="synthos_logo_2.png">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -43,9 +43,10 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-more-tutorials" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">More tutorials</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-more-tutorials">
-<li><h6 class="dropdown-header" data-toc-skip>Running spatial ML models</h6></li>
-    <li><h6 class="dropdown-header" data-toc-skip>All MBG model runner options</h6></li>
-    <li><h6 class="dropdown-header" data-toc-skip>Model validation and comparison</h6></li>
+<li><a class="dropdown-item" href="../articles/geographical_domain.html">Generate spatio-temporal domain</a></li>
+    <li><a class="dropdown-item" href="../articles/generate_disturbances.html">Generate disturbances</a></li>
+    <li><a class="dropdown-item" href="../articles/generate_baselines.html">Generate baselines</a></li>
+    <li><a class="dropdown-item" href="../articles/generate_sampling_design.html">Generate sampling design</a></li>
   </ul>
 </li>
       </ul>
@@ -173,13 +174,53 @@ baselines<a class="anchor" aria-label="anchor" href="#generate-the-spatio-tempor
 <code class="sourceCode R"><span><span class="co"># 3.1 Long-term trajectories at site level</span></span>
 <span></span>
 <span><span class="va">plots_1</span> <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_synthos.html">plot_synthos</a></span><span class="op">(</span><span class="va">synthos_data</span>, type <span class="op">=</span> <span class="st">"trajectories"</span><span class="op">)</span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">plots</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span>filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"figures/figure1."</span>, <span class="va">.x</span>, <span class="st">".png"</span><span class="op">)</span>,</span>
+<span>                                plot <span class="op">=</span> <span class="va">plots</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">10</span>, dpi <span class="op">=</span> <span class="fl">300</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 3.2 Heatmaps </span></span>
-<span><span class="va">plots_2</span> <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_synthos.html">plot_synthos</a></span><span class="op">(</span><span class="va">synthos_data</span>, type <span class="op">=</span> <span class="st">"heatmaps"</span><span class="op">)</span></span></code></pre></div>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plots_1</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">plots_2</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">plots_2</span> <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/plot_synthos.html">plot_synthos</a></span><span class="op">(</span><span class="va">synthos_data</span>, type <span class="op">=</span> <span class="st">"heatmaps"</span><span class="op">)</span></span>
+<span><span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map.html" class="external-link">walk</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">plots</span><span class="op">)</span>, <span class="op">~</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsave.html" class="external-link">ggsave</a></span><span class="op">(</span>filename <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"figures/figure2."</span>, <span class="va">.x</span>, <span class="st">".png"</span><span class="op">)</span>,</span>
+<span>                                plot <span class="op">=</span> <span class="va">plots</span><span class="op">[[</span><span class="va">.x</span><span class="op">]</span><span class="op">]</span>, width <span class="op">=</span> <span class="fl">6</span>, height <span class="op">=</span> <span class="fl">8</span>, dpi <span class="op">=</span> <span class="fl">300</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<div class="section level3">
+<h3 id="trajectories">5.1 Trajectories<a class="anchor" aria-label="anchor" href="#trajectories"></a>
+</h3>
+<figure style="text-align: center"><img src="figures/figure1.1.png" alt="Coral reef" width="80%"><figcaption>
+Figure 1: Trajectories of hard coral cover (HCC) at 3m depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.2.png" alt="Coral reef" width="80%"><figcaption>
+Figure 2: Trajectories of hard coral cover (HCC) at 10m depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.3.png" alt="Coral reef" width="80%"><figcaption>
+Figure 3: Trajectories of macroalgae cover (MA) at 3m depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.4.png" alt="Coral reef" width="80%"><figcaption>
+Figure 4: Trajectories of macroalgae cover (MA) at 10m depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.5.png" alt="Coral reef" width="80%"><figcaption>
+Figure 5: Trajectories of soft coral cover (SC) at 3m depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.6.png" alt="Coral reef" width="80%"><figcaption>
+Figure 6: Trajectories of soft coral cover (SC) at 10m depth.
+</figcaption></figure>
+</div>
+<div class="section level3">
+<h3 id="heatmaps">5.2 Heatmaps<a class="anchor" aria-label="anchor" href="#heatmaps"></a>
+</h3>
+<figure style="text-align: center"><img src="figures/figure1.1.png" alt="Coral reef" width="80%"><figcaption>
+Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m
+depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.2.png" alt="Coral reef" width="80%"><figcaption>
+Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m
+depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.3.png" alt="Coral reef" width="80%"><figcaption>
+Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m
+depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.4.png" alt="Coral reef" width="80%"><figcaption>
+Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m
+depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.5.png" alt="Coral reef" width="80%"><figcaption>
+Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m
+depth.
+</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.6.png" alt="Coral reef" width="80%"><figcaption>
+Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m
+depth.
+</figcaption></figure>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

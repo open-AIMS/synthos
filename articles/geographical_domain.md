@@ -1,0 +1,98 @@
+# Generate the geographical domain
+
+## Setting up
+
+``` r
+# Load packages
+library(sf)
+library(stars)
+library(gstat)
+library(INLA)
+library(ggplot2)
+library(synthos)
+library(stringr)
+library(ggpubr)
+library(scico)
+```
+
+## 1. Generate settings
+
+``` r
+surveys <-  "random" # or  "fixed"
+data_type <- "points" # or "cover"
+
+synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+```
+
+## 2. Generate the spatio-temporal domain
+
+``` r
+
+spatial_domain <- st_geometry(
+  st_multipoint(
+    x = rbind(
+      c(0, -11),
+      c(3,-11),
+      c(6,-14),
+      c(1,-15),
+      c(2,-12),
+      c(0,-11)
+    )
+  )
+) |>
+  st_set_crs(config_sp$crs) |>
+  st_cast("POLYGON")
+
+## ---- SpatialPoints
+set.seed(config_sp$seed)
+spatial_grid <- spatial_domain |>
+  st_set_crs(NA) |>
+  st_sample(size = 10000, type = "regular") |>
+  st_set_crs(config_sp$crs)
+sf_use_s2(FALSE)
+
+
+simulated_field_sf  <- synthos::generate_field(spatial_grid, config_sp)
+simulated_patches_sf <- synthos::generate_patches(simulated_field_sf, config_sp)
+reefs.sf <- synthos::generate_reefs(simulated_patches_sf, config_sp)
+```
+
+## 3. Vizualisation
+
+``` r
+g_domain <-  ggplot() +
+  geom_sf(data = spatial_domain, fill = "transparent", alpha = .2, color = "black", size = 1.5) + 
+  geom_sf(data = reefs.sf$simulated_reefs_sf) +
+  theme_bw() +
+  xlab("Longitude") + ylab("Latitude") +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.title = element_text(size = 13),
+    axis.text = element_text(size = 11)
+  )
+
+## ---- SyntheticData_Spatial.mesh
+mesh <- synthos::create_spde_mesh(spatial_grid,config_sp)
+
+g_mesh <- ggplot() +
+  gg(mesh) +
+  geom_sf(data = spatial_domain, fill = "transparent", alpha = .2, color = "black", size = 1.5) +
+  coord_sf(crs = 4326, expand = FALSE) +
+  scale_x_continuous(name = "Longitude") +
+  scale_y_continuous(name = "Latitude") +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.title = element_text(size = 13),
+    axis.text = element_text(size = 11)
+  )
+
+g_domain + g_mesh +
+   plot_annotation(tag_levels = "a", tag_suffix = ')') 
+```
+
+![Coral reef](figures/figure1.png)
+
+Figure 1: a) Location of the reefs within the spatial domain. b) Spatial
+interpolation performed using the INLA framework, generating a
+computational mesh. The mesh will be then used to model the
+spatio-temporal dependencies.
