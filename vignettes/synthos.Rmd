@@ -114,10 +114,10 @@ plots_1 <- synthos::plot_synthos(synthos_data, type = "trajectories")
 # 3.2 Heatmaps 
 plots_2 <- synthos::plot_synthos(synthos_data, type = "heatmaps")
 ```
-```{r plot-traj, fig.width=6, fig.height=10}
+```{r plot-traj, fig.width=6, fig.height=10, eval=FALSE}
 plots_1[[2]]
 ```
 
-```{r plot-map, fig.width=6, fig.height=8}
+```{r plot-map, fig.width=6, fig.height=8, eval=FALSE}
 plots_2[[2]]
 ```
