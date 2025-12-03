@@ -17,7 +17,7 @@ knitr::opts_chunk$set(
 
 ## Setting up
 
-```{r setup, message = FALSE, warning = FALSE}
+```{r setup, message = FALSE, warning = FALSE, eval=FALSE}
 # Load packages
 library(sf)
 library(stars)
@@ -29,7 +29,7 @@ library(synthos)
 
 ## 1. Generate settings 
 
-```{r generate-settings, message = FALSE, warning = FALSE}
+```{r generate-settings, message = FALSE, warning = FALSE, eval=FALSE}
 surveys <-  "random" # or  "fixed"
 data_type <- "points" # or "cover"
 
@@ -38,7 +38,7 @@ synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
 
 ## 2. Generate the spatio-temporal domain, disturbance effects and baselines
 
-```{r generate-sp, message = FALSE, warning = FALSE}
+```{r generate-sp, message = FALSE, warning = FALSE, eval=FALSE}
 spatial_domain <- st_geometry(
   st_multipoint(
     x = rbind(
@@ -67,7 +67,7 @@ benthos_reefs_pts <- synthos::create_synthetic_reef_landscape(spatial_grid, conf
 
 ## 3. Generate sampling design
 
-```{r generate-sampling, message = FALSE, warning = FALSE}
+```{r generate-sampling, message = FALSE, warning = FALSE, eval=FALSE}
 if (surveys == "fixed") {
   locs_sf <- synthos::sampling_design_large_scale_fixed(
     benthos_reefs_pts, config_lrge
@@ -90,7 +90,7 @@ if (surveys == "fixed") {
 
 ## 4. Generate export data table
 
-```{r export, message = FALSE, warning = FALSE}
+```{r export, message = FALSE, warning = FALSE, eval=FALSE}
 if (data_type == "points") {
   pts <- synthos::sampling_design_fine_scale_points(obs, config_pt)
   synthos_data <- synthos::prepare_table(pts)  
@@ -106,7 +106,7 @@ if (data_type == "points") {
 
 ## 5. Vizualisations
 
-```{r viz, message = FALSE, warning = FALSE}
+```{r viz, message = FALSE, warning = FALSE, eval=FALSE}
 # 3.1 Long-term trajectories at site level
 
 plots_1 <- synthos::plot_synthos(synthos_data, type = "trajectories")
