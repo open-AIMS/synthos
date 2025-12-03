@@ -24,7 +24,6 @@ library(stars)
 library(gstat)
 library(INLA)
 library(ggplot2)
-remotes::install_github("open-AIMS/synthos@julie", force = TRUE, dependencies = FALSE)
 library(synthos)
 ```
 
