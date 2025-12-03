@@ -109,3 +109,9 @@ Science](https://www.aims.gov.au/) under the GPL-2 License
 - [`synthetic_field_sc()`](https://open-aims.github.io/synthos/reference/synthetic_field_sc.md)
   : Synthetic Soft Coral Cover Field
 
+# Articles
+
+### All vignettes
+
+- [Generate synthos
+  data](https://open-aims.github.io/synthos/articles/synthos.md):
