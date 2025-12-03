@@ -151,32 +151,32 @@ purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x,
 
 ### 5.2 Heatmaps 
 <figure style="text-align: center">
-  <img src="figures/figure1.1.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.1.png" alt="Coral reef" width="80%">
   <figcaption>Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m depth. </figcaption>
 </figure>
 
 <figure style="text-align: center">
-  <img src="figures/figure1.2.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.2.png" alt="Coral reef" width="80%">
   <figcaption>Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m depth. </figcaption>
 </figure>
 
 <figure style="text-align: center">
-  <img src="figures/figure1.3.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.3.png" alt="Coral reef" width="80%">
   <figcaption>Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m depth. </figcaption>
 </figure>
 
 <figure style="text-align: center">
-  <img src="figures/figure1.4.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.4.png" alt="Coral reef" width="80%">
   <figcaption>Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m depth. </figcaption>
 </figure>
 
 <figure style="text-align: center">
-  <img src="figures/figure1.5.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.5.png" alt="Coral reef" width="80%">
   <figcaption>Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m depth. </figcaption>
 </figure>
 
 <figure style="text-align: center">
-  <img src="figures/figure1.6.png" alt="Coral reef" width="80%">
+  <img src="figures/figure2.6.png" alt="Coral reef" width="80%">
   <figcaption>Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m depth. </figcaption>
 </figure>
 

@@ -96,8 +96,14 @@ if (data_type == "points") {
 # 3.1 Long-term trajectories at site level
 
 plots <- synthos::plot_synthos(synthos_data, type = "trajectories")
-purrr::walk(plots, print)
+
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure1.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 10, dpi = 300))
+
 
 # 3.2 Heatmaps 
 plots <- synthos::plot_synthos(synthos_data, type = "heatmaps")
-purrr::walk(plots, print)
+
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 8, dpi = 300))
+
