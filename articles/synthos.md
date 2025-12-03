@@ -132,32 +132,32 @@ Figure 6: Trajectories of soft coral cover (SC) at 10m depth.
 
 ### 5.2 Heatmaps
 
-![Coral reef](figures/figure1.1.png)
+![Coral reef](figures/figure2.1.png)
 
 Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m
 depth.
 
-![Coral reef](figures/figure1.2.png)
+![Coral reef](figures/figure2.2.png)
 
 Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m
 depth.
 
-![Coral reef](figures/figure1.3.png)
+![Coral reef](figures/figure2.3.png)
 
 Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m
 depth.
 
-![Coral reef](figures/figure1.4.png)
+![Coral reef](figures/figure2.4.png)
 
 Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m
 depth.
 
-![Coral reef](figures/figure1.5.png)
+![Coral reef](figures/figure2.5.png)
 
 Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m
 depth.
 
-![Coral reef](figures/figure1.6.png)
+![Coral reef](figures/figure2.6.png)
 
 Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m
 depth.
