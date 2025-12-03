@@ -38,7 +38,7 @@ data_type <- "points" # or "cover"
 synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
 ```
 
-## 2. Generate the baseline for hard coral  
+## 2. Generate the baseline for hard corals  
 
 ```{r generate-base, message = FALSE, warning = FALSE, eval=FALSE}
 
@@ -111,12 +111,12 @@ ggplot() +
 
 <figure style="text-align: center">
   <img src="figures/figure3A.png" alt="Coral reef" width="80%">
-  <figcaption>Figure 1: Baseline values of hard coral cover. </figcaption>
+  <figcaption>Figure 1: Baseline values for hard corals. </figcaption>
 </figure>
 
-## 3. Generate the baseline for soft coral  
+## 3. Generate the baseline for soft corals  
 
-```{r generate-base, message = FALSE, warning = FALSE, eval=FALSE}
+```{r generate-base-sc, message = FALSE, warning = FALSE, eval=FALSE}
 baseline.sample.sc <- mesh$loc[, 1:2] %>%
   as.data.frame() %>%
   dplyr::select(Longitude = V1, Latitude = V2) %>%
@@ -180,6 +180,6 @@ ggplot() +
 
 <figure style="text-align: center">
   <img src="figures/figure3B.png" alt="Coral reef" width="80%">
-  <figcaption>Figure 2: Baseline values of soft coral cover. </figcaption>
+  <figcaption>Figure 2: Baseline values for soft corals. </figcaption>
 </figure>
 

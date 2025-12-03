@@ -81,7 +81,6 @@ if (data_type == "points") {
 ## 3. Vizualisation
 
 ```{r generate-viz, message = FALSE, warning = FALSE, eval=FALSE}
-
 X_sf <- synthos_data %>%
   filter(!is.na(COUNT)) %>%
   st_as_sf(coords = c("site_longitude", "site_latitude"),
@@ -97,7 +96,7 @@ ggplot() +
     axis.title = element_text(size = 13),
     axis.text = element_text(size = 11)
   )
-````
+```
 
 <figure style="text-align: center">
   <img src="figures/figure4.1.png" alt="Coral reef" width="80%">

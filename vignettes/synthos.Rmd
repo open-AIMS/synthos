@@ -14,7 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-
 ## Setting up
 
 ```{r setup, message = FALSE, warning = FALSE, eval=FALSE}
@@ -110,14 +109,74 @@ if (data_type == "points") {
 # 3.1 Long-term trajectories at site level
 
 plots_1 <- synthos::plot_synthos(synthos_data, type = "trajectories")
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure1.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 10, dpi = 300))
 
 # 3.2 Heatmaps 
 plots_2 <- synthos::plot_synthos(synthos_data, type = "heatmaps")
-```
-```{r plot-traj, fig.width=6, fig.height=10, eval=FALSE}
-plots_1[[2]]
+purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x, ".png"),
+                                plot = plots[[.x]], width = 6, height = 8, dpi = 300))
 ```
 
-```{r plot-map, fig.width=6, fig.height=8, eval=FALSE}
-plots_2[[2]]
-```
+### 5.1 Trajectories 
+<figure style="text-align: center">
+  <img src="figures/figure1.1.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 1: Trajectories of hard coral cover (HCC) at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.2.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 2: Trajectories of hard coral cover (HCC) at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.3.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 3: Trajectories of macroalgae cover (MA) at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.4.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 4: Trajectories of macroalgae cover (MA) at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.5.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 5: Trajectories of soft coral cover (SC) at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.6.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 6: Trajectories of soft coral cover (SC) at 10m depth. </figcaption>
+</figure>
+
+### 5.2 Heatmaps 
+<figure style="text-align: center">
+  <img src="figures/figure1.1.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.2.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.3.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.4.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.5.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure1.6.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m depth. </figcaption>
+</figure>
+
