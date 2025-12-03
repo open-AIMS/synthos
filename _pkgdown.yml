@@ -15,7 +15,7 @@ template:
     secondary: '#058040'
   includes:
     in_header:
-      - '<link rel="icon" type="image/png" href="synthos_logo.png">'
+      - '<link rel="icon" type="image/png" href="synthos_logo_2.png">'
 navbar:
   title: mbg
   structure:
@@ -25,18 +25,17 @@ navbar:
     home:
       text: Home
       href: index.html
-   # intro:
-   #   text: Generating data
-   #   href: articles/synthos.html
     vignettes:
       text: More tutorials
       menu:
-      - text: Running spatial ML models
-    #    href: articles/spatial-ml-models.html
-      - text: All MBG model runner options
-    #    href: articles/all-model-options.html
-      - text: Model validation and comparison
-    #    href: articles/model-comparison.html
+      - text: Generate spatio-temporal domain
+        href: articles/geographical_domain.html
+      - text: Generate disturbances
+        href: articles/generate_disturbances.html
+      - text: Generate baselines
+        href: articles/generate_baselines.html
+      - text: Generate sampling design
+        href: articles/generate_sampling_design.html
 # reference:
 # - title: MBG Model Runner
 #   desc: Model runner class
