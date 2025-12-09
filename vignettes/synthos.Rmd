@@ -7,6 +7,27 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+The first version of `synthos` generates semi-realistic data of three benthic communities: hard coral, soft coral and macroalgae. 
+
+This vignette illustrates an example of how to use `synthos` by simulating observations of bentbic communities using the following configuration: 
+
+| Main configuration             |  Example settings                                                                              |
+|--------------------------------|------------------------------------------------------------------------------------------------|
+| Observation data type          | Point-based observations                                                                       |
+| Monitoring design              | Random locations                                                                               |
+| Number of surveyed years       | 15 years                                                                                       |
+| Sampling design                | 25 reefs, 3 sites per reef, 5 transects per site, 100 photo frames per transect, 50 points per frame, 2 depths |
+| Relative disturbance weights   | 80% heat stress, 19% cyclones, 1% other disturbances                                           |
+| Annual growth rates            | 3% for hard coral and 3% for soft coral\*\*                                                    |
+
+The configuration used in this example can be easily adjusted using the function [generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html). 
+
+**Macroalgae responds differently: instead of growing independently, it occupies the remaining available space (i.e.,
+macroalgae cover = total available space − hard coral cover − soft coral cover).
+
+Further explanations of each step can be found in the accompanying [vignettes](https://open-aims.github.io/synthos/articles/).
+
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -29,7 +50,7 @@ library(synthos)
 ## 1. Generate settings 
 
 ```{r generate-settings, message = FALSE, warning = FALSE, eval=FALSE}
-surveys <-  "random" # or  "fixed"
+surveys <-  "random" # or "fixed"
 data_type <- "points" # or "cover"
 
 synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
@@ -119,17 +140,17 @@ purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x,
 ```
 
 ### 5.1 Trajectories 
-<figure style="text-align: center">
+<!-- <figure style="text-align: center">
   <img src="figures/figure1.1.png" alt="Coral reef" width="80%">
   <figcaption>Figure 1: Trajectories of hard coral cover (HCC) at 3m depth. </figcaption>
-</figure>
+</figure> -->
 
 <figure style="text-align: center">
   <img src="figures/figure1.2.png" alt="Coral reef" width="80%">
   <figcaption>Figure 2: Trajectories of hard coral cover (HCC) at 10m depth. </figcaption>
 </figure>
 
-<figure style="text-align: center">
+<!-- <figure style="text-align: center">
   <img src="figures/figure1.3.png" alt="Coral reef" width="80%">
   <figcaption>Figure 3: Trajectories of macroalgae cover (MA) at 3m depth. </figcaption>
 </figure>
@@ -147,20 +168,20 @@ purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x,
 <figure style="text-align: center">
   <img src="figures/figure1.6.png" alt="Coral reef" width="80%">
   <figcaption>Figure 6: Trajectories of soft coral cover (SC) at 10m depth. </figcaption>
-</figure>
+</figure> -->
 
 ### 5.2 Heatmaps 
-<figure style="text-align: center">
+<!-- <figure style="text-align: center">
   <img src="figures/figure2.1.png" alt="Coral reef" width="80%">
   <figcaption>Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m depth. </figcaption>
-</figure>
+</figure> -->
 
 <figure style="text-align: center">
   <img src="figures/figure2.2.png" alt="Coral reef" width="80%">
   <figcaption>Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m depth. </figcaption>
 </figure>
 
-<figure style="text-align: center">
+<!-- <figure style="text-align: center">
   <img src="figures/figure2.3.png" alt="Coral reef" width="80%">
   <figcaption>Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m depth. </figcaption>
 </figure>
@@ -179,4 +200,4 @@ purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x,
   <img src="figures/figure2.6.png" alt="Coral reef" width="80%">
   <figcaption>Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m depth. </figcaption>
 </figure>
-
+ -->
