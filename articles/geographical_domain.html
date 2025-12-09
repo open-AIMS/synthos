@@ -77,6 +77,14 @@
 
     
     
+<p>The first version of <code>synthos</code> focuses on simulating
+abundance data for benthic communities living on coral reefs. To
+generate realistic reef structures, we create a collection of irregular,
+non-uniformly distributed across the spatial domain using on a Gaussian
+Markov random field. To further enhance realism, the shapes are hollowed
+out to represent a shallow, sand filled lagoon surrounded by a sloping
+escarpment of hard substrate. Benthic communities are then constrained
+to grow within this reef area representing a reef slope habitat.</p>
 <div class="section level2">
 <h2 id="setting-up">Setting up<a class="anchor" aria-label="anchor" href="#setting-up"></a>
 </h2>
@@ -95,6 +103,34 @@
 <div class="section level2">
 <h2 id="generate-settings">1. Generate settings<a class="anchor" aria-label="anchor" href="#generate-settings"></a>
 </h2>
+<p><strong>Selection of site allocation.</strong></p>
+<p>Two choices are available for site allocation. <em>Fixed</em> surveys
+refer to permanent monitoring locations that are revisited annually.
+This design offers greater power for detecting temporal trends, but the
+estimated trend values can be biased toward the specific locations
+chosen for sampling. <em>Random</em> surveys refer to monitoring
+locations selected without spatial permanence. Each reef is surveyed
+between 2 and 15 times, with the timing of sampling events separated by
+less than 5 years between consecutive surveys (see <a href="https://open-aims.github.io/synthos/reference/sample_years_with_condition.html">sample_years_with_condition()</a>.
+This design is provide more accurate estimates of the absolute value of
+the response, but it may have lower statistical power for detecting
+temporal trends.</p>
+<p><strong>Selection of observation data type.</strong></p>
+<p>Observation data type refers to the form of the measured response
+representing the two-dimensional coverage of a benthic community. In the
+first version of <code>synthos</code>, two observation types are
+available.</p>
+<p><em>Point-based</em> data corresponds to the outputs typically
+produced by machine-learning (ML) methods. Under this approach,
+abundance is expressed as the relative count of classified points per
+photo frame. Counts for each benthic group can then be aggregated across
+spatial scales; in our example, point counts are summed at the transect
+level. The proportion of points belonging to a given community, divided
+by the total number of points, provides its percent cover.</p>
+<p>The second observation type is direct <em>percent cover</em>, which
+measures the area occupied by a community within a quadrat. Percent
+cover at the transect level is then obtained by averaging the
+quadrat-level estimates.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">surveys</span> <span class="op">&lt;-</span>  <span class="st">"random"</span> <span class="co"># or  "fixed"</span></span>
 <span><span class="va">data_type</span> <span class="op">&lt;-</span> <span class="st">"points"</span> <span class="co"># or "cover"</span></span>
@@ -102,8 +138,11 @@
 <span><span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/generateSettings.html">generateSettings</a></span><span class="op">(</span>nreefs <span class="op">=</span> <span class="fl">25</span>, nsites <span class="op">=</span> <span class="fl">3</span>, nyears <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
-<h2 id="generate-the-spatio-temporal-domain">2. Generate the spatio-temporal domain<a class="anchor" aria-label="anchor" href="#generate-the-spatio-temporal-domain"></a>
+<h2 id="generate-the-spatial-and-temporal-domains">2. Generate the spatial and temporal domains<a class="anchor" aria-label="anchor" href="#generate-the-spatial-and-temporal-domains"></a>
 </h2>
+<p>The spatial domain representing the synthetic reef structures is then
+generated using functionality from both <code>INLA</code> and
+<code>gstat</code> packages.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="va">spatial_domain</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_geometry.html" class="external-link">st_geometry</a></span><span class="op">(</span></span>
@@ -129,7 +168,6 @@
 <span>  <span class="fu"><a href="https://r-spatial.github.io/sf/reference/st_crs.html" class="external-link">st_set_crs</a></span><span class="op">(</span><span class="va">config_sp</span><span class="op">$</span><span class="va">crs</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://r-spatial.github.io/sf/reference/s2.html" class="external-link">sf_use_s2</a></span><span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
-<span></span>
 <span><span class="va">simulated_field_sf</span>  <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/generate_field.html">generate_field</a></span><span class="op">(</span><span class="va">spatial_grid</span>, <span class="va">config_sp</span><span class="op">)</span></span>
 <span><span class="va">simulated_patches_sf</span> <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/generate_patches.html">generate_patches</a></span><span class="op">(</span><span class="va">simulated_field_sf</span>, <span class="va">config_sp</span><span class="op">)</span></span>
 <span><span class="va">reefs.sf</span> <span class="op">&lt;-</span> <span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/generate_reefs.html">generate_reefs</a></span><span class="op">(</span><span class="va">simulated_patches_sf</span>, <span class="va">config_sp</span><span class="op">)</span></span></code></pre></div>
@@ -137,6 +175,9 @@
 <div class="section level2">
 <h2 id="vizualisation">3. Vizualisation<a class="anchor" aria-label="anchor" href="#vizualisation"></a>
 </h2>
+<p>The spatial domain is then used to create the <code>INLA</code> mesh,
+which represent the spatial field, a smooth approximation of how values
+change across space.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">g_domain</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggsf.html" class="external-link">geom_sf</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">spatial_domain</span>, fill <span class="op">=</span> <span class="st">"transparent"</span>, alpha <span class="op">=</span> <span class="fl">.2</span>, color <span class="op">=</span> <span class="st">"black"</span>, size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span> </span>
