@@ -77,6 +77,55 @@
 
     
     
+<p>The first version of <code>synthos</code> generates semi-realistic
+data of three benthic communities: hard coral, soft coral and
+macroalgae.</p>
+<p>This vignette illustrates an example of how to use
+<code>synthos</code> by simulating observations of bentbic communities
+using the following configuration:</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="75%">
+</colgroup>
+<thead><tr class="header">
+<th>Main configuration</th>
+<th>Example settings</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Observation data type</td>
+<td>Point-based observations</td>
+</tr>
+<tr class="even">
+<td>Monitoring design</td>
+<td>Random locations</td>
+</tr>
+<tr class="odd">
+<td>Number of surveyed years</td>
+<td>15 years</td>
+</tr>
+<tr class="even">
+<td>Sampling design</td>
+<td>25 reefs, 3 sites per reef, 5 transects per site, 100 photo frames
+per transect, 50 points per frame, 2 depths</td>
+</tr>
+<tr class="odd">
+<td>Relative disturbance weights</td>
+<td>80% heat stress, 19% cyclones, 1% other disturbances</td>
+</tr>
+<tr class="even">
+<td>Annual growth rates</td>
+<td>3% for hard coral and 3% for soft coral**</td>
+</tr>
+</tbody>
+</table>
+<p>The configuration used in this example can be easily adjusted using
+the function <a href="https://open-aims.github.io/synthos/reference/generateSettings.html">generateSettings</a>.</p>
+<p>**Macroalgae responds differently: instead of growing independently,
+it occupies the remaining available space (i.e., macroalgae cover =
+total available space − hard coral cover − soft coral cover).</p>
+<p>Further explanations of each step can be found in the accompanying <a href="https://open-aims.github.io/synthos/articles/">vignettes</a>.</p>
 <div class="section level2">
 <h2 id="setting-up">Setting up<a class="anchor" aria-label="anchor" href="#setting-up"></a>
 </h2>
@@ -93,7 +142,7 @@
 <h2 id="generate-settings">1. Generate settings<a class="anchor" aria-label="anchor" href="#generate-settings"></a>
 </h2>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">surveys</span> <span class="op">&lt;-</span>  <span class="st">"random"</span> <span class="co"># or  "fixed"</span></span>
+<code class="sourceCode R"><span><span class="va">surveys</span> <span class="op">&lt;-</span>  <span class="st">"random"</span> <span class="co"># or "fixed"</span></span>
 <span><span class="va">data_type</span> <span class="op">&lt;-</span> <span class="st">"points"</span> <span class="co"># or "cover"</span></span>
 <span></span>
 <span><span class="fu">synthos</span><span class="fu">::</span><span class="fu"><a href="../reference/generateSettings.html">generateSettings</a></span><span class="op">(</span>nreefs <span class="op">=</span> <span class="fl">25</span>, nsites <span class="op">=</span> <span class="fl">3</span>, nyears <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span></code></pre></div>
@@ -184,42 +233,62 @@ baselines<a class="anchor" aria-label="anchor" href="#generate-the-spatio-tempor
 <div class="section level3">
 <h3 id="trajectories">5.1 Trajectories<a class="anchor" aria-label="anchor" href="#trajectories"></a>
 </h3>
-<figure style="text-align: center"><img src="figures/figure1.1.png" alt="Coral reef" width="80%"><figcaption>
-Figure 1: Trajectories of hard coral cover (HCC) at 3m depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.2.png" alt="Coral reef" width="80%"><figcaption>
+<!-- <figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure1.1.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 1: Trajectories of hard coral cover (HCC) at 3m depth. </figcaption>
+</figure> -->
+<figure style="text-align: center"><img src="figures/figure1.2.png" alt="Coral reef" width="80%"><figcaption>
 Figure 2: Trajectories of hard coral cover (HCC) at 10m depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.3.png" alt="Coral reef" width="80%"><figcaption>
-Figure 3: Trajectories of macroalgae cover (MA) at 3m depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.4.png" alt="Coral reef" width="80%"><figcaption>
-Figure 4: Trajectories of macroalgae cover (MA) at 10m depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.5.png" alt="Coral reef" width="80%"><figcaption>
-Figure 5: Trajectories of soft coral cover (SC) at 3m depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure1.6.png" alt="Coral reef" width="80%"><figcaption>
-Figure 6: Trajectories of soft coral cover (SC) at 10m depth.
-</figcaption></figure>
+</figcaption></figure><!-- <figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure1.3.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 3: Trajectories of macroalgae cover (MA) at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure1.4.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 4: Trajectories of macroalgae cover (MA) at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure1.5.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 5: Trajectories of soft coral cover (SC) at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure1.6.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 6: Trajectories of soft coral cover (SC) at 10m depth. </figcaption>
+</figure> -->
 </div>
 <div class="section level3">
 <h3 id="heatmaps">5.2 Heatmaps<a class="anchor" aria-label="anchor" href="#heatmaps"></a>
 </h3>
-<figure style="text-align: center"><img src="figures/figure2.1.png" alt="Coral reef" width="80%"><figcaption>
-Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m
-depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure2.2.png" alt="Coral reef" width="80%"><figcaption>
+<!-- <figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure2.1.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m depth. </figcaption>
+</figure> -->
+<figure style="text-align: center"><img src="figures/figure2.2.png" alt="Coral reef" width="80%"><figcaption>
 Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m
 depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure2.3.png" alt="Coral reef" width="80%"><figcaption>
-Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m
-depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure2.4.png" alt="Coral reef" width="80%"><figcaption>
-Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m
-depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure2.5.png" alt="Coral reef" width="80%"><figcaption>
-Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m
-depth.
-</figcaption></figure><figure style="text-align: center"><img src="figures/figure2.6.png" alt="Coral reef" width="80%"><figcaption>
-Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m
-depth.
-</figcaption></figure>
+</figcaption></figure><!-- <figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure2.3.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure2.4.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="/home/runner/work/synthos/synthos/vignettes/figures/figure2.5.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m depth. </figcaption>
+</figure>
+
+<figure style="text-align: center">
+  <img src="figures/figure2.6.png" alt="Coral reef" width="80%">
+  <figcaption>Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m depth. </figcaption>
+</figure>
+ -->
 </div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

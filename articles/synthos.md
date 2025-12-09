@@ -1,5 +1,32 @@
 # Generate synthos data
 
+The first version of `synthos` generates semi-realistic data of three
+benthic communities: hard coral, soft coral and macroalgae.
+
+This vignette illustrates an example of how to use `synthos` by
+simulating observations of bentbic communities using the following
+configuration:
+
+| Main configuration           | Example settings                                                                                               |
+|------------------------------|----------------------------------------------------------------------------------------------------------------|
+| Observation data type        | Point-based observations                                                                                       |
+| Monitoring design            | Random locations                                                                                               |
+| Number of surveyed years     | 15 years                                                                                                       |
+| Sampling design              | 25 reefs, 3 sites per reef, 5 transects per site, 100 photo frames per transect, 50 points per frame, 2 depths |
+| Relative disturbance weights | 80% heat stress, 19% cyclones, 1% other disturbances                                                           |
+| Annual growth rates          | 3% for hard coral and 3% for soft coral\*\*                                                                    |
+
+The configuration used in this example can be easily adjusted using the
+function
+[generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html).
+
+\*\*Macroalgae responds differently: instead of growing independently,
+it occupies the remaining available space (i.e., macroalgae cover =
+total available space − hard coral cover − soft coral cover).
+
+Further explanations of each step can be found in the accompanying
+[vignettes](https://open-aims.github.io/synthos/articles/).
+
 ## Setting up
 
 ``` r
@@ -15,7 +42,7 @@ library(synthos)
 ## 1. Generate settings
 
 ``` r
-surveys <-  "random" # or  "fixed"
+surveys <-  "random" # or "fixed"
 data_type <- "points" # or "cover"
 
 synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
@@ -106,58 +133,13 @@ purrr::walk(seq_along(plots), ~ ggsave(filename = paste0("figures/figure2.", .x,
 
 ### 5.1 Trajectories
 
-![Coral reef](figures/figure1.1.png)
-
-Figure 1: Trajectories of hard coral cover (HCC) at 3m depth.
-
 ![Coral reef](figures/figure1.2.png)
 
 Figure 2: Trajectories of hard coral cover (HCC) at 10m depth.
 
-![Coral reef](figures/figure1.3.png)
-
-Figure 3: Trajectories of macroalgae cover (MA) at 3m depth.
-
-![Coral reef](figures/figure1.4.png)
-
-Figure 4: Trajectories of macroalgae cover (MA) at 10m depth.
-
-![Coral reef](figures/figure1.5.png)
-
-Figure 5: Trajectories of soft coral cover (SC) at 3m depth.
-
-![Coral reef](figures/figure1.6.png)
-
-Figure 6: Trajectories of soft coral cover (SC) at 10m depth.
-
 ### 5.2 Heatmaps
-
-![Coral reef](figures/figure2.1.png)
-
-Figure 7: Temporal pattern of mean hard coral cover (HCC) by site at 3m
-depth.
 
 ![Coral reef](figures/figure2.2.png)
 
 Figure 8: Temporal pattern of mean hard coral cover (HCC) by site at 10m
-depth.
-
-![Coral reef](figures/figure2.3.png)
-
-Figure 9: Temporal pattern of mean macroalgae cover (MA) by site at 3m
-depth.
-
-![Coral reef](figures/figure2.4.png)
-
-Figure 10: Temporal pattern of mean macroalgae cover (MA) by site at 10m
-depth.
-
-![Coral reef](figures/figure2.5.png)
-
-Figure 11: Temporal pattern of mean soft coral cover (SC) by site at 3m
-depth.
-
-![Coral reef](figures/figure2.6.png)
-
-Figure 12: Temporal pattern of mean soft coral cover (SC) by site at 10m
 depth.
