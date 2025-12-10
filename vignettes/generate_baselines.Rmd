@@ -14,6 +14,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+In `synthos`, baselines represent the ecological community states in the year prior to sampling. In the current implementation, separate deterministic baseline surfaces are generated for hard coral (HCC) and soft coral (SC). Both baselines impose a west–east spatial gradient, with higher hard and soft coral cover in eastern locations, reflecting broad ecological patterns encoded through simple deterministic functions. The HCC and SC baselines differ primarily in how latitude influences cover. For hard corals (HCC), baseline values increase with latitude, whereas for soft corals (SC), a decreasing latitudinal effect is imposed. In addition, the rescaled baseline ranges are set higher for HCC than for SC, reflecting their comparatively greater expected cover in the initial state.
+
 ## Setting up
 
 ```{r setup, message = FALSE, warning = FALSE, eval=FALSE}
@@ -53,6 +55,10 @@ spatial.grid.pts.df <- spatial_grid %>%
   arrange(Longitude, Latitude)
 
 ## ---- SyntheticData_BaselineSpatial.HCC
+
+cover_range <- config_sp$hcc_cover_range
+cover_range <- qlogis(cover_range)
+
 baseline.sample.hcc <- mesh$loc[,1:2] %>%
   as.data.frame() %>%
   dplyr::select(Longitude = V1, Latitude = V2) %>%
@@ -60,7 +66,7 @@ baseline.sample.hcc <- mesh$loc[,1:2] %>%
          clat = as.vector(scale(Latitude, scale = FALSE)),
          Y = clong + sin(clat) + 
            1.5*clong + clat) %>%
-  mutate(Y = scales::rescale(Y, to = c(-2, 0.8)))
+  mutate(Y = scales::rescale(Y, to = cover_range))
 
 baseline.effects.hcc <- baseline.sample.hcc %>%
   dplyr::select(Y) %>%
@@ -117,6 +123,10 @@ ggplot() +
 ## 3. Generate the baseline for soft corals  
 
 ```{r generate-base-sc, message = FALSE, warning = FALSE, eval=FALSE}
+
+cover_range <- config_sp$sc_cover_range
+cover_range <- qlogis(cover_range)
+
 baseline.sample.sc <- mesh$loc[, 1:2] %>%
   as.data.frame() %>%
   dplyr::select(Longitude = V1, Latitude = V2) %>%
@@ -126,7 +136,7 @@ baseline.sample.sc <- mesh$loc[, 1:2] %>%
     Y = clong + sin(clat) +
       1.5 * clong + -1.5 * clat
   ) %>%
-  mutate(Y = scales::rescale(Y, to = c(-4, -2)))
+  mutate(Y = scales::rescale(Y, to = cover_range))
 
 baseline.effects.sc <- baseline.sample.sc %>%
   dplyr::select(Y) %>%
