@@ -77,6 +77,18 @@
 
     
     
+<p>In <code>synthos</code>, baselines represent the ecological community
+states in the year prior to sampling. In the current implementation,
+separate deterministic baseline surfaces are generated for hard coral
+(HCC) and soft coral (SC). Both baselines impose a west–east spatial
+gradient, with higher hard and soft coral cover in eastern locations,
+reflecting broad ecological patterns encoded through simple
+deterministic functions. The HCC and SC baselines differ primarily in
+how latitude influences cover. For hard corals (HCC), baseline values
+increase with latitude, whereas for soft corals (SC), a decreasing
+latitudinal effect is imposed. In addition, the rescaled baseline ranges
+are set higher for HCC than for SC, reflecting their comparatively
+greater expected cover in the initial state.</p>
 <div class="section level2">
 <h2 id="setting-up">Setting up<a class="anchor" aria-label="anchor" href="#setting-up"></a>
 </h2>
@@ -117,6 +129,10 @@
 <span>  <span class="fu">arrange</span><span class="op">(</span><span class="va">Longitude</span>, <span class="va">Latitude</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## ---- SyntheticData_BaselineSpatial.HCC</span></span>
+<span></span>
+<span><span class="va">cover_range</span> <span class="op">&lt;-</span> <span class="va">config_sp</span><span class="op">$</span><span class="va">hcc_cover_range</span></span>
+<span><span class="va">cover_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">qlogis</a></span><span class="op">(</span><span class="va">cover_range</span><span class="op">)</span></span>
+<span></span>
 <span><span class="va">baseline.sample.hcc</span> <span class="op">&lt;-</span> <span class="va">mesh</span><span class="op">$</span><span class="va">loc</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>Longitude <span class="op">=</span> <span class="va">V1</span>, Latitude <span class="op">=</span> <span class="va">V2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -124,7 +140,7 @@
 <span>         clat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/scale.html" class="external-link">scale</a></span><span class="op">(</span><span class="va">Latitude</span>, scale <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>         Y <span class="op">=</span> <span class="va">clong</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">clat</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>           <span class="fl">1.5</span><span class="op">*</span><span class="va">clong</span> <span class="op">+</span> <span class="va">clat</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>Y <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">Y</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">2</span>, <span class="fl">0.8</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>Y <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">Y</span>, to <span class="op">=</span> <span class="va">cover_range</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">baseline.effects.hcc</span> <span class="op">&lt;-</span> <span class="va">baseline.sample.hcc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
@@ -179,7 +195,11 @@ Figure 1: Baseline values for hard corals.
 <h2 id="generate-the-baseline-for-soft-corals">3. Generate the baseline for soft corals<a class="anchor" aria-label="anchor" href="#generate-the-baseline-for-soft-corals"></a>
 </h2>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">baseline.sample.sc</span> <span class="op">&lt;-</span> <span class="va">mesh</span><span class="op">$</span><span class="va">loc</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
+<code class="sourceCode R"><span></span>
+<span><span class="va">cover_range</span> <span class="op">&lt;-</span> <span class="va">config_sp</span><span class="op">$</span><span class="va">sc_cover_range</span></span>
+<span><span class="va">cover_range</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Logistic.html" class="external-link">qlogis</a></span><span class="op">(</span><span class="va">cover_range</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">baseline.sample.sc</span> <span class="op">&lt;-</span> <span class="va">mesh</span><span class="op">$</span><span class="va">loc</span><span class="op">[</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">2</span><span class="op">]</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/as.data.frame.html" class="external-link">as.data.frame</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span>Longitude <span class="op">=</span> <span class="va">V1</span>, Latitude <span class="op">=</span> <span class="va">V2</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">mutate</span><span class="op">(</span></span>
@@ -188,7 +208,7 @@ Figure 1: Baseline values for hard corals.
 <span>    Y <span class="op">=</span> <span class="va">clong</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">sin</a></span><span class="op">(</span><span class="va">clat</span><span class="op">)</span> <span class="op">+</span></span>
 <span>      <span class="fl">1.5</span> <span class="op">*</span> <span class="va">clong</span> <span class="op">+</span> <span class="op">-</span><span class="fl">1.5</span> <span class="op">*</span> <span class="va">clat</span></span>
 <span>  <span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
-<span>  <span class="fu">mutate</span><span class="op">(</span>Y <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">Y</span>, to <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">4</span>, <span class="op">-</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu">mutate</span><span class="op">(</span>Y <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/rescale.html" class="external-link">rescale</a></span><span class="op">(</span><span class="va">Y</span>, to <span class="op">=</span> <span class="va">cover_range</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">baseline.effects.sc</span> <span class="op">&lt;-</span> <span class="va">baseline.sample.sc</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Y</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span>

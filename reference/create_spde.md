@@ -45,7 +45,6 @@ library(sf)
 #> Linking to GEOS 3.12.1, GDAL 3.8.4, PROJ 9.4.0; sf_use_s2() is TRUE
 library(INLA)
 #> Loading required package: Matrix
-#> Warning: URL 'https://inla.r-inla-download.org/VERSIONS': Timeout of 2 seconds was reached
 #> This is INLA_25.10.19 built 2025-10-19 19:10:20 UTC.
 #>  - See www.r-inla.org/contact-us for how to get help.
 #>  - List available models/likelihoods/etc with inla.list.models()

@@ -1,5 +1,53 @@
 # Generate disturbances
 
+**Details on disturbances**
+
+`synthos` generates three types of disturbances known to reduce hard and
+soft coral cover. Each disturbance has its own spatial and temporal
+patterns, reflecting how these processes occur in reality.
+
+The intensity of a *Heat stress* event is approximated by the
+distribution of Degree Heating Weeks (DHWs) with maximum annual values
+correlated with mass coral bleaching and mortality. `synthos` modelled
+heat stress by first generating a temporal DHW signal that varies form
+year to year. Random values are then added to the trend to mimic the
+yearly variation of heat-stress events under long-term warming. The
+resulting temporal signal is then propagated across the spatial field
+using a time-varying AR(1)-like process and rescaled between \[0-1\] to
+support comparisons with other disturbances.
+
+Exposure to *Cyclones* is modelled through three components:
+
+- their occurrence
+- their intensity
+- the geographical effect: reflecting the fact that some locations are
+  more susceptible to cyclone exposure than others
+
+Cyclone occurrence in a given year is simulated as a binary event
+(yes/no) whose probability of happening increases through time. When a
+cyclone occurs, its intensity is also randomly generated from a
+probability distribution biased to produce stronger cyclone events on
+average. Values of cyclone intensity is then used to adjust the
+geographical effect to produce the fine spatial pattern of cyclone
+impact and rescaled between \[0-1\].
+
+A third disturbance, *Other*, is generated using the same approach as
+heat stress disturbance but without the underlying temporal trend. Each
+year, spatial effects are drawn from a probability distribution
+parameterized to introduce low temporal autocorrelation values between
+consecutive years and rescaled between \[0-1\].
+
+**Details on the weighting system**
+
+Working with synthetic data requires the ability to recover the input
+values, including the effects of disturbances. Although disturbances are
+generated using both deterministic and stochastic processes, their
+influence can be controlled by applying weights. In `synthos`,
+disturbance values are scaled by user-defined deterministic weights,
+providing a simple and transparent way to modulate their impact. The
+configuration of the weights can be adjusted within the function
+[generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html).
+
 ## Setting up
 
 ``` r
