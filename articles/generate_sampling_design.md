@@ -5,7 +5,7 @@ monitoring program. In `synthos`, the design parameters are organized
 into two complementary components:
 
 - Large-scale design: locates sites within reefs selected across the
-  spatial domain and creates uneven repeated surveys if random site
+  spatial domain and creates unevenly repeated surveys when random site
   allocation is selected.  
 - Fine-scale design: specifies the sampling hierarchy within each site,
   including transects, photo frames, and points for point-based data, as
@@ -62,7 +62,7 @@ library(scico)
 surveys <-  "random" # or  "fixed"
 data_type <- "points" # or "cover"
 
-synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15, dhw_eff = 0.5, cyc_eff = 0.3, other_eff = 0.2)
 ```
 
 ## 2. Generate sampling design

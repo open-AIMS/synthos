@@ -67,7 +67,7 @@ estimates.
 surveys <-  "random" # or  "fixed"
 data_type <- "points" # or "cover"
 
-synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15, dhw_eff = 0.5, cyc_eff = 0.3, other_eff = 0.2)
 ```
 
 ## 2. Generate the spatial and temporal domains
