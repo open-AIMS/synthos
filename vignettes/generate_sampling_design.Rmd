@@ -9,7 +9,7 @@ vignette: >
 
 The final step is to generate the sampling design that underpins the monitoring program. In `synthos`, the design parameters are organized into two complementary components: 
 
-- Large-scale design: locates sites within reefs selected across the spatial domain and creates uneven repeated surveys if random site allocation is selected.  
+- Large-scale design: locates sites within reefs selected across the spatial domain and creates unevenly repeated surveys when random site allocation is selected.  
 - Fine-scale design: specifies the sampling hierarchy within each site, including transects, photo frames, and points for point-based data, as well as quadrats for cover data.
 
 Both components can be easily customised through the function [generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html), allowing users to tailor the sampling design to their specific monitoring aspirations. 
@@ -66,7 +66,7 @@ library(scico)
 surveys <-  "random" # or  "fixed"
 data_type <- "points" # or "cover"
 
-synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15)
+synthos::generateSettings(nreefs = 25, nsites = 3, nyears = 15, dhw_eff = 0.5, cyc_eff = 0.3, other_eff = 0.2)
 ```
 
 ## 2. Generate sampling design

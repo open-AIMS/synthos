@@ -1,108 +1,97 @@
 #' Generate Simulation Settings for Synthetic Reef Landscapes
 #'
-#' Creates and saves all configuration lists required to simulate synthetic
-#' reef landscapes, including spatial, large-scale, fine-scale, and
-#' point-based sampling parameters. Each configuration list is also assigned to
-#' the global environment for use by downstream modelling functions.
+#' Creates and stores all configuration lists required to simulate synthetic
+#' reef landscapes, including spatio-temporal settings, large-scale sampling
+#' structure, fine-scale sampling hierarchy, and point-based observation
+#' parameters. Each configuration list is also exported to the global
+#' environment for downstream modelling functions.
 #'
 #' @title Generate Settings for Synthetic Reef Simulations
 #'
 #' @param nreefs Integer. Number of reef locations to simulate.
-#' @param nsites Integer. Number of sites per reef to simulate.
+#' @param nsites Integer. Number of sites to simulate per reef.
 #' @param nyears Integer. Number of years to simulate.
+#' @param dhw_eff Numeric. Weight controlling the influence of thermal stress
+#'   (degree heating weeks) on benthic cover.
+#' @param cyc_eff Numeric. Weight controlling the influence of cyclone 
+#'   disturbances on benthic cover.
+#' @param other_eff Numeric. Weight for additional disturbances not explicitly
+#'   modelled.
 #'
 #' @details
-#' **Spatio-temporal parameters (config_sp)**
+#' **Spatio-temporal parameters (`config_sp`)**
+#'
+#' Controls the spatial domain, covariance structure, temporal sequence,
+#' and disturbance weights.
+#'
 #' \itemize{
 #'   \item \strong{seed}: Random seed controlling all stochastic processes.
-#'   \item \strong{crs}: Coordinate reference system (EPSG code) applied to
-#'     the spatial domain.
-#'   \item \strong{model}: Variogram model used to generate spatial
-#'     covariance. Supported models include "Sph", "Exp", "Gau", "Lin", "Mat",
-#'     "Ste", "Pen", "Hug", "Hol", "Cor", and composite forms such as
-#'     "Sphlin", "Sphexp", "Sphgaus", "Sphmat", "Sphste", "Sphpen", "Sphhug",
-#'     "Sphhol", "Sphcor".
-#'   \item \strong{psill}: Partial sill. The variance explained by spatial
-#'     structure; the difference between the sill (asymptotic variance of the
-#'     variogram) and the nugget. Represents the plateau reached as lag
-#'     distance increases.
-#'   \item \strong{range}: Distance at which spatial correlation becomes
-#'     negligible. Beyond this range, locations are effectively
-#'     uncorrelated.
-#'   \item \strong{nugget}: Variance at zero distance (the variogram
-#'     intercept). Captures measurement error and micro-scale variability
-#'     below the sampling resolution.
-#'   \item \strong{alpha}: Smoothness parameter of the spatial field. Larger
-#'     values produce smoother fields; smaller values yield more rugged
-#'     surfaces. In SPDE models, controls the order of the differential
-#'     operator.
-#'   \item \strong{kappa}: Controls the spatial scale (range) of the SPDE
-#'     spatial field. Smaller values correspond to broader spatial
-#'     correlation; larger values produce shorter-range correlation.
-#'   \item \strong{variance}: Variance parameter used in the construction of
-#'     the Matérn precision matrix for the spatial field.
-#'   \item \strong{patch\_threshold}: Numeric cutoff below which the spatial
-#'     field is masked, producing discrete habitat patches.
-#'   \item \strong{reef\_width}: Half-width of the reef "ribbon" used to
-#'     represent benthic habitat around the patch outline.
-#'   \item \strong{years}: Sequence of years included in the simulation.
-#'   \item \strong{dhw\_weight}: Weight determining the relative influence of
-#'     degree heating weeks (thermal stress) on benthic cover.
-#'   \item \strong{cyc\_weight}: Weight determining the influence of cyclone
-#'     disturbances on benthic cover.
-#'   \item \strong{other\_weight}: Weight for additional disturbances not
-#'     explicitly modelled.
-#'   \item \strong{hcc\_cover\_range}: Minimum and maximum expected hard coral
-#'     cover over space and time.
-#'   \item \strong{hcc\_growth}: Annual growth rate of hard coral cover.
-#'   \item \strong{sc\_cover\_range}: Minimum and maximum expected soft coral
-#'     cover over space and time.
-#'   \item \strong{sc\_growth}: Annual growth rate of soft coral cover.
+#'   \item \strong{crs}: Coordinate reference system (EPSG code).
+#'   \item \strong{model}: Variogram model (e.g., "Exp", "Sph", "Gau", "Mat", etc.).
+#'   \item \strong{psill}: Partial sill (variance explained by spatial structure).
+#'   \item \strong{range}: Distance at which spatial correlation becomes negligible.
+#'   \item \strong{nugget}: Variance at zero distance (micro-scale variability).
+#'   \item \strong{alpha}: Smoothness of the spatial field.
+#'   \item \strong{kappa}: Spatial scale parameter in the SPDE representation.
+#'   \item \strong{variance}: Variance of the Matérn precision matrix.
+#'   \item \strong{patch_threshold}: Threshold defining habitat patches.
+#'   \item \strong{reef_width}: Half-width of the simulated reef ribbon.
+#'   \item \strong{years}: Sequence of simulated years.
+#'   \item \strong{dhw_weight}: Weight of thermal stress (degree heating weeks).
+#'   \item \strong{cyc_weight}: Weight of cyclone disturbances.
+#'   \item \strong{other_weight}: Weight of additional disturbance processes.
+#'   \item \strong{hcc_cover_range}: Expected range of hard coral cover.
+#'   \item \strong{hcc_growth}: Annual growth rate of hard coral cover.
+#'   \item \strong{sc_cover_range}: Expected range of soft coral cover.
+#'   \item \strong{sc_growth}: Annual growth rate of soft coral cover.
 #' }
 #'
-#' **Large-scale sampling parameters (config_lrge)**
+#' **Large-scale sampling parameters (`config_lrge`)**
 #' \itemize{
 #'   \item \strong{n_locs}: Number of reef locations.
 #'   \item \strong{n_sites}: Number of sites per reef.
-#'   \item \strong{seed}: Seed for sampling design reproducibility.
+#'   \item \strong{seed}: Seed for sampling reproducibility.
 #' }
 #'
-#' **Fine-scale sampling parameters (config_fine)**  
-#' (Site, transect, and random-effect structure for each benthic group)
+#' **Fine-scale sampling parameters (`config_fine`)**
+#'
+#' Defines site-level, transect-level, and residual variance components for
+#' each benthic group.
+#'
 #' \itemize{
 #'   \item \strong{years}: Years included in the fine-scale simulation.
-#'   \item \strong{Number_of_transects_per_site}: Number of transects simulated at each site.
-#'   \item \strong{Depths}: Number of depth strata simulated.
-#'   \item \strong{hcc_site_sigma}, \strong{hcc_transect_sigma},
-#'     \strong{hcc_sigma}: Variances for site-level, transect-level, and
-#'     residual random effects for hard coral cover.
-#'   \item \strong{sc_site_sigma}, \strong{sc_transect_sigma},
-#'     \strong{sc_sigma}: Equivalent random-effect variances for soft coral.
-#'   \item \strong{ma_site_sigma}, \strong{ma_transect_sigma},
-#'     \strong{ma_sigma}: Equivalent random-effect variances for macroalgae.
+#'   \item \strong{Number_of_transects_per_site}: Transects simulated at each site.
+#'   \item \strong{Depths}: Number of depth strata.
+#'   \item \strong{hcc_site_sigma}, \strong{hcc_transect_sigma}, \strong{hcc_sigma}:  
+#'     Random-effect variances for hard coral.
+#'   \item \strong{sc_site_sigma}, \strong{sc_transect_sigma}, \strong{sc_sigma}:  
+#'     Random-effect variances for soft coral.
+#'   \item \strong{ma_site_sigma}, \strong{ma_transect_sigma}, \strong{ma_sigma}:  
+#'     Random-effect variances for macroalgae.
 #' }
 #'
-#' **Point-based sampling parameters (config_pt)**  
-#' Defines photo-quadrat and point-count structure.
+#' **Point-based sampling parameters (`config_pt`)**
+#'
+#' Defines the structure of quadrats, frames, and annotation points.
+#'
 #' \itemize{
 #'   \item \strong{Depths}: Number of depth strata.
-#'   \item \strong{Depth_effect_multiplier}: Multiplier controlling depth-related differences
-#'     in benthic cover.
+#'   \item \strong{Depth_effect_multiplier}: Strength of depth-related differences.
 #'   \item \strong{Number_of_transects_per_site}: Transects per site.
-#'   \item \strong{Number_of_frames_per_transect}: Number of photo frames per transect.
-#'   \item \strong{Number_of_quadrats_per_transect}: Quadrat count per transect.
-#'   \item \strong{Points_per_frame}: Number of random points per photographic frame.
-#'   \item \strong{Quad_sigma}: Random variation among quadrats.
+#'   \item \strong{Number_of_frames_per_transect}: Frames per transect.
+#'   \item \strong{Number_of_quadrats_per_transect}: Quadrats per transect.
+#'   \item \strong{Points_per_frame}: Annotation points per frame.
+#'   \item \strong{Quad_sigma}: Quadrats-level random variation.
 #' }
 #'
 #' @return Invisibly returns a list containing the four configuration lists:
-#'   \code{config_sp}, \code{config_lrge}, \code{config_fine}, and
-#'   \code{config_pt}. Each is also assigned to the global environment.
+#' \code{config_sp}, \code{config_lrge}, \code{config_fine}, and
+#' \code{config_pt}. Each is also assigned to the global environment.
 #'
 #' @author Murray
 #'
 #' @export
-generateSettings <- function(nreefs, nsites, nyears){
+generateSettings <- function(nreefs, nsites, nyears, dhw_eff, cyc_eff, other_eff){
 
 ## Config of the spatio-temporal model
 config_sp <- list(
@@ -118,9 +107,9 @@ config_sp <- list(
   patch_threshold = 1.75,
   reef_width = 0.01,
   years = 1:nyears,
-  dhw_weight = 0.8,
-  cyc_weight = 0.19,
-  other_weight = 0.01,
+  dhw_weight = dhw_eff,
+  cyc_weight = cyc_eff,
+  other_weight = other_eff,
   hcc_cover_range = c(0.1, 0.7),
   hcc_growth = 0.3,
   sc_cover_range = c(0.01, 0.1),
