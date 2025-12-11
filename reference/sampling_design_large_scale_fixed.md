@@ -26,8 +26,6 @@ sampling_design_large_scale_fixed(data_reefs_pts_sf, config_lrge)
 
   A list with:
 
-  - `n_locs`: number of reefs (locations) to select
-
   - `n_sites`: number of sites per selected reef
 
   - `seed`: random seed
@@ -39,8 +37,7 @@ values remain on the logit scale.
 
 ## Details
 
-Selects a set number of reef locations and then randomly selects a fixed
-number of sites within each selected location.
+Selects a fixed number of sites within each reef.
 
 ## Author
 

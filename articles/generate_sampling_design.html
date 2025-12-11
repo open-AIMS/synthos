@@ -79,10 +79,11 @@
     
 <p>The final step is to generate the sampling design that underpins the
 monitoring program. In <code>synthos</code>, the design parameters are
-organised into two complementary components:</p>
+organized into two complementary components:</p>
 <ul>
-<li>Large-scale design: defines which reefs and sites are selected
-across the spatial domain<br>
+<li>Large-scale design: locates sites within reefs selected across the
+spatial domain and creates uneven repeated surveys if random site
+allocation is selected.<br>
 </li>
 <li>Fine-scale design: specifies the sampling hierarchy within each
 site, including transects, photo frames, and points for point-based
@@ -91,6 +92,89 @@ data, as well as quadrats for cover data.</li>
 <p>Both components can be easily customised through the function <a href="https://open-aims.github.io/synthos/reference/generateSettings.html">generateSettings</a>,
 allowing users to tailor the sampling design to their specific
 monitoring aspirations.</p>
+<p>The <code>synthos</code> table is then generated including the
+selection of surveyed reefs and primary metadata. It summarizes the data
+at the transect scale by summing the number of count in point-based
+observation data and averaging cover at the quadrat-level.</p>
+<p>The table includes the following:</p>
+<table class="table">
+<colgroup>
+<col width="25%">
+<col width="74%">
+</colgroup>
+<thead><tr class="header">
+<th>Variable</th>
+<th>Description</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>survey_depth</code></td>
+<td>Depth in metres.</td>
+</tr>
+<tr class="even">
+<td><code>project_name</code></td>
+<td>Name of the monitoring program.</td>
+</tr>
+<tr class="odd">
+<td><code>site_name</code></td>
+<td>Combined reef–site identifier.</td>
+</tr>
+<tr class="even">
+<td><code>survey_transect_number</code></td>
+<td>Transect number within a site.</td>
+</tr>
+<tr class="odd">
+<td>
+<code>site_latitude</code>, <code>site_longitude</code>
+</td>
+<td>Geographic coordinates of a site.</td>
+</tr>
+<tr class="even">
+<td><code>survey_start_date</code></td>
+<td>Survey date and time (year/month/day/hour).</td>
+</tr>
+<tr class="odd">
+<td><code>point_machine_classification</code></td>
+<td>Benthic community class for each annotation point.</td>
+</tr>
+<tr class="even">
+<td><code>COUNT_TRUE</code></td>
+<td>“True” number of counts available for every reef across the spatial
+domain.</td>
+</tr>
+<tr class="odd">
+<td><code>TOTAL</code></td>
+<td>Total number of annotation points.</td>
+</tr>
+<tr class="even">
+<td><code>COVER_TRUE</code></td>
+<td>“True” percent cover available for every reef across the spatial
+domain.</td>
+</tr>
+<tr class="odd">
+<td><code>year</code></td>
+<td>Year extracted from <code>survey_start_date</code>.</td>
+</tr>
+<tr class="even">
+<td><code>reef</code></td>
+<td>Reef extracted from <code>site_name</code>.</td>
+</tr>
+<tr class="odd">
+<td><code>site</code></td>
+<td>Site extracted from <code>site_name</code>.</td>
+</tr>
+<tr class="even">
+<td><code>COUNT</code></td>
+<td>Number of counts for selected reefs only (NA for non-selected
+reefs).</td>
+</tr>
+<tr class="odd">
+<td><code>COVER</code></td>
+<td>Percent cover for selected reefs only (NA for non-selected
+reefs).</td>
+</tr>
+</tbody>
+</table>
 <div class="section level2">
 <h2 id="setting-up">Setting up<a class="anchor" aria-label="anchor" href="#setting-up"></a>
 </h2>

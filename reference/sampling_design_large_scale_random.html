@@ -62,8 +62,7 @@
 
 
 <dt id="arg-config-lrge">config_lrge<a class="anchor" aria-label="anchor" href="#arg-config-lrge"></a></dt>
-<dd><p>A list with:</p><ul><li><p><code>n_locs</code> — number of reef locations to select</p></li>
-<li><p><code>n_sites</code> — number of sites per selected reef</p></li>
+<dd><p>A list with:</p><ul><li><p><code>n_sites</code> — number of sites per selected reef</p></li>
 <li><p><code>seed</code> — random seed for reproducibility</p></li>
 </ul></dd>
 
@@ -76,11 +75,10 @@ associated cover values (still on the logit scale).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>Randomly selects reef locations and a fixed number of sites within each
-selected location. Valid survey years are then sampled per reef using
+    <p>Randomly selects a fixed number of sites within each
+reefs. Valid survey years are then sampled per reef using
 temporal constraints (via <code><a href="sample_years_with_condition.html">sample_years_with_condition()</a></code>).</p>
-<p>The function:</p><ul><li><p>Randomly samples reef locations</p></li>
-<li><p>Randomly selects a fixed number of sites within each reef</p></li>
+<p>The function:</p><ul><li><p>Randomly selects a fixed number of sites within each reef</p></li>
 <li><p>Uses <code><a href="sample_years_with_condition.html">sample_years_with_condition()</a></code> to select years per reef</p></li>
 <li><p>Filters the dataset to retain only valid reef–year combinations</p></li>
 </ul></div>
