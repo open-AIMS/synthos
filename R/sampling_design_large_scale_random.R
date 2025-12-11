@@ -1,7 +1,7 @@
 #' Large‐scale Randomised Sampling Design
 #'
-#' Randomly selects reef locations and a fixed number of sites within each
-#' selected location. Valid survey years are then sampled per reef using
+#' Randomly selects a fixed number of sites within each
+#' reefs. Valid survey years are then sampled per reef using
 #' temporal constraints (via `sample_years_with_condition()`).
 #'
 #' @title Large‐scale Randomised Sampling Design
@@ -16,7 +16,6 @@
 #'
 #' @param config_lrge A list with:
 #' \itemize{
-#'   \item `n_locs` — number of reef locations to select
 #'   \item `n_sites` — number of sites per selected reef
 #'   \item `seed` — random seed for reproducibility
 #' }
@@ -28,7 +27,6 @@
 #' @details
 #' The function:
 #' \itemize{
-#'   \item Randomly samples reef locations
 #'   \item Randomly selects a fixed number of sites within each reef
 #'   \item Uses `sample_years_with_condition()` to select years per reef
 #'   \item Filters the dataset to retain only valid reef–year combinations
@@ -47,10 +45,7 @@ sampling_design_large_scale_random <- function(data_reefs_pts_sf, config_lrge) {
     )),
     sort(names(config_lrge))
   )
- # set.seed(config_lrge$seed)
 
-  ## Then filter to these Reefs before selecting a single location within
-  ## each of the Reefs
   data_random_locs_sf <- data_reefs_pts_sf |>
     dplyr::select(Reef, geometry) |>
     dplyr::distinct(.keep_all = TRUE) |>

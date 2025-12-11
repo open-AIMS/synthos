@@ -1,7 +1,6 @@
 #' Large‐scale fixed sampling design
 #'
-#' Selects a set number of reef locations and then randomly selects a
-#' fixed number of sites within each selected location.
+#' Selects a fixed number of sites within each reef.
 #'
 #' @title Large‐scale fixed sampling design
 #'
@@ -13,7 +12,6 @@
 #'   - `geometry`: spatial geometry
 #'
 #' @param config_lrge A list with:
-#'   - `n_locs`: number of reefs (locations) to select
 #'   - `n_sites`: number of sites per selected reef
 #'   - `seed`: random seed
 #'
@@ -41,8 +39,6 @@ sampling_design_large_scale_fixed <- function(data_reefs_pts_sf, config_lrge) {
     sort(names(config_lrge))
   )
 
-  ## Then filter to these Reefs before selecting a single location within
-  ## each of the Reefs
   data_fixed_locs_sf <- data_reefs_pts_sf |>
     dplyr::select(Reef, geometry) |>
     dplyr::distinct(.keep_all = TRUE) |>

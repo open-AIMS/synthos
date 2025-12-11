@@ -7,12 +7,34 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-The final step is to generate the sampling design that underpins the monitoring program. In `synthos`, the design parameters are organised into two complementary components: 
+The final step is to generate the sampling design that underpins the monitoring program. In `synthos`, the design parameters are organized into two complementary components: 
 
-- Large-scale design: defines which reefs and sites are selected across the spatial domain  
+- Large-scale design: locates sites within reefs selected across the spatial domain and creates uneven repeated surveys if random site allocation is selected.  
 - Fine-scale design: specifies the sampling hierarchy within each site, including transects, photo frames, and points for point-based data, as well as quadrats for cover data.
 
 Both components can be easily customised through the function [generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html), allowing users to tailor the sampling design to their specific monitoring aspirations. 
+
+The `synthos` table is then generated including the selection of surveyed reefs and primary metadata. It summarizes the data at the transect scale by summing the number of count in point-based observation data and averaging cover at the quadrat-level.   
+
+The table includes the following: 
+
+| Variable                         | Description                                                                                       |
+|----------------------------------|---------------------------------------------------------------------------------------------------|
+| `survey_depth`                   | Depth in metres.                                                                                  |
+| `project_name`                   | Name of the monitoring program.                                                                   |
+| `site_name`                      | Combined reef–site identifier.                                                                    |
+| `survey_transect_number`         | Transect number within a site.                                                                    |
+| `site_latitude`, `site_longitude`| Geographic coordinates of a site.                                                                 |
+| `survey_start_date`              | Survey date and time (year/month/day/hour).                                                       |
+| `point_machine_classification`   | Benthic community class for each annotation point.                                                |
+| `COUNT_TRUE`                     | “True” number of counts available for every reef across the spatial domain.                       |
+| `TOTAL`                          | Total number of annotation points.                                                                |
+| `COVER_TRUE`                     | “True” percent cover available for every reef across the spatial domain.                          |
+| `year`                           | Year extracted from `survey_start_date`.                                                          |
+| `reef`                           | Reef extracted from `site_name`.                                                                  |
+| `site`                           | Site extracted from `site_name`.                                                                  |
+| `COUNT`                          | Number of counts for selected reefs only (NA for non-selected reefs).                             |
+| `COVER`                          | Percent cover for selected reefs only (NA for non-selected reefs).                                |
 
 
 ```{r, include = FALSE}
