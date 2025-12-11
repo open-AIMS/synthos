@@ -40,7 +40,7 @@ Two choices are available for site allocation.
 *Fixed* surveys refer to permanent monitoring locations that are revisited annually. 
 This design offers greater power for detecting temporal trends, but the estimated trend values can be biased toward the specific locations chosen for sampling. 
 
-*Random* surveys refer to monitoring locations selected without spatial permanence. Each reef is surveyed between 2 and 15 times, with the timing of sampling events separated by less than 5 years between consecutive surveys (see [sample_years_with_condition()](https://open-aims.github.io/synthos/reference/sample_years_with_condition.html) to change these conditions). This design is provide more accurate estimates of the absolute value of the response, but it may have lower statistical power for detecting temporal trends.     
+*Random* surveys refer to monitoring locations selected without spatial permanence. Each reef is surveyed between 2 and 15 times, with the timing of sampling events separated by less than 5 years between consecutive surveys (see [sample_years_with_condition()](https://open-aims.github.io/synthos/reference/sample_years_with_condition.html)) to change these conditions. This design is provide more accurate estimates of the absolute value of the response, but it may have lower statistical power for detecting temporal trends.     
 
 **Selection of observation data type.**
 
