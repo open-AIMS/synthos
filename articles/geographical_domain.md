@@ -39,8 +39,8 @@ specific locations chosen for sampling.
 permanence. Each reef is surveyed between 2 and 15 times, with the
 timing of sampling events separated by less than 5 years between
 consecutive surveys (see
-[sample_years_with_condition()](https://open-aims.github.io/synthos/reference/sample_years_with_condition.html)
-to change these conditions). This design is provide more accurate
+[sample_years_with_condition()](https://open-aims.github.io/synthos/reference/sample_years_with_condition.html))
+to change these conditions. This design is provide more accurate
 estimates of the absolute value of the response, but it may have lower
 statistical power for detecting temporal trends.
 

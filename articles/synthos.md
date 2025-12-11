@@ -13,16 +13,16 @@ configuration:
 | Site allocation              | Random locations                                                                                               |
 | Number of sampling events    | 15 years                                                                                                       |
 | Sampling design              | 25 reefs, 3 sites per reef, 5 transects per site, 100 photo frames per transect, 50 points per frame, 2 depths |
-| Relative disturbance weights | 80% heat stress, 19% cyclones, 1% “other” disturbances                                                         |
+| Relative disturbance weights | 80% heat stress, 19% cyclone exposure, 1% other                                                                |
 | Annual growth values         | 3% for hard coral and 3% for soft coral\*                                                                      |
 
 The configuration used in this example can be easily adjusted using the
 function
 [generateSettings](https://open-aims.github.io/synthos/reference/generateSettings.html).
 
-\*\*Macroalgae responds differently\*: instead of growing independently,
-it occupies the remaining available space (i.e., macroalgae cover =
-total available space − (hard coral cover + soft coral cover) with total
+\*Macroalgae responds differently: instead of growing independently, it
+occupies the remaining available space (i.e., macroalgae cover = total
+available space − (hard coral cover + soft coral cover) with total
 available space is fixed at 80% for each location).
 
 **Further explanations of each step can be found in the accompanying
